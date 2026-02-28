@@ -1,0 +1,226 @@
+/* Calculator Specific Styles for Dark Mode */
+.calc-input-panel {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+    aspect-ratio: 1 / 1;
+    display: block;
+}
+
+.chart-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background-color: #1e293b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    font-weight: bold;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-total-main {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.chart-total-text {
+    font-size: 14px;
+    font-weight: normal;
+    margin-top: 5px;
+    color: #94a3b8;
+}
+
+.fee-item-color {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.fee-item-color:last-child {
+    border-bottom: none;
+}
+
+.fee-name-group {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.fee-value {
+    text-align: right;
+    min-width: 80px;
+    display: inline-block;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.dot-blue {
+    background-color: #3b82f6;
+}
+
+.dot-black {
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.total-amount-line {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.btn-calc {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-calc:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Tab Design */
+.nav-pills .nav-link {
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.nav-pills .nav-link.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.nav-item {
+    flex: 1;
+}
+
+@media (max-width: 992px) {
+    .calc-input-panel {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+    }
+
+    .chart-container {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Button Options for Customs Calculator */
+.btn-option {
+    padding: 10px 24px;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.btn-option:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-option.btn-active {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+/* Shipping Calculator Styles */
+.vehicle-type-card {
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.vehicle-type-card:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-2px);
+}
+
+.vehicle-type-card.selected {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.vehicle-type-card svg {
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.vehicle-type-card.selected svg {
+    color: #10b981;
+}
+
+.container-type-btn {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.container-type-btn:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.container-type-btn.selected {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
