@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
         // Notifications (admin sending)
         Route::post('notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
         Route::post('notifications/send-bulk', [NotificationController::class, 'sendBulk'])->name('notifications.send-bulk');
+        Route::post('notifications/send-to-all-dealers', [NotificationController::class, 'sendToAllDealers'])->name('notifications.send-to-all-dealers');
 
         // Settings
         Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');

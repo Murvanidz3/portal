@@ -34,7 +34,15 @@ class NotificationController extends Controller
             ->where('is_read', false)
             ->count();
 
-        return view('notifications.index', compact('notifications', 'unreadCount'));
+        // For admin: get dealer count for broadcast form
+        $dealerCount = 0;
+        if ($user->isAdmin()) {
+            $dealerCount = User::where('role', 'dealer')
+                ->where('status', 'approved')
+                ->count();
+        }
+
+        return view('notifications.index', compact('notifications', 'unreadCount', 'dealerCount'));
     }
 
     /**
@@ -209,5 +217,32 @@ class NotificationController extends Controller
 
         return redirect()->back()
             ->with('success', "შეტყობინება გაეგზავნა {$count} მომხმარებელს!");
+    }
+
+    /**
+     * Send notification to all dealers (admin only).
+     */
+    public function sendToAllDealers(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+
+        $dealers = User::where('role', 'dealer')
+            ->where('status', 'approved')
+            ->get();
+
+        $count = 0;
+        foreach ($dealers as $dealer) {
+            Notification::createForUser($dealer->id, $validated['message']);
+            $count++;
+        }
+
+        return redirect()->back()
+            ->with('success', "შეტყობინება გაეგზავნა {$count} დილერს!");
     }
 }
