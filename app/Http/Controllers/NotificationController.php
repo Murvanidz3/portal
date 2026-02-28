@@ -34,15 +34,23 @@ class NotificationController extends Controller
             ->where('is_read', false)
             ->count();
 
-        // For admin: get dealer count for broadcast form
+        // For admin: get dealer count and broadcast history
         $dealerCount = 0;
+        $broadcastHistory = collect();
         if ($user->isAdmin()) {
             $dealerCount = User::where('role', 'dealer')
                 ->where('approved', true)
                 ->count();
+
+            // Get broadcast history - messages sent to admin's own notification log
+            $broadcastHistory = Notification::where('user_id', $user->id)
+                ->where('message', 'LIKE', '[BROADCAST]%')
+                ->orderBy('created_at', 'desc')
+                ->limit(20)
+                ->get();
         }
 
-        return view('notifications.index', compact('notifications', 'unreadCount', 'dealerCount'));
+        return view('notifications.index', compact('notifications', 'unreadCount', 'dealerCount', 'broadcastHistory'));
     }
 
     /**
@@ -106,6 +114,11 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
+        // Only admin can delete notifications
+        if (!auth()->user()->isAdmin()) {
+            abort(403);
+        }
+
         if ($notification->user_id !== auth()->id()) {
             abort(403);
         }
@@ -241,6 +254,12 @@ class NotificationController extends Controller
             Notification::createForUser($dealer->id, $validated['message']);
             $count++;
         }
+
+        // Log broadcast for admin history
+        Notification::createForUser(
+            auth()->id(),
+            '[BROADCAST] ' . $validated['message'] . ' (' . $count . ' დილერს)'
+        );
 
         return redirect()->back()
             ->with('success', "შეტყობინება გაეგზავნა {$count} დილერს!");

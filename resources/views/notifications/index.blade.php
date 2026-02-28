@@ -50,8 +50,31 @@
                 </button>
             </form>
         </div>
+
+        <!-- Broadcast History -->
+        @if($broadcastHistory->count() > 0)
+            <div class="glass-card p-6 mb-6">
+                <h2 class="text-lg font-semibold text-white mb-4">გაგზავნილი შეტყობინებების ისტორია</h2>
+                <div class="space-y-3">
+                    @foreach($broadcastHistory as $broadcast)
+                        <div class="p-3 rounded-lg bg-dark-800/50 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-dark-300 text-sm">{{ str_replace('[BROADCAST] ', '', $broadcast->message) }}</p>
+                                <span class="text-xs text-dark-500 mt-1 block">{{ $broadcast->formatted_date }}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     @endif
 
+    <!-- Notifications List -->
     <div class="glass-card overflow-hidden">
         @if($notifications->count() > 0)
             <div class="divide-y divide-white/5">
@@ -91,16 +114,18 @@
                                         </button>
                                     </form>
                                 @endif
-                                <form method="POST" action="{{ route('notifications.destroy', $notification) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="p-2 text-dark-400 hover:text-red-400" title="წაშლა">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                </form>
+                                @if(auth()->user()->isAdmin())
+                                    <form method="POST" action="{{ route('notifications.destroy', $notification) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-2 text-dark-400 hover:text-red-400" title="წაშლა">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
