@@ -7,7 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Dashboard') -
-        {{ $godModeBranding['brand_company_name'] ?? config('app.name', 'OneCar CRM') }}</title>
+        {{ $godModeBranding['brand_company_name'] ?? config('app.name', 'OneCar CRM') }}
+    </title>
 
     <!-- Favicon (Dynamic from God Mode) -->
     <link rel="icon" href="{{ $godModeBranding['brand_favicon'] ?? asset('favicon.ico') }}" type="image/x-icon">
@@ -107,6 +108,129 @@
         class="fixed inset-0 z-50 bg-dark-950/80 backdrop-blur-sm items-center justify-center hidden">
         <div class="spinner"></div>
     </div>
+
+    <!-- Notification Popup Container -->
+    <div id="notification-popup-container" class="fixed top-4 right-4 z-[60] space-y-3 max-w-sm w-full"
+        style="pointer-events: none;"></div>
+
+    <style>
+        .notification-popup {
+            pointer-events: auto;
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        .notification-popup.hiding {
+            animation: slideOutRight 0.3s ease-in forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check for unread notifications on page load
+            fetch('{{ route("notifications.recent") }}', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.notifications && data.notifications.length > 0) {
+                        // Get dismissed notification IDs from sessionStorage
+                        let dismissed = JSON.parse(sessionStorage.getItem('dismissed_notifications') || '[]');
+
+                        let unread = data.notifications.filter(n => !n.is_read && !dismissed.includes(n.id));
+
+                        // Show max 3 popups
+                        unread.slice(0, 3).forEach((notification, index) => {
+                            setTimeout(() => showNotificationPopup(notification), index * 300);
+                        });
+
+                        // If more than 3 unread
+                        if (unread.length > 3) {
+                            setTimeout(() => {
+                                showNotificationPopup({
+                                    id: 'more',
+                                    message: `+${unread.length - 3} სხვა შეტყობინება`,
+                                    url: '{{ route("notifications.index") }}'
+                                });
+                            }, 3 * 300 + 200);
+                        }
+                    }
+                })
+                .catch(() => { });
+        });
+
+        function showNotificationPopup(notification) {
+            const container = document.getElementById('notification-popup-container');
+            const popup = document.createElement('div');
+            popup.className = 'notification-popup bg-dark-800 border border-primary-500/30 rounded-xl p-4 shadow-2xl shadow-primary-500/10 cursor-pointer';
+            popup.innerHTML = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full bg-primary-600/20 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-white font-medium">${notification.message}</p>
+                    </div>
+                    <button class="text-dark-400 hover:text-white flex-shrink-0" onclick="event.stopPropagation(); dismissPopup(this.closest('.notification-popup'), ${notification.id})">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            popup.addEventListener('click', function () {
+                window.location.href = notification.url || '{{ route("notifications.index") }}';
+            });
+
+            container.appendChild(popup);
+
+            // Auto dismiss after 8 seconds
+            setTimeout(() => dismissPopup(popup, notification.id), 8000);
+        }
+
+        function dismissPopup(popup, notificationId) {
+            if (!popup || popup.classList.contains('hiding')) return;
+            popup.classList.add('hiding');
+
+            // Save dismissed ID to session
+            if (notificationId && notificationId !== 'more') {
+                let dismissed = JSON.parse(sessionStorage.getItem('dismissed_notifications') || '[]');
+                dismissed.push(notificationId);
+                sessionStorage.setItem('dismissed_notifications', JSON.stringify(dismissed));
+            }
+
+            setTimeout(() => popup.remove(), 300);
+        }
+    </script>
 
     @stack('scripts')
 

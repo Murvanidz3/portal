@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BroadcastLog;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,9 +43,8 @@ class NotificationController extends Controller
                 ->where('approved', true)
                 ->count();
 
-            // Get broadcast history - messages sent to admin's own notification log
-            $broadcastHistory = Notification::where('user_id', $user->id)
-                ->where('message', 'LIKE', '[BROADCAST]%')
+            // Get broadcast history from broadcast_logs table
+            $broadcastHistory = BroadcastLog::where('sent_by', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->limit(20)
                 ->get();
@@ -256,10 +256,11 @@ class NotificationController extends Controller
         }
 
         // Log broadcast for admin history
-        Notification::createForUser(
-            auth()->id(),
-            '[BROADCAST] ' . $validated['message'] . ' (' . $count . ' დილერს)'
-        );
+        BroadcastLog::create([
+            'sent_by' => auth()->id(),
+            'message' => $validated['message'],
+            'dealer_count' => $count,
+        ]);
 
         return redirect()->back()
             ->with('success', "შეტყობინება გაეგზავნა {$count} დილერს!");

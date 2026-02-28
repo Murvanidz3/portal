@@ -36,14 +36,12 @@
 
             <form method="POST" action="{{ route('notifications.send-to-all-dealers') }}" class="space-y-4">
                 @csrf
-
                 <div>
                     <label class="block text-sm font-medium text-dark-300 mb-2">შეტყობინების ტექსტი</label>
                     <textarea name="message" rows="3" class="form-input w-full" maxlength="1000"
                         placeholder="მაგ: გაიაფდა ტრანსპორტირება ნიუ ჯერსის შტატში 50$-ით" required></textarea>
                     <p class="text-xs text-dark-500 mt-1">მაქს. 1000 სიმბოლო</p>
                 </div>
-
                 <button type="submit" class="btn-primary"
                     onclick="return confirm('ნამდვილად გსურთ შეტყობინების გაგზავნა {{ $dealerCount }} დილერისთვის?')">
                     გაგზავნა ყველა დილერისთვის ({{ $dealerCount }})
@@ -64,8 +62,11 @@
                                 </svg>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="text-dark-300 text-sm">{{ str_replace('[BROADCAST] ', '', $broadcast->message) }}</p>
-                                <span class="text-xs text-dark-500 mt-1 block">{{ $broadcast->formatted_date }}</span>
+                                <p class="text-dark-300 text-sm">{{ $broadcast->message }}</p>
+                                <div class="flex items-center gap-3 mt-1">
+                                    <span class="text-xs text-dark-500">{{ $broadcast->created_at->format('d.m.Y H:i') }}</span>
+                                    <span class="text-xs text-primary-400">{{ $broadcast->dealer_count }} დილერს</span>
+                                </div>
                             </div>
                         </div>
                     @endforeach
