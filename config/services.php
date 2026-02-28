@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'sms' => [
+        'api_key' => env('SMS_API_KEY', ''),
+        'sender' => env('SMS_SENDER', 'ONECAR.GE'),
+        'api_url' => env('SMS_API_URL', 'https://smsoffice.ge/api/v2/send/'),
+    ],
+
 ];

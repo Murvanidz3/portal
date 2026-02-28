@@ -12,17 +12,18 @@ use Illuminate\Support\Facades\Log;
 
 class SmsService
 {
-    protected string $apiUrl = 'https://smsoffice.ge/api/v2/send/'; // POST requires trailing slash
+    protected string $apiUrl;
     protected ?string $apiKey;
     protected string $sender;
 
     public function __construct()
     {
-        // Use provided API key or fallback to setting
-        $this->apiKey = 'aad8d93a80bb4782ae8bd95bfad2b234';
-        $this->sender = Setting::get('sms_sender', 'smsoffice');
+        // Read from config (which reads from .env), with DB settings as override
+        $this->apiKey = Setting::get('sms_api_key', config('services.sms.api_key', ''));
+        $this->sender = Setting::get('sms_sender', config('services.sms.sender', 'ONECAR.GE'));
+        $this->apiUrl = config('services.sms.api_url', 'https://smsoffice.ge/api/v2/send/');
     }
-    
+
     /**
      * Get SMS balance from API.
      */
@@ -31,19 +32,19 @@ class SmsService
         if (empty($this->apiKey)) {
             return null;
         }
-        
+
         try {
             $response = Http::timeout(10)->get('https://smsoffice.ge/api/getBalance', [
                 'key' => $this->apiKey,
             ]);
-            
+
             if ($response->successful()) {
                 $body = $response->body();
                 // API returns the balance as a number
                 $balance = (int) trim($body);
                 return $balance > 0 ? $balance : 0;
             }
-            
+
             return null;
         } catch (\Exception $e) {
             Log::error('SMS: Failed to get balance', [
@@ -60,7 +61,7 @@ class SmsService
     {
         // Format phone number
         $phone = $this->formatPhone($phone);
-        
+
         if (empty($phone)) {
             Log::warning('SMS: Invalid phone number');
             return false;
@@ -69,36 +70,41 @@ class SmsService
         // Check if API key is configured
         if (empty($this->apiKey)) {
             Log::warning('SMS: API key not configured');
-            // Still log the SMS for testing/debugging
             SmsLog::log($phone, $message, 'failed', null);
             return false;
         }
 
         try {
             $referenceId = 'sms_' . uniqid();
-            
-            // Use POST method for better reliability (especially for long messages)
-            // Use POST method with form data (as per API documentation)
-            $response = Http::timeout(10)->asForm()->post($this->apiUrl, [
+
+            $params = [
                 'key' => $this->apiKey,
                 'destination' => $phone,
                 'sender' => $this->sender,
                 'content' => $message,
                 'urgent' => 'true',
+            ];
+
+            Log::info('SMS: Attempting to send', [
+                'phone' => $phone,
+                'sender' => $this->sender,
+                'message_length' => mb_strlen($message),
             ]);
+
+            // Try GET method first (more reliable on shared hosting)
+            $response = Http::timeout(15)->get('https://smsoffice.ge/api/v2/send/', $params);
 
             // Parse JSON response
             $responseData = $response->json();
             $success = false;
-            
+
             // Check API response format: { "Success": boolean, "Message": string, "ErrorCode": integer }
             if ($responseData && isset($responseData['Success'])) {
                 $success = $responseData['Success'] === true || $responseData['ErrorCode'] == 0;
             } else {
-                // Fallback: check HTTP status
                 $success = $response->successful();
             }
-            
+
             // Log the SMS
             SmsLog::log(
                 $phone,
@@ -110,9 +116,16 @@ class SmsService
             if (!$success) {
                 Log::error('SMS: Failed to send', [
                     'phone' => $phone,
-                    'response' => $response->body(),
+                    'sender' => $this->sender,
+                    'response_body' => $response->body(),
+                    'response_status' => $response->status(),
                     'error_code' => $responseData['ErrorCode'] ?? null,
                     'error_message' => $responseData['Message'] ?? null,
+                ]);
+            } else {
+                Log::info('SMS: Sent successfully', [
+                    'phone' => $phone,
+                    'response' => $responseData,
                 ]);
             }
 
@@ -121,6 +134,7 @@ class SmsService
             Log::error('SMS: Exception', [
                 'phone' => $phone,
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             SmsLog::log($phone, $message, 'failed', null);
@@ -135,7 +149,7 @@ class SmsService
     {
         // Get template for this status
         $template = SmsTemplate::getByStatus($newStatus);
-        
+
         if (!$template) {
             Log::info('SMS: No template for status', ['status' => $newStatus]);
             return false;
@@ -143,7 +157,7 @@ class SmsService
 
         // Get recipient phone number
         $phone = $this->getRecipientPhone($car);
-        
+
         if (empty($phone)) {
             Log::info('SMS: No phone number for car', ['car_id' => $car->id]);
             return false;
@@ -208,12 +222,12 @@ class SmsService
     {
         // Remove all non-numeric characters
         $phone = preg_replace('/[^0-9]/', '', $phone);
-        
+
         // Handle Georgian numbers
         if (str_starts_with($phone, '5') && strlen($phone) === 9) {
             $phone = '995' . $phone;
         }
-        
+
         // Add Georgia country code if missing
         if (strlen($phone) === 9 && !str_starts_with($phone, '995')) {
             $phone = '995' . $phone;
