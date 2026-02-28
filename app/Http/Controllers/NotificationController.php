@@ -38,7 +38,7 @@ class NotificationController extends Controller
         $dealerCount = 0;
         if ($user->isAdmin()) {
             $dealerCount = User::where('role', 'dealer')
-                ->where('status', 'approved')
+                ->where('approved', true)
                 ->count();
         }
 
@@ -233,7 +233,7 @@ class NotificationController extends Controller
         ]);
 
         $dealers = User::where('role', 'dealer')
-            ->where('status', 'approved')
+            ->where('approved', true)
             ->get();
 
         $count = 0;
