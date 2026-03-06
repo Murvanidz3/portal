@@ -5,7 +5,7 @@
 @section('page-header')
     <div>
         <h1 class="text-2xl font-bold text-white">კალკულატორი</h1>
-        <p class="text-dark-400 mt-1">გამოთვალეთ მანქანის ჯამური ღირებულება</p>
+        <p class="text-dark-400 mt-1">გამოთვალეთ მანქანის ჯამური ღირებულება</p><!-- webhook test v2 -->
     </div>
 @endsection
 
