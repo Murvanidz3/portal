@@ -63,8 +63,14 @@
                 @csrf
 
                 <div>
-                    <label class="block text-sm font-medium text-dark-300 mb-2">ტელეფონი</label>
-                    <input type="text" name="phone" class="form-input w-full" placeholder="995XXXXXXXXX" required>
+                    <label class="block text-sm font-medium text-dark-300 mb-2">ტელეფონის ნომრები</label>
+                    <textarea name="phone" rows="3" class="form-input w-full font-mono text-sm"
+                        placeholder="995XXXXXXXXX&#10;995XXXXXXXXX&#10;995XXXXXXXXX" required
+                        oninput="updatePhoneCount(this)"></textarea>
+                    <div class="flex items-center justify-between mt-1">
+                        <p class="text-xs text-dark-500">გამოყავით მძიმით, წერტილ-მძიმით ან ახალ ხაზზე</p>
+                        <span id="phone-count" class="text-xs text-primary-400 font-medium"></span>
+                    </div>
                 </div>
 
                 <div>
@@ -73,7 +79,7 @@
                     <p class="text-xs text-dark-500 mt-1">მაქს. 500 სიმბოლო</p>
                 </div>
 
-                <button type="submit" class="btn-primary w-full">
+                <button type="submit" class="btn-primary w-full" id="sms-send-btn">
                     გაგზავნა
                 </button>
             </form>
@@ -115,7 +121,7 @@
                             <td class="text-center">
                                 <span
                                     class="px-2 py-1 rounded-full text-xs font-medium 
-                                    {{ $log->status == 'sent' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400' }}">
+                                                    {{ $log->status == 'sent' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400' }}">
                                     {{ $log->status_label }}
                                 </span>
                             </td>
@@ -203,6 +209,22 @@
             function closeModal() {
                 document.getElementById('template-modal').classList.add('hidden');
                 document.getElementById('template-modal').classList.remove('flex');
+            }
+
+            function updatePhoneCount(textarea) {
+                const text = textarea.value.trim();
+                if (!text) {
+                    document.getElementById('phone-count').textContent = '';
+                    document.getElementById('sms-send-btn').textContent = 'გაგზავნა';
+                    return;
+                }
+                const phones = text.split(/[\s,;\n\r]+/).filter(p => p.trim().length > 0);
+                const unique = [...new Set(phones)];
+                const count = unique.length;
+                document.getElementById('phone-count').textContent = count + ' ნომერი';
+                document.getElementById('sms-send-btn').textContent = count > 1
+                    ? `გაგზავნა (${count} ნომერზე)`
+                    : 'გაგზავნა';
             }
         </script>
     @endpush

@@ -37,7 +37,7 @@ class SmsController extends Controller
             $search = $request->search;
             $logsQuery->where(function ($q) use ($search) {
                 $q->where('phone', 'like', "%{$search}%")
-                  ->orWhere('message', 'like', "%{$search}%");
+                    ->orWhere('message', 'like', "%{$search}%");
             });
         }
 
@@ -45,7 +45,7 @@ class SmsController extends Controller
 
         // Stats
         $balance = $this->smsService->getBalance();
-        
+
         $stats = [
             'total_sent' => SmsLog::sent()->count(),
             'total_failed' => SmsLog::failed()->count(),
@@ -79,30 +79,54 @@ class SmsController extends Controller
     }
 
     /**
-     * Send SMS manually.
+     * Send SMS manually (supports multiple phone numbers).
      */
     public function send(Request $request)
     {
         $validated = $request->validate([
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string',
             'message' => 'required|string|max:500',
         ]);
 
-        $result = $this->smsService->send(
-            $validated['phone'],
-            $validated['message']
-        );
+        // Split phone numbers by comma, newline, semicolon, or space
+        $phones = preg_split('/[\s,;\n\r]+/', trim($validated['phone']));
+        $phones = array_filter(array_map('trim', $phones)); // Remove empty entries
+        $phones = array_unique($phones); // Remove duplicates
+
+        if (empty($phones)) {
+            return redirect()->back()->with('error', 'ტელეფონის ნომერი არ არის მითითებული!');
+        }
+
+        $successCount = 0;
+        $failCount = 0;
+
+        foreach ($phones as $phone) {
+            $result = $this->smsService->send($phone, $validated['message']);
+            if ($result) {
+                $successCount++;
+            } else {
+                $failCount++;
+            }
+        }
 
         if ($request->expectsJson()) {
             return response()->json([
-                'success' => $result,
-                'message' => $result ? 'SMS გაიგზავნა!' : 'SMS გაგზავნა ვერ მოხერხდა!'
+                'success' => $successCount > 0,
+                'message' => "გაიგზავნა: {$successCount}, შეცდომა: {$failCount}"
             ]);
         }
 
+        $totalCount = count($phones);
+        if ($totalCount === 1) {
+            return redirect()->back()->with(
+                $successCount > 0 ? 'success' : 'error',
+                $successCount > 0 ? 'SMS გაიგზავნა!' : 'SMS გაგზავნა ვერ მოხერხდა!'
+            );
+        }
+
         return redirect()->back()->with(
-            $result ? 'success' : 'error',
-            $result ? 'SMS გაიგზავნა!' : 'SMS გაგზავნა ვერ მოხერხდა!'
+            $successCount > 0 ? 'success' : 'error',
+            "SMS გაიგზავნა {$successCount}/{$totalCount} ნომერზე." . ($failCount > 0 ? " შეცდომა: {$failCount}" : '')
         );
     }
 
