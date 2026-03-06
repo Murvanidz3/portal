@@ -7,44 +7,44 @@
 
 /* ===================================
    OneCar CRM - Custom Theme
-   Dark Mode Default + Blue Accent
+   Dark Mode + Orange Accent
    =================================== */
 
 @theme {
     /* Fonts */
     --font-sans: 'GeoFont', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     
-    /* Primary Colors - Blue */
-    --color-primary-50: #eff6ff;
-    --color-primary-100: #dbeafe;
-    --color-primary-200: #bfdbfe;
-    --color-primary-300: #93c5fd;
-    --color-primary-400: #60a5fa;
-    --color-primary-500: #3b82f6;
-    --color-primary-600: #2563eb;
-    --color-primary-700: #1d4ed8;
-    --color-primary-800: #1e40af;
-    --color-primary-900: #1e3a8a;
-    --color-primary-950: #172554;
+    /* Primary Colors - Orange */
+    --color-primary-50: #fff7ed;
+    --color-primary-100: #ffedd5;
+    --color-primary-200: #fed7aa;
+    --color-primary-300: #fdba74;
+    --color-primary-400: #ff8f1f;
+    --color-primary-500: #ff6f00;
+    --color-primary-600: #e65c00;
+    --color-primary-700: #c2410c;
+    --color-primary-800: #9a3412;
+    --color-primary-900: #7c2d12;
+    --color-primary-950: #431407;
     
     /* Dark Theme Background Colors */
-    --color-dark-50: #f8fafc;
-    --color-dark-100: #f1f5f9;
-    --color-dark-200: #e2e8f0;
-    --color-dark-300: #cbd5e1;
-    --color-dark-400: #94a3b8;
-    --color-dark-500: #64748b;
-    --color-dark-600: #475569;
-    --color-dark-700: #334155;
-    --color-dark-800: #1e293b;
-    --color-dark-850: #172032;
-    --color-dark-900: #0f172a;
-    --color-dark-950: #020617;
+    --color-dark-50: #fafafa;
+    --color-dark-100: #f0f0f0;
+    --color-dark-200: #d4d4d4;
+    --color-dark-300: #a3a3a3;
+    --color-dark-400: #737373;
+    --color-dark-500: #525252;
+    --color-dark-600: #404040;
+    --color-dark-700: #2a2a2a;
+    --color-dark-800: #1e1e1e;
+    --color-dark-850: #181818;
+    --color-dark-900: #141414;
+    --color-dark-950: #121212;
     
     /* Sidebar specific */
-    --color-sidebar: #0f172a;
-    --color-sidebar-hover: #1e293b;
-    --color-sidebar-active: #1e40af;
+    --color-sidebar: #141414;
+    --color-sidebar-hover: #1e1e1e;
+    --color-sidebar-active: #e65c00;
 }
 
 /* Georgian Font */
@@ -64,7 +64,7 @@
 /* Base Styles */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #334155 #0f172a;
+    scrollbar-color: #2a2a2a #121212;
 }
 
 *::-webkit-scrollbar {
@@ -73,24 +73,24 @@
 }
 
 *::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: #121212;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: #334155;
+    background: #2a2a2a;
     border-radius: 3px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+    background: #404040;
 }
 
 /* Glass Card Effect */
 .glass-card {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(30, 30, 30, 0.8);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #2a2a2a;
     border-radius: 16px;
 }
 
@@ -99,16 +99,16 @@
 }
 
 .glass-card-hover:hover {
-    background: rgba(30, 41, 59, 0.9);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 111, 0, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 /* Sidebar Styles */
 .sidebar {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, #141414 0%, #1e1e1e 100%);
+    border-right: 1px solid #2a2a2a;
 }
 
 .sidebar-item {
@@ -118,17 +118,17 @@
 }
 
 .sidebar-item:hover {
-    background: rgba(59, 130, 246, 0.1);
-    color: #60a5fa;
+    background: rgba(255, 111, 0, 0.1);
+    color: #ff8f1f;
 }
 
 .sidebar-item.active {
-    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #e65c00 0%, #ff6f00 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 111, 0, 0.35);
 }
 
-/* Status Badges - Solid background with white text, same style as debt badge */
+/* Status Badges - Solid background with white text */
 .badge-purchased {
     background: #fbbf24 !important;
     color: white !important;
@@ -146,7 +146,7 @@
 }
 
 .badge-loaded, .badge-on_way {
-    background: #3b82f6 !important;
+    background: #ff6f00 !important;
     color: white !important;
     border: none !important;
     font-weight: 600;
@@ -154,7 +154,7 @@
 }
 
 .badge-poti {
-    background: #2563eb !important;
+    background: #e65c00 !important;
     color: white !important;
     border: none !important;
     font-weight: 600;
@@ -171,25 +171,31 @@
 
 /* Button Styles */
 .btn-primary {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: #ff6f00;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     font-weight: 600;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.35);
 }
 
 .btn-primary:hover {
+    background: #ff8f1f;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 111, 0, 0.4);
+}
+
+.btn-primary:active {
+    background: #e65c00;
+    transform: translateY(0);
 }
 
 .btn-secondary {
-    background: rgba(71, 85, 105, 0.5);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(42, 42, 42, 0.8);
+    color: #e5e5e5;
+    border: 1px solid #2a2a2a;
     padding: 10px 20px;
     border-radius: 10px;
     font-weight: 500;
@@ -197,70 +203,70 @@
 }
 
 .btn-secondary:hover {
-    background: rgba(71, 85, 105, 0.7);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(64, 64, 64, 0.8);
+    border-color: rgba(255, 111, 0, 0.3);
 }
 
 /* Form Inputs */
 .form-input {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(18, 18, 18, 0.8);
+    border: 1px solid #2a2a2a;
     border-radius: 10px;
-    color: white;
+    color: #e5e5e5;
     padding: 12px 16px;
     transition: all 0.2s ease;
 }
 
 .form-input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: #ff6f00;
+    box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.15);
 }
 
 .form-input::placeholder {
-    color: #64748b;
+    color: #525252;
 }
 
 /* Table Styles */
 .table-dark {
-    background: rgba(30, 41, 59, 0.5);
+    background: rgba(30, 30, 30, 0.5);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .table-dark th {
-    background: rgba(15, 23, 42, 0.8);
-    color: #94a3b8;
+    background: rgba(18, 18, 18, 0.9);
+    color: #737373;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
     padding: 14px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid #2a2a2a;
 }
 
 .table-dark td {
     padding: 14px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    color: #e2e8f0;
+    border-bottom: 1px solid rgba(42, 42, 42, 0.5);
+    color: #d4d4d4;
 }
 
 .table-dark tr:hover {
-    background: rgba(59, 130, 246, 0.05);
+    background: rgba(255, 111, 0, 0.05);
 }
 
 /* Stats Card */
 .stat-card {
-    background: rgba(30, 41, 59, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid #2a2a2a;
     border-radius: 16px;
     padding: 20px;
     transition: all 0.3s ease;
 }
 
 .stat-card:hover {
-    border-color: rgba(59, 130, 246, 0.3);
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.1);
+    border-color: rgba(255, 111, 0, 0.3);
+    box-shadow: 0 0 30px rgba(255, 111, 0, 0.08);
 }
 
 /* Animations */
@@ -286,8 +292,8 @@
 .spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid rgba(59, 130, 246, 0.2);
-    border-top-color: #3b82f6;
+    border: 3px solid rgba(255, 111, 0, 0.2);
+    border-top-color: #ff6f00;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -308,8 +314,8 @@
     left: 50%;
     transform: translateX(-50%);
     padding: 6px 12px;
-    background: #1e293b;
-    color: white;
+    background: #1e1e1e;
+    color: #e5e5e5;
     font-size: 12px;
     border-radius: 6px;
     white-space: nowrap;
