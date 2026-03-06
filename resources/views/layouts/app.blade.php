@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="ka" class="dark">
+<script>
+    // Prevent flash: apply saved theme immediately
+    (function () {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.className = theme;
+    })();
+</script>
 
 <head>
     <meta charset="UTF-8">
@@ -31,7 +38,7 @@
     @endif
 </head>
 
-<body class="bg-dark-950 text-white font-sans antialiased" x-data="{ sidebarOpen: false }">
+<body class="theme-bg theme-text font-sans antialiased" x-data="{ sidebarOpen: false }">
 
     <div class="flex min-h-screen">
 
@@ -230,6 +237,38 @@
 
             setTimeout(() => popup.remove(), 300);
         }
+    </script>
+
+    <script>
+        // Theme Toggle System
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            const newTheme = isDark ? 'light' : 'dark';
+            html.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+            if (sunIcon && moonIcon) {
+                if (theme === 'dark') {
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                } else {
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+            }
+        }
+
+        // Init icons on load
+        document.addEventListener('DOMContentLoaded', function () {
+            const theme = localStorage.getItem('theme') || 'dark';
+            updateThemeIcons(theme);
+        });
     </script>
 
     @stack('scripts')

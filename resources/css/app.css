@@ -13,7 +13,7 @@
 @theme {
     /* Fonts */
     --font-sans: 'GeoFont', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-    
+
     /* Primary Colors - Orange */
     --color-primary-50: #fff7ed;
     --color-primary-100: #ffedd5;
@@ -26,7 +26,7 @@
     --color-primary-800: #9a3412;
     --color-primary-900: #7c2d12;
     --color-primary-950: #431407;
-    
+
     /* Dark Theme Background Colors */
     --color-dark-50: #fafafa;
     --color-dark-100: #f0f0f0;
@@ -40,7 +40,7 @@
     --color-dark-850: #181818;
     --color-dark-900: #141414;
     --color-dark-950: #121212;
-    
+
     /* Sidebar specific */
     --color-sidebar: #141414;
     --color-sidebar-hover: #1e1e1e;
@@ -61,7 +61,31 @@
     display: none !important;
 }
 
-/* Base Styles */
+/* ===================================
+   THEME BASE CLASSES
+   =================================== */
+.theme-bg {
+    background: #121212;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-text {
+    color: #e5e5e5;
+}
+
+.light .theme-bg {
+    background: #f5f5f5;
+}
+
+.light .theme-text {
+    color: #1a1a1a;
+}
+
+/* ===================================
+   DARK MODE STYLES (default)
+   =================================== */
+
+/* Scrollbar */
 * {
     scrollbar-width: thin;
     scrollbar-color: #2a2a2a #121212;
@@ -92,6 +116,7 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid #2a2a2a;
     border-radius: 16px;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-card-hover {
@@ -107,8 +132,9 @@
 
 /* Sidebar Styles */
 .sidebar {
-    background: linear-gradient(180deg, #141414 0%, #1e1e1e 100%);
+    background: linear-gradient(180deg, #141414 0%, #1a1a1a 100%);
     border-right: 1px solid #2a2a2a;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .sidebar-item {
@@ -125,10 +151,10 @@
 .sidebar-item.active {
     background: linear-gradient(135deg, #e65c00 0%, #ff6f00 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(255, 111, 0, 0.35);
+    box-shadow: 0 4px 15px rgba(255, 111, 0, 0.35);
 }
 
-/* Status Badges - Solid background with white text */
+/* Status Badges */
 .badge-purchased {
     background: #fbbf24 !important;
     color: white !important;
@@ -145,7 +171,8 @@
     opacity: 0.9;
 }
 
-.badge-loaded, .badge-on_way {
+.badge-loaded,
+.badge-on_way {
     background: #ff6f00 !important;
     color: white !important;
     border: none !important;
@@ -161,7 +188,8 @@
     opacity: 0.9;
 }
 
-.badge-green, .badge-delivered {
+.badge-green,
+.badge-delivered {
     background: #22c55e !important;
     color: white !important;
     border: none !important;
@@ -171,25 +199,26 @@
 
 /* Button Styles */
 .btn-primary {
-    background: #ff6f00;
+    background: linear-gradient(135deg, #ff6f00 0%, #ff8f1f 100%);
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: 0 0 10px rgba(255, 111, 0, 0.35);
+    transition: all 0.25s ease;
+    box-shadow: 0 0 15px rgba(255, 111, 0, 0.3);
 }
 
 .btn-primary:hover {
-    background: #ff8f1f;
+    background: linear-gradient(135deg, #ff8f1f 0%, #ffab40 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 111, 0, 0.4);
+    box-shadow: 0 6px 25px rgba(255, 111, 0, 0.45);
 }
 
 .btn-primary:active {
     background: #e65c00;
     transform: translateY(0);
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.3);
 }
 
 .btn-secondary {
@@ -232,6 +261,7 @@
     background: rgba(30, 30, 30, 0.5);
     border-radius: 12px;
     overflow: hidden;
+    transition: background 0.3s ease;
 }
 
 .table-dark th {
@@ -243,12 +273,14 @@
     letter-spacing: 0.05em;
     padding: 14px 16px;
     border-bottom: 1px solid #2a2a2a;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .table-dark td {
     padding: 14px 16px;
     border-bottom: 1px solid rgba(42, 42, 42, 0.5);
     color: #d4d4d4;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .table-dark tr:hover {
@@ -271,13 +303,27 @@
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .animate-fade-in {
@@ -299,7 +345,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Tooltip */
@@ -338,8 +386,236 @@
         z-index: 50;
         transition: transform 0.3s ease;
     }
-    
+
     .sidebar.open {
         transform: translateX(0);
     }
+}
+
+/* ===================================
+   LIGHT MODE OVERRIDES
+   =================================== */
+
+/* Body background */
+.light .theme-bg {
+    background: #f5f5f5;
+}
+
+/* Scrollbar light */
+.light * {
+    scrollbar-color: #d4d4d4 #f5f5f5;
+}
+
+.light *::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+.light *::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+}
+
+.light *::-webkit-scrollbar-thumb:hover {
+    background: #a3a3a3;
+}
+
+/* Glass Card - Light */
+.light .glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.light .glass-card-hover:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 111, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar - Light */
+.light .sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    border-right: 1px solid #e0e0e0;
+}
+
+.light .sidebar-item:hover {
+    background: rgba(255, 111, 0, 0.08);
+    color: #e65c00;
+}
+
+.light .sidebar-item.active {
+    background: linear-gradient(135deg, #e65c00 0%, #ff6f00 100%);
+    color: white;
+}
+
+/* Header - Light */
+.light header {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+/* Footer - Light */
+.light footer {
+    border-top-color: #e0e0e0 !important;
+}
+
+/* Text overrides */
+.light .text-white {
+    color: #1a1a1a !important;
+}
+
+.light .text-dark-300 {
+    color: #525252 !important;
+}
+
+.light .text-dark-400 {
+    color: #737373 !important;
+}
+
+.light .text-dark-500 {
+    color: #8a8a8a !important;
+}
+
+/* Button Secondary - Light */
+.light .btn-secondary {
+    background: rgba(240, 240, 240, 0.9);
+    color: #1a1a1a;
+    border: 1px solid #e0e0e0;
+}
+
+.light .btn-secondary:hover {
+    background: rgba(230, 230, 230, 1);
+    border-color: rgba(255, 111, 0, 0.4);
+}
+
+/* Form Inputs - Light */
+.light .form-input {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d4d4d4;
+    color: #1a1a1a;
+}
+
+.light .form-input:focus {
+    border-color: #ff6f00;
+    box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.12);
+}
+
+.light .form-input::placeholder {
+    color: #a3a3a3;
+}
+
+/* Table - Light */
+.light .table-dark {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.light .table-dark th {
+    background: rgba(245, 245, 245, 0.95);
+    color: #525252;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.light .table-dark td {
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.light .table-dark tr:hover {
+    background: rgba(255, 111, 0, 0.04);
+}
+
+/* Stat Card - Light */
+.light .stat-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #e0e0e0;
+}
+
+.light .stat-card:hover {
+    border-color: rgba(255, 111, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* Dropdowns & modals - Light */
+.light .bg-dark-800 {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+}
+
+.light .bg-dark-700 {
+    background: #f5f5f5 !important;
+}
+
+.light .bg-dark-900 {
+    background: #fafafa !important;
+}
+
+.light .bg-dark-950 {
+    background: #f5f5f5 !important;
+}
+
+/* Borders - Light */
+.light .border-white\/5,
+.light .border-white\/10 {
+    border-color: #e0e0e0 !important;
+}
+
+/* Hover backgrounds - Light */
+.light .hover\:bg-dark-800:hover {
+    background: #f0f0f0 !important;
+}
+
+.light .hover\:bg-dark-700\/50:hover {
+    background: rgba(240, 240, 240, 0.7) !important;
+}
+
+/* Loading overlay - Light */
+.light #loading-overlay {
+    background: rgba(245, 245, 245, 0.85) !important;
+}
+
+/* Notification popup - Light */
+.light .notification-popup {
+    background: #ffffff !important;
+    border-color: rgba(255, 111, 0, 0.2) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Tooltip - Light */
+.light .tooltip::after {
+    background: #ffffff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Sidebar text - Light */
+.light .sidebar .text-dark-300 {
+    color: #525252 !important;
+}
+
+.light .sidebar .text-dark-500 {
+    color: #8a8a8a !important;
+}
+
+/* Sidebar border - Light */
+.light .sidebar .border-white\/5 {
+    border-color: #e0e0e0 !important;
+}
+
+/* Mobile overlay - Light */
+.light #sidebar-overlay {
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Select options - Light */
+.light select option {
+    background: #ffffff;
+    color: #1a1a1a;
+}
+
+/* Profile avatar gradient stays same */
+.light .from-primary-500 {
+    --tw-gradient-from: #ff6f00;
+}
+
+.light .to-primary-700 {
+    --tw-gradient-to: #c2410c;
 }
