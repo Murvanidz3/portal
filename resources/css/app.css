@@ -378,19 +378,7 @@
     visibility: visible;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-    .sidebar {
-        transform: translateX(-100%);
-        position: fixed;
-        z-index: 50;
-        transition: transform 0.3s ease;
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-}
+/* Responsive - sidebar handled by Alpine.js + Tailwind classes in template */
 
 /* ===================================
    LIGHT MODE OVERRIDES
