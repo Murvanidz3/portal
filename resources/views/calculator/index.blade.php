@@ -15,26 +15,26 @@
 
 @section('content')
     <div class="space-y-6" x-data="{ 
-                                                 activeTab: 'shipping',
-                                                 init() {
-                                                     this.$watch('activeTab', (value) => {
-                                                         setTimeout(() => {
-                                                             if (value === 'shipping') {
-                                                                 if (typeof updateLocationDropdown === 'function') {
-                                                                     updateLocationDropdown();
+                                                     activeTab: 'shipping',
+                                                     init() {
+                                                         this.$watch('activeTab', (value) => {
+                                                             setTimeout(() => {
+                                                                 if (value === 'shipping') {
+                                                                     if (typeof updateLocationDropdown === 'function') {
+                                                                         updateLocationDropdown();
+                                                                     }
+                                                                     if (typeof calculateShipping === 'function') {
+                                                                         calculateShipping();
+                                                                     }
+                                                                 } else if (value === 'auction' && typeof calculateFees === 'function') {
+                                                                     calculateFees();
+                                                                 } else if (value === 'customs' && typeof calculateCustoms === 'function') {
+                                                                     calculateCustoms();
                                                                  }
-                                                                 if (typeof calculateShipping === 'function') {
-                                                                     calculateShipping();
-                                                                 }
-                                                             } else if (value === 'auction' && typeof calculateFees === 'function') {
-                                                                 calculateFees();
-                                                             } else if (value === 'customs' && typeof calculateCustoms === 'function') {
-                                                                 calculateCustoms();
-                                                             }
-                                                         }, 150);
-                                                     });
-                                                 }
-                                             }">
+                                                             }, 150);
+                                                         });
+                                                     }
+                                                 }">
         <!-- Tabs Navigation -->
         <div class="glass-card p-2">
             <div class="flex flex-wrap gap-2">
@@ -205,18 +205,18 @@
                         <!-- Right Column: Results Display -->
                         <!-- Right Column: Results Display -->
                         <!-- Right Column: Results Display -->
-                        <div class="lg:col-span-2 bg-dark-800/50 rounded-xl p-6 border border-dark-600 flex flex-col justify-center min-h-[420px]">
-                            
+                        <div
+                            class="lg:col-span-2 bg-dark-800/50 rounded-xl p-6 border border-dark-600 flex flex-col justify-center min-h-[420px]">
+
                             <h5 class="text-xs font-semibold text-dark-400 uppercase tracking-wider mb-8 w-full text-left">
                                 ტრანსპორტირების დეტალები
                             </h5>
 
                             <div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full">
-                                
+
                                 <!-- Chart -->
                                 <div class="chart-container flex-shrink-0" id="shippingChartContainer"
-                                     style="width: 200px; height: 200px;" 
-                                     :style="chartStyle">
+                                    style="width: 200px; height: 200px;" :style="chartStyle">
                                     <div class="chart-inner">
                                         <span class="chart-total-main" x-text="(totalCost || 0) + ' $'">0 $</span>
                                         <span class="chart-total-text">ტრანსპორტირება</span>
@@ -225,9 +225,10 @@
 
                                 <!-- Breakdown List -->
                                 <div class="flex-1 w-full max-w-sm ml-0 md:ml-4">
-                                    
+
                                     <!-- Default State -->
-                                    <div x-show="!calculationResult" class="text-center md:text-left text-dark-400 text-sm py-4">
+                                    <div x-show="!calculationResult"
+                                        class="text-center md:text-left text-dark-400 text-sm py-4">
                                         აირჩიეთ ლოკაცია ღირებულების სანახავად
                                     </div>
 
@@ -239,7 +240,8 @@
                                                     <span class="color-dot dot-blue"></span>
                                                     <span>ლოკაცია:</span>
                                                 </span>
-                                                <span class="fee-value text-white" x-text="calculationResult.location"></span>
+                                                <span class="fee-value text-white"
+                                                    x-text="calculationResult.location"></span>
                                             </div>
 
                                             <div class="fee-item-color">
@@ -247,7 +249,8 @@
                                                     <span class="color-dot" style="background-color: #6b7280;"></span>
                                                     <span>ბაზისური:</span>
                                                 </span>
-                                                <span class="fee-value text-white" x-text="calculationResult.base_rate + ' $'"></span>
+                                                <span class="fee-value text-white"
+                                                    x-text="calculationResult.base_rate + ' $'"></span>
                                             </div>
 
                                             <template x-if="calculationResult.vehicle_adjustment > 0">
@@ -256,17 +259,19 @@
                                                         <span class="color-dot" style="background-color: #f59e0b;"></span>
                                                         <span>ავტ. ტიპი:</span>
                                                     </span>
-                                                    <span class="fee-value text-white" x-text="'+ ' + calculationResult.vehicle_adjustment + ' $'"></span>
+                                                    <span class="fee-value text-white"
+                                                        x-text="'+ ' + calculationResult.vehicle_adjustment + ' $'"></span>
                                                 </div>
                                             </template>
 
-                                             <template x-if="calculationResult.port_adjustment > 0">
+                                            <template x-if="calculationResult.port_adjustment > 0">
                                                 <div class="fee-item-color">
                                                     <span class="fee-name-group">
                                                         <span class="color-dot" style="background-color: #8b5cf6;"></span>
                                                         <span>პორტი:</span>
                                                     </span>
-                                                    <span class="fee-value text-white" x-text="'+ ' + calculationResult.port_adjustment + ' $'"></span>
+                                                    <span class="fee-value text-white"
+                                                        x-text="'+ ' + calculationResult.port_adjustment + ' $'"></span>
                                                 </div>
                                             </template>
 
@@ -275,16 +280,17 @@
                                                     <span class="color-dot dot-black"></span>
                                                     <span>სრული ფასი:</span>
                                                 </span>
-                                                <span class="text-2xl font-bold text-green-400" x-text="(totalCost || 0) + ' $'"></span>
+                                                <span class="text-2xl font-bold text-green-400"
+                                                    x-text="(totalCost || 0) + ' $'"></span>
                                             </div>
                                         </div>
                                     </template>
                                 </div>
                             </div>
-                            
+
                             <template x-if="calculationResult">
                                 <div class="mt-6 text-center text-[10px] text-dark-500">
-                                    <span class="text-primary-400" x-text="calculationResult.auction"></span> ტრანსპორტირება 
+                                    <span class="text-primary-400" x-text="calculationResult.auction"></span> ტრანსპორტირება
                                     <span x-text="destinationPort === 'poti' ? 'ფოთში' : 'ბათუმში'"></span>.
                                 </div>
                             </template>
@@ -459,22 +465,22 @@
 
                             <!-- Engine Capacity (dropdown style as in design) -->
                             <div class="relative mb-4" x-data="{
-                                                                    engineOpen: false,
-                                                                    engineDisplay: 'აირჩიეთ',
-                                                                    get engineOptions() {
-                                                                        var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
-                                                                    },
-                                                                    selectEngine(val) {
-                                                                        this.engineDisplay = val;
-                                                                        this.engineOpen = false;
-                                                                        var inp = document.getElementById('engine');
-                                                                        if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
-                                                                    },
-                                                                    init() {
-                                                                        var inp = document.getElementById('engine');
-                                                                        if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
-                                                                    }
-                                                                }" @click.outside="engineOpen = false">
+                                                                        engineOpen: false,
+                                                                        engineDisplay: 'აირჩიეთ',
+                                                                        get engineOptions() {
+                                                                            var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
+                                                                        },
+                                                                        selectEngine(val) {
+                                                                            this.engineDisplay = val;
+                                                                            this.engineOpen = false;
+                                                                            var inp = document.getElementById('engine');
+                                                                            if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
+                                                                        },
+                                                                        init() {
+                                                                            var inp = document.getElementById('engine');
+                                                                            if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
+                                                                        }
+                                                                    }" @click.outside="engineOpen = false">
                                 <label class="block text-xs font-semibold text-dark-400 uppercase tracking-wider mb-2">
                                     ძრავის მოცულობა
                                 </label>
@@ -784,47 +790,47 @@
 
             // Auction Fee Calculator JavaScript
             const COPART_TOTAL_FEES = [
-                { min: 0.00, max: 49.99, fee: 131.00 },
-                { min: 50.00, max: 99.99, fee: 131.00 },
-                { min: 100.00, max: 199.99, fee: 205.00 },
-                { min: 200.00, max: 299.99, fee: 240.00 },
-                { min: 300.00, max: 349.99, fee: 265.00 },
-                { min: 350.00, max: 399.99, fee: 280.00 },
-                { min: 400.00, max: 449.99, fee: 305.00 },
-                { min: 450.00, max: 499.99, fee: 315.00 },
-                { min: 500.00, max: 549.99, fee: 350.00 },
-                { min: 550.00, max: 599.99, fee: 350.00 },
-                { min: 600.00, max: 699.99, fee: 365.00 },
-                { min: 700.00, max: 799.99, fee: 390.00 },
-                { min: 800.00, max: 899.99, fee: 410.00 },
-                { min: 900.00, max: 999.99, fee: 425.00 },
-                { min: 1000.00, max: 1199.99, fee: 465.00 },
-                { min: 1200.00, max: 1299.99, fee: 485.00 },
-                { min: 1300.00, max: 1399.99, fee: 500.00 },
-                { min: 1400.00, max: 1499.99, fee: 515.00 },
-                { min: 1500.00, max: 1599.99, fee: 540.00 },
-                { min: 1600.00, max: 1699.99, fee: 555.00 },
-                { min: 1700.00, max: 1799.99, fee: 575.00 },
-                { min: 1800.00, max: 1999.99, fee: 595.00 },
-                { min: 2000.00, max: 2399.99, fee: 630.00 },
-                { min: 2400.00, max: 2499.99, fee: 665.00 },
-                { min: 2500.00, max: 2999.99, fee: 700.00 },
-                { min: 3000.00, max: 3499.99, fee: 745.00 },
-                { min: 3500.00, max: 3999.99, fee: 795.00 },
-                { min: 4000.00, max: 4499.99, fee: 855.00 },
-                { min: 4500.00, max: 4999.99, fee: 880.00 },
-                { min: 5000.00, max: 5499.99, fee: 905.00 },
-                { min: 5500.00, max: 5999.99, fee: 930.00 },
-                { min: 6000.00, max: 6499.99, fee: 975.00 },
-                { min: 6500.00, max: 6999.99, fee: 995.00 },
-                { min: 7000.00, max: 7499.99, fee: 1030.00 },
-                { min: 7500.00, max: 7999.99, fee: 1050.00 },
-                { min: 8000.00, max: 8499.99, fee: 1090.00 },
-                { min: 8500.00, max: 9999.99, fee: 1110.00 },
-                { min: 10000.00, max: 11999.99, fee: 1140.00 },
-                { min: 12000.00, max: 12499.99, fee: 1150.00 },
-                { min: 12500.00, max: 14999.99, fee: 1165.00 },
-                { min: 15000.00, max: 999999.99, fee_percent: 0.06, fee_fixed: 290.00 },
+                { min: 0.00, max: 49.99, fee: 181.00 },
+                { min: 50.00, max: 99.99, fee: 181.00 },
+                { min: 100.00, max: 199.99, fee: 255.00 },
+                { min: 200.00, max: 299.99, fee: 290.00 },
+                { min: 300.00, max: 349.99, fee: 315.00 },
+                { min: 350.00, max: 399.99, fee: 330.00 },
+                { min: 400.00, max: 449.99, fee: 355.00 },
+                { min: 450.00, max: 499.99, fee: 365.00 },
+                { min: 500.00, max: 549.99, fee: 400.00 },
+                { min: 550.00, max: 599.99, fee: 400.00 },
+                { min: 600.00, max: 699.99, fee: 415.00 },
+                { min: 700.00, max: 799.99, fee: 440.00 },
+                { min: 800.00, max: 899.99, fee: 460.00 },
+                { min: 900.00, max: 999.99, fee: 475.00 },
+                { min: 1000.00, max: 1199.99, fee: 515.00 },
+                { min: 1200.00, max: 1299.99, fee: 535.00 },
+                { min: 1300.00, max: 1399.99, fee: 550.00 },
+                { min: 1400.00, max: 1499.99, fee: 565.00 },
+                { min: 1500.00, max: 1599.99, fee: 590.00 },
+                { min: 1600.00, max: 1699.99, fee: 605.00 },
+                { min: 1700.00, max: 1799.99, fee: 625.00 },
+                { min: 1800.00, max: 1999.99, fee: 645.00 },
+                { min: 2000.00, max: 2399.99, fee: 680.00 },
+                { min: 2400.00, max: 2499.99, fee: 715.00 },
+                { min: 2500.00, max: 2999.99, fee: 750.00 },
+                { min: 3000.00, max: 3499.99, fee: 795.00 },
+                { min: 3500.00, max: 3999.99, fee: 845.00 },
+                { min: 4000.00, max: 4499.99, fee: 905.00 },
+                { min: 4500.00, max: 4999.99, fee: 930.00 },
+                { min: 5000.00, max: 5499.99, fee: 955.00 },
+                { min: 5500.00, max: 5999.99, fee: 980.00 },
+                { min: 6000.00, max: 6499.99, fee: 1025.00 },
+                { min: 6500.00, max: 6999.99, fee: 1045.00 },
+                { min: 7000.00, max: 7499.99, fee: 1080.00 },
+                { min: 7500.00, max: 7999.99, fee: 1100.00 },
+                { min: 8000.00, max: 8499.99, fee: 1140.00 },
+                { min: 8500.00, max: 9999.99, fee: 1160.00 },
+                { min: 10000.00, max: 11999.99, fee: 1190.00 },
+                { min: 12000.00, max: 12499.99, fee: 1200.00 },
+                { min: 12500.00, max: 14999.99, fee: 1215.00 },
+                { min: 15000.00, max: 999999.99, fee_percent: 0.06, fee_fixed: 340.00 },
             ];
 
             const IAAI_TOTAL_FEES = [
@@ -961,14 +967,14 @@
 
                 // --- შედეგების პანელი (ორივე შემთხვევაში მხოლოდ სულ დანარიცხი) ---
                 feeBreakdownDiv.innerHTML = `
-                                                                                    <div class="fee-item-color">
-                                                                                        <span class="fee-name-group">
-                                                                                            <span class="color-dot dot-black"></span>
-                                                                                            <span>დარიცხვა :</span>
-                                                                                        </span>
-                                                                                        <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
-                                                                                    </div>
-                                                                                `;
+                                                                                            <div class="fee-item-color">
+                                                                                                <span class="fee-name-group">
+                                                                                                    <span class="color-dot dot-black"></span>
+                                                                                                    <span>დარიცხვა :</span>
+                                                                                                </span>
+                                                                                                <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
+                                                                                            </div>
+                                                                                        `;
 
                 // --- გრაფიკის განახლება (Conic Gradient) ---
                 const chartContainer = document.getElementById('chartContainer');
