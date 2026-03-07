@@ -130,9 +130,6 @@ class CarService
         return $car;
     }
 
-    /**
-     * Prepare car data for storage.
-     */
     protected function prepareCarData(array $data): array
     {
         // Backward compatibility for make_model
@@ -140,7 +137,8 @@ class CarService
             $data['make_model'] = trim($data['make']) . ' ' . trim($data['model']);
         }
 
-        // Default financial values
+        // Only enforce 0 for financial fields that are actually passed in the array but are null.
+        // This prevents omitted fields (like paid_amount) from being reset to 0 during updates.
         $financialFields = [
             'dealer_profit',
             'discount',
@@ -150,7 +148,9 @@ class CarService
         ];
 
         foreach ($financialFields as $field) {
-            $data[$field] = $data[$field] ?? 0;
+            if (array_key_exists($field, $data)) {
+                $data[$field] = $data[$field] ?? 0;
+            }
         }
 
         return $data;
