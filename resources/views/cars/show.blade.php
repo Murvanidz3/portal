@@ -451,17 +451,17 @@
 
             <!-- Recipient (მიმღები) Info - editable on view -->
             <div class="glass-card p-6" x-data="recipientCard({
-                updateUrl: @js(route('cars.update-recipient', $car)),
-                displayName: @js($car->getClientDisplayName()),
-                displayPhone: @js($car->getClientPhone()),
-                displayIdNumber: @js($car->client_id_number ?? ''),
-                clientName: @js($car->client_name ?? ''),
-                clientPhone: @js($car->client_phone ?? ''),
-                clientIdNumber: @js($car->client_id_number ?? ''),
-                clientUserId: @js($car->client_user_id ?? ''),
-                canEdit: @json($canEditCar),
-                clients: @js($clients->map(fn($u) => ['id' => $u->id, 'name' => $u->full_name ?? $u->username])->values()->all())
-            })">
+                    updateUrl: @js(route('cars.update-recipient', $car)),
+                    displayName: @js($car->getClientDisplayName()),
+                    displayPhone: @js($car->getClientPhone()),
+                    displayIdNumber: @js($car->client_id_number ?? ''),
+                    clientName: @js($car->client_name ?? ''),
+                    clientPhone: @js($car->client_phone ?? ''),
+                    clientIdNumber: @js($car->client_id_number ?? ''),
+                    clientUserId: @js($car->client_user_id ?? ''),
+                    canEdit: @json($canEditCar),
+                    clients: @js($clients->map(fn($u) => ['id' => $u->id, 'name' => $u->full_name ?? $u->username])->values()->all())
+                })">
                 <div class="flex items-center justify-between gap-3 mb-4">
                     <h3 class="text-lg font-semibold text-white">მიმღები</h3>
                     @if($canEditCar)
@@ -554,9 +554,9 @@
                     </div>
                     <div class="flex justify-between">
                         <dt class="text-dark-400">ტრანსპორტირება:</dt>
-                        <dd class="text-white">${{ number_format($car->shipping_cost, 2) }}</dd>
+                        <dd class="text-white">${{ number_format($car->shipping_cost + $car->additional_cost, 2) }}</dd>
                     </div>
-                    {{-- დამატებითი ხარჯები დამალულია view-დან, მაგრამ ფუნქციონირებს --}}
+                    {{-- დამატებითი ხარჯები დამალულია view-დან და დაჯამებულია ტრანსპორტირებასთან --}}
 
                     <div class="border-t border-white/10 pt-3">
                         <div class="flex justify-between">
@@ -569,7 +569,8 @@
                         </div>
                         <div class="flex justify-between mt-2">
                             <dt class="text-dark-400 font-medium">
-                                {{ $car->hasOverpayment() ? 'პლიუს ბალანსი:' : 'დარჩენილი:' }}</dt>
+                                {{ $car->hasOverpayment() ? 'პლიუს ბალანსი:' : 'დარჩენილი:' }}
+                            </dt>
                             <dd
                                 class="{{ $car->hasOverpayment() ? 'text-green-400' : ($car->hasDebt() ? 'text-red-400' : 'text-green-400') }} font-bold">
                                 {{ $car->hasOverpayment() ? $car->formatted_overpayment : $car->formatted_debt }}
