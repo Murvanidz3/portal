@@ -123,36 +123,34 @@ class CalculatorController extends Controller
      */
     private function parseRatesCsv()
     {
-        // Cache the parsed CSV to avoid reading the file on every request
-        return cache()->remember('shipping_rates_global_v1', 3600, function () {
-            $path = storage_path('app/public/shipping-rates/rates.csv');
-            if (!file_exists($path)) {
-                return [];
-            }
+        $path = storage_path('app/public/shipping-rates/rates.csv');
+        if (!file_exists($path)) {
+            \Illuminate\Support\Facades\Log::error("Rates CSV not found at: {$path}");
+            return [];
+        }
 
-            $csv = array_map('str_getcsv', file($path));
-            $headers = array_shift($csv);
+        $csv = array_map('str_getcsv', file($path));
+        $headers = array_shift($csv);
 
-            $rates = [];
-            foreach ($csv as $row) {
-                if (count($row) < 9)
-                    continue; // Ensurerow has enough columns
+        $rates = [];
+        foreach ($csv as $row) {
+            if (count($row) < 9)
+                continue; // Ensure row has enough columns
 
-                $auction = strtoupper(trim($row[0]));
-                $location = trim($row[1]);
+            $auction = strtoupper(trim($row[0]));
+            $location = trim($row[1]);
 
-                $rates[$auction][$location] = [
-                    'sedan' => (float) str_replace(',', '', $row[3]),
-                    'suv' => (float) str_replace(',', '', $row[4]),
-                    'pickup' => (float) str_replace(',', '', $row[5]),
-                    'minivan' => (float) str_replace(',', '', $row[6]),
-                    'sprinter' => (float) str_replace(',', '', $row[7]),
-                    'moto' => (float) str_replace(',', '', $row[8]),
-                ];
-            }
+            $rates[$auction][$location] = [
+                'sedan' => (float) str_replace(',', '', $row[3]),
+                'suv' => (float) str_replace(',', '', $row[4]),
+                'pickup' => (float) str_replace(',', '', $row[5]),
+                'minivan' => (float) str_replace(',', '', $row[6]),
+                'sprinter' => (float) str_replace(',', '', $row[7]),
+                'moto' => (float) str_replace(',', '', $row[8]),
+            ];
+        }
 
-            return $rates;
-        });
+        return $rates;
     }
 
     /**
@@ -165,6 +163,11 @@ class CalculatorController extends Controller
 
         $ratesData = $this->parseRatesCsv();
         $auctionRates = $ratesData[$auctionType] ?? [];
+        \Illuminate\Support\Facades\Log::info("Calculator getLocations called", [
+            'auction' => $auctionType,
+            'ratesDataCount' => count($ratesData),
+            'auctionRatesCount' => count($auctionRates)
+        ]);
 
         $locations = [];
         foreach ($auctionRates as $location => $prices) {
