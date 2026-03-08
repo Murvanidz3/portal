@@ -77,9 +77,6 @@ Route::middleware(['auth'])->group(function () {
     // Calculator
     Route::get('calculator', [CalculatorController::class, 'index'])->name('calculator.index');
     Route::post('calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
-    Route::post('calculator/shipping', [CalculatorController::class, 'calculateShipping'])->name('calculator.shipping');
-    Route::get('calculator/locations', [CalculatorController::class, 'searchLocations'])->name('calculator.locations');
-    Route::get('calculator/rates-info', [CalculatorController::class, 'hasCustomRates'])->name('calculator.rates-info');
     Route::get('calculator/get-locations', [CalculatorController::class, 'getLocations'])->name('calculator.get-locations');
     Route::post('calculator/calculate-from-rates', [CalculatorController::class, 'calculateShippingFromRates'])->name('calculator.calculate-from-rates');
 
@@ -190,16 +187,7 @@ Route::prefix('god')->name('god.')->group(function () {
         Route::post('styles/reset-all', [GodStyleController::class, 'resetAll'])->name('styles.reset-all');
         Route::get('styles/css', [GodStyleController::class, 'getCss'])->name('styles.css');
 
-        // Shipping Rates (User-specific Excel uploads)
-        Route::prefix('shipping-rates')->name('shipping-rates.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'index'])->name('index');
-            Route::get('/template', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'downloadTemplate'])->name('template');
-            Route::get('/{user}', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'show'])->name('show');
-            Route::post('/{user}/upload', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'upload'])->name('upload');
-            Route::get('/{user}/search', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'searchLocations'])->name('search');
-            Route::post('/file/{file}/activate', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'activate'])->name('activate');
-            Route::delete('/file/{file}', [\App\Http\Controllers\GodMode\ShippingRatesController::class, 'delete'])->name('delete');
-        });
+
     });
 });
 

@@ -89,15 +89,7 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    public function shippingFiles()
-    {
-        return $this->hasMany(UserShippingFile::class);
-    }
 
-    public function shippingRates()
-    {
-        return $this->hasMany(UserShippingRate::class);
-    }
 
     // Scopes
     public function scopeAdmins($query)

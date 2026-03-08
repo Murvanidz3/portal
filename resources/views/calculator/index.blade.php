@@ -15,26 +15,26 @@
 
 @section('content')
     <div class="space-y-6" x-data="{ 
-                                                     activeTab: 'shipping',
-                                                     init() {
-                                                         this.$watch('activeTab', (value) => {
-                                                             setTimeout(() => {
-                                                                 if (value === 'shipping') {
-                                                                     if (typeof updateLocationDropdown === 'function') {
-                                                                         updateLocationDropdown();
-                                                                     }
-                                                                     if (typeof calculateShipping === 'function') {
-                                                                         calculateShipping();
-                                                                     }
-                                                                 } else if (value === 'auction' && typeof calculateFees === 'function') {
-                                                                     calculateFees();
-                                                                 } else if (value === 'customs' && typeof calculateCustoms === 'function') {
-                                                                     calculateCustoms();
+                                                                 activeTab: 'shipping',
+                                                                 init() {
+                                                                     this.$watch('activeTab', (value) => {
+                                                                         setTimeout(() => {
+                                                                             if (value === 'shipping') {
+                                                                                 if (typeof updateLocationDropdown === 'function') {
+                                                                                     updateLocationDropdown();
+                                                                                 }
+                                                                                 if (typeof calculateShipping === 'function') {
+                                                                                     calculateShipping();
+                                                                                 }
+                                                                             } else if (value === 'auction' && typeof calculateFees === 'function') {
+                                                                                 calculateFees();
+                                                                             } else if (value === 'customs' && typeof calculateCustoms === 'function') {
+                                                                                 calculateCustoms();
+                                                                             }
+                                                                         }, 150);
+                                                                     });
                                                                  }
-                                                             }, 150);
-                                                         });
-                                                     }
-                                                 }">
+                                                             }">
         <!-- Tabs Navigation -->
         <div class="glass-card p-2">
             <div class="flex flex-wrap gap-2">
@@ -98,14 +98,12 @@
                                 <div>
                                     <label class="block text-xs text-dark-400 mb-2">აირჩიე ავტომობილის ტიპი</label>
                                     <select x-model="vehicleType" @change="calculate()" class="form-input w-full max-w-xs">
-                                        <option value="sedan">Sedan</option>
-                                        <option value="sm_suv">S/M SUV</option>
-                                        <option value="big_suv">Big SUV</option>
-                                        <option value="van">VAN</option>
-                                        <option value="sprinter">Sprinter</option>
-                                        <option value="pickup">Pickup</option>
-                                        <option value="heavy_equip">Heavy Equip</option>
-                                        <option value="bob_cat">Bob Cat</option>
+                                        <option value="sedan">სედანი</option>
+                                        <option value="suv">ჯიპი</option>
+                                        <option value="pickup">პიკაპი</option>
+                                        <option value="minivan">მინივენი</option>
+                                        <option value="sprinter">სპრინტერი</option>
+                                        <option value="moto">მოტო</option>
                                     </select>
                                 </div>
 
@@ -182,23 +180,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Destination Country -->
-                                <div>
-                                    <label class="block text-xs text-dark-400 mb-2">მიმღები ქვეყანა</label>
-                                    <select x-model="destinationCountry" class="form-input w-full max-w-xs" disabled>
-                                        <option value="georgia">Georgia</option>
-                                    </select>
-                                </div>
 
-                                <!-- Destination Port -->
-                                <div>
-                                    <label class="block text-xs text-dark-400 mb-2">მიმღები პორტი</label>
-                                    <select x-model="destinationPort" @change="calculate()"
-                                        class="form-input w-full max-w-xs">
-                                        <option value="poti">ფოთი</option>
-                                        <option value="batumi">ბათუმი</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
 
@@ -253,27 +235,23 @@
                                                     x-text="calculationResult.base_rate + ' $'"></span>
                                             </div>
 
-                                            <template x-if="calculationResult.vehicle_adjustment > 0">
-                                                <div class="fee-item-color">
-                                                    <span class="fee-name-group">
-                                                        <span class="color-dot" style="background-color: #f59e0b;"></span>
-                                                        <span>ავტ. ტიპი:</span>
-                                                    </span>
-                                                    <span class="fee-value text-white"
-                                                        x-text="'+ ' + calculationResult.vehicle_adjustment + ' $'"></span>
-                                                </div>
-                                            </template>
+                                            <div class="fee-item-color">
+                                                <span class="fee-name-group">
+                                                    <span class="color-dot" style="background-color: #f59e0b;"></span>
+                                                    <span>ავტ. ტიპი:</span>
+                                                </span>
+                                                <span class="fee-value text-white capitalize">
+                                                    <span x-show="calculationResult.vehicle_type === 'sedan'">სედანი</span>
+                                                    <span x-show="calculationResult.vehicle_type === 'suv'">ჯიპი</span>
+                                                    <span x-show="calculationResult.vehicle_type === 'pickup'">პიკაპი</span>
+                                                    <span
+                                                        x-show="calculationResult.vehicle_type === 'minivan'">მინივენი</span>
+                                                    <span
+                                                        x-show="calculationResult.vehicle_type === 'sprinter'">სპრინტერი</span>
+                                                    <span x-show="calculationResult.vehicle_type === 'moto'">მოტო</span>
+                                                </span>
+                                            </div>
 
-                                            <template x-if="calculationResult.port_adjustment > 0">
-                                                <div class="fee-item-color">
-                                                    <span class="fee-name-group">
-                                                        <span class="color-dot" style="background-color: #8b5cf6;"></span>
-                                                        <span>პორტი:</span>
-                                                    </span>
-                                                    <span class="fee-value text-white"
-                                                        x-text="'+ ' + calculationResult.port_adjustment + ' $'"></span>
-                                                </div>
-                                            </template>
 
                                             <div class="total-amount-line mt-4 pt-4 border-t border-dark-600">
                                                 <span class="fee-name-group">
@@ -291,7 +269,7 @@
                             <template x-if="calculationResult">
                                 <div class="mt-6 text-center text-[10px] text-dark-500">
                                     <span class="text-primary-400" x-text="calculationResult.auction"></span> ტრანსპორტირება
-                                    <span x-text="destinationPort === 'poti' ? 'ფოთში' : 'ბათუმში'"></span>.
+                                    ფოთში.
                                 </div>
                             </template>
                         </div>
@@ -465,22 +443,22 @@
 
                             <!-- Engine Capacity (dropdown style as in design) -->
                             <div class="relative mb-4" x-data="{
-                                                                        engineOpen: false,
-                                                                        engineDisplay: 'აირჩიეთ',
-                                                                        get engineOptions() {
-                                                                            var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
-                                                                        },
-                                                                        selectEngine(val) {
-                                                                            this.engineDisplay = val;
-                                                                            this.engineOpen = false;
-                                                                            var inp = document.getElementById('engine');
-                                                                            if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
-                                                                        },
-                                                                        init() {
-                                                                            var inp = document.getElementById('engine');
-                                                                            if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
-                                                                        }
-                                                                    }" @click.outside="engineOpen = false">
+                                                                                    engineOpen: false,
+                                                                                    engineDisplay: 'აირჩიეთ',
+                                                                                    get engineOptions() {
+                                                                                        var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
+                                                                                    },
+                                                                                    selectEngine(val) {
+                                                                                        this.engineDisplay = val;
+                                                                                        this.engineOpen = false;
+                                                                                        var inp = document.getElementById('engine');
+                                                                                        if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
+                                                                                    },
+                                                                                    init() {
+                                                                                        var inp = document.getElementById('engine');
+                                                                                        if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
+                                                                                    }
+                                                                                }" @click.outside="engineOpen = false">
                                 <label class="block text-xs font-semibold text-dark-400 uppercase tracking-wider mb-2">
                                     ძრავის მოცულობა
                                 </label>
@@ -634,8 +612,7 @@
                     // State
                     vehicleType: 'sedan',
                     auction: 'COPART',
-                    destinationCountry: 'georgia',
-                    destinationPort: 'poti',
+
 
                     // Location state
                     locations: [],
@@ -718,8 +695,7 @@
                                 body: JSON.stringify({
                                     vehicle_type: this.vehicleType,
                                     auction: this.auction,
-                                    location: this.selectedLocation,
-                                    destination_port: this.destinationPort
+                                    location: this.selectedLocation
                                 })
                             });
 
@@ -967,14 +943,14 @@
 
                 // --- შედეგების პანელი (ორივე შემთხვევაში მხოლოდ სულ დანარიცხი) ---
                 feeBreakdownDiv.innerHTML = `
-                                                                                            <div class="fee-item-color">
-                                                                                                <span class="fee-name-group">
-                                                                                                    <span class="color-dot dot-black"></span>
-                                                                                                    <span>დარიცხვა :</span>
-                                                                                                </span>
-                                                                                                <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
-                                                                                            </div>
-                                                                                        `;
+                                                                                                                    <div class="fee-item-color">
+                                                                                                                        <span class="fee-name-group">
+                                                                                                                            <span class="color-dot dot-black"></span>
+                                                                                                                            <span>დარიცხვა :</span>
+                                                                                                                        </span>
+                                                                                                                        <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
+                                                                                                                    </div>
+                                                                                                                `;
 
                 // --- გრაფიკის განახლება (Conic Gradient) ---
                 const chartContainer = document.getElementById('chartContainer');

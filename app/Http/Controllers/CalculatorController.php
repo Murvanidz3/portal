@@ -118,96 +118,115 @@ class CalculatorController extends Controller
     }
 
     /**
-     * Calculate shipping cost estimate.
-     * Uses user-specific rates from uploaded Excel if available.
+     * Parse global rates from Excel CSV.
+     * @return array
      */
-    public function calculateShipping(Request $request)
+    private function parseRatesCsv()
     {
-        $validated = $request->validate([
-            'origin' => 'required|string|max:200',
-            'vehicle_type' => 'required|in:sedan,suv,truck,motorcycle',
-            'is_running' => 'boolean',
-            'auction_type' => 'nullable|in:copart,iaai',
-        ]);
-
-        $userId = auth()->id();
-        $auctionType = $validated['auction_type'] ?? 'copart';
-        $origin = $validated['origin'];
-        $vehicleType = $validated['vehicle_type'];
-        $isRunning = $request->boolean('is_running', true);
-
-        // Try to find user-specific rate first
-        $userRate = null;
-        if ($userId) {
-            $userRate = \App\Models\UserShippingRate::findRate($userId, $auctionType, $origin);
-        }
-
-        if ($userRate !== null) {
-            // Use user-specific rate
-            $shippingCost = $userRate;
-
-            // Add vehicle type adjustment
-            $vehicleAdjustments = [
-                'sedan' => 0,
-                'suv' => 200,
-                'truck' => 400,
-                'motorcycle' => -500,
-            ];
-            $shippingCost += $vehicleAdjustments[$vehicleType] ?? 0;
-
-            // Add towing fee if not running
-            if (!$isRunning) {
-                $shippingCost += 150;
+        // Cache the parsed CSV to avoid reading the file on every request
+        return cache()->remember('shipping_rates_global_v1', 3600, function () {
+            $path = storage_path('app/public/shipping-rates/rates.csv');
+            if (!file_exists($path)) {
+                return [];
             }
 
+            $csv = array_map('str_getcsv', file($path));
+            $headers = array_shift($csv);
+
+            $rates = [];
+            foreach ($csv as $row) {
+                if (count($row) < 9)
+                    continue; // Ensurerow has enough columns
+
+                $auction = strtoupper(trim($row[0]));
+                $location = trim($row[1]);
+
+                $rates[$auction][$location] = [
+                    'sedan' => (float) str_replace(',', '', $row[3]),
+                    'suv' => (float) str_replace(',', '', $row[4]),
+                    'pickup' => (float) str_replace(',', '', $row[5]),
+                    'minivan' => (float) str_replace(',', '', $row[6]),
+                    'sprinter' => (float) str_replace(',', '', $row[7]),
+                    'moto' => (float) str_replace(',', '', $row[8]),
+                ];
+            }
+
+            return $rates;
+        });
+    }
+
+    /**
+     * Get locations for dropdown based on auction type.
+     * Returns global locations from rates.csv.
+     */
+    public function getLocations(Request $request)
+    {
+        $auctionType = strtoupper($request->get('auction', 'COPART'));
+
+        $ratesData = $this->parseRatesCsv();
+        $auctionRates = $ratesData[$auctionType] ?? [];
+
+        $locations = [];
+        foreach ($auctionRates as $location => $prices) {
+            $locations[] = [
+                'name' => $location,
+                'price' => $prices['sedan'] // Sending default sedan price for display if needed
+            ];
+        }
+
+        // Sort locations alphabetically
+        usort($locations, function ($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
+
+        return response()->json([
+            'locations' => $locations,
+            'has_rates' => !empty($locations),
+            'auction' => $auctionType,
+            'debug' => [
+                'is_global' => true,
+                'rates_count' => count($locations)
+            ]
+        ]);
+    }
+
+    /**
+     * Calculate shipping from global rates.
+     */
+    public function calculateShippingFromRates(Request $request)
+    {
+        $validated = $request->validate([
+            'vehicle_type' => 'required|string',
+            'auction' => 'required|in:COPART,IAAI',
+            'location' => 'required|string',
+        ]);
+
+        $auctionType = strtoupper($validated['auction']);
+        $location = trim($validated['location']);
+        $vehicleType = strtolower($validated['vehicle_type']);
+
+        $ratesData = $this->parseRatesCsv();
+
+        if (!isset($ratesData[$auctionType][$location])) {
             return response()->json([
-                'estimated_cost' => round(max($shippingCost, 0), 2),
-                'origin' => $origin,
-                'vehicle_type' => $vehicleType,
-                'is_running' => $isRunning,
-                'auction_type' => $auctionType,
-                'rate_source' => 'custom',
-                'base_rate' => $userRate,
+                'success' => false,
+                'error' => 'ტარიფი ვერ მოიძებნა ამ ლოკაციისთვის',
             ]);
         }
 
-        // Fall back to default rates
-        $baseRates = [
-            'sedan' => 1500,
-            'suv' => 1800,
-            'truck' => 2200,
-            'motorcycle' => 800,
-        ];
+        $locationRates = $ratesData[$auctionType][$location];
 
-        // Location multipliers (simplified)
-        $locationMultipliers = [
-            'CA' => 1.0,
-            'TX' => 1.1,
-            'FL' => 1.15,
-            'NY' => 1.2,
-            'NJ' => 1.2,
-            'default' => 1.15,
-        ];
-
-        $originPrefix = strtoupper(substr($origin, 0, 2));
-
-        $baseRate = $baseRates[$vehicleType];
-        $multiplier = $locationMultipliers[$originPrefix] ?? $locationMultipliers['default'];
-
-        $shippingCost = $baseRate * $multiplier;
-
-        // Add towing fee if not running
-        if (!$isRunning) {
-            $shippingCost += 150;
-        }
+        // Base rate is determined directly from the specific vehicle type column in CSV
+        // If the exact type isn't found, fallback to sedan
+        $baseRate = $locationRates[$vehicleType] ?? $locationRates['sedan'] ?? 0;
 
         return response()->json([
-            'estimated_cost' => round($shippingCost, 2),
-            'origin' => $origin,
-            'vehicle_type' => $vehicleType,
-            'is_running' => $isRunning,
-            'auction_type' => $auctionType,
-            'rate_source' => 'default',
+            'success' => true,
+            'base_rate' => $baseRate,
+            'total_cost' => round($baseRate, 2),
+            'vehicle_type' => $validated['vehicle_type'],
+            'auction' => $validated['auction'],
+            'location' => $validated['location'],
         ]);
     }
 
@@ -257,175 +276,9 @@ class CalculatorController extends Controller
         return $baseAmount * $exciseRate;
     }
 
-    /**
-     * Search locations for autocomplete.
-     */
-    public function searchLocations(Request $request)
-    {
-        $query = $request->get('q', '');
-        $auctionType = $request->get('auction_type', 'copart');
-        $userId = auth()->id();
 
-        if (!$userId || strlen($query) < 2) {
-            return response()->json([]);
-        }
 
-        $service = app(\App\Services\ShippingRateService::class);
-        $results = $service->searchLocation($userId, $query);
 
-        // Filter by auction type
-        $filtered = array_filter($results, function ($r) use ($auctionType) {
-            return $r['auction_type'] === $auctionType;
-        });
-
-        return response()->json(array_values($filtered));
-    }
-
-    /**
-     * Check if user has custom shipping rates.
-     */
-    public function hasCustomRates()
-    {
-        $userId = auth()->id();
-
-        if (!$userId) {
-            return response()->json(['has_rates' => false]);
-        }
-
-        $service = app(\App\Services\ShippingRateService::class);
-        $hasRates = $service->hasCustomRates($userId);
-        $rates = [];
-
-        if ($hasRates) {
-            $rates = $service->getUserRates($userId);
-        }
-
-        return response()->json([
-            'has_rates' => $hasRates,
-            'copart_count' => count($rates['copart'] ?? []),
-            'iaai_count' => count($rates['iaai'] ?? []),
-        ]);
-    }
-
-    /**
-     * Get locations for dropdown based on auction type.
-     * Returns locations from user's uploaded CSV.
-     */
-    public function getLocations(Request $request)
-    {
-        $userId = auth()->id();
-        $auctionType = strtoupper($request->get('auction', 'COPART'));
-
-        if (!$userId) {
-            return response()->json(['locations' => [], 'has_rates' => false, 'debug' => 'No user ID']);
-        }
-
-        // Direct approach: Find the latest file for the user
-        $latestFile = \App\Models\UserShippingFile::where('user_id', $userId)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        if (!$latestFile) {
-            return response()->json([
-                'locations' => [],
-                'has_rates' => false,
-                'debug' => 'No shipping file found for user'
-            ]);
-        }
-
-        // Fetch rates directly from this file
-        $rates = \App\Models\UserShippingRate::where('user_id', $userId)
-            ->where('shipping_file_id', $latestFile->id)
-            ->where('auction_type', strtolower($auctionType))
-            ->orderBy('location_name')
-            ->get();
-
-        $locations = $rates->map(function ($r) {
-            return [
-                'name' => $r->location_name,
-                'price' => (float) $r->price
-            ];
-        })->values();
-
-        return response()->json([
-            'locations' => $locations,
-            'has_rates' => $locations->isNotEmpty(),
-            'auction' => $auctionType,
-            'debug' => [
-                'user_id' => $userId,
-                'file_id' => $latestFile->id,
-                'file_active' => $latestFile->is_active,
-                'rates_count' => $rates->count()
-            ]
-        ]);
-    }
-
-    /**
-     * Calculate shipping from user's rates.
-     */
-    public function calculateShippingFromRates(Request $request)
-    {
-        $userId = auth()->id();
-
-        $validated = $request->validate([
-            'vehicle_type' => 'required|string',
-            'auction' => 'required|in:COPART,IAAI',
-            'location' => 'required|string',
-            'destination_port' => 'required|in:poti,batumi',
-        ]);
-
-        if (!$userId) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        $service = app(\App\Services\ShippingRateService::class);
-
-        // Get base rate from user's uploaded CSV
-        $auctionType = strtolower($validated['auction']);
-        $baseRate = \App\Models\UserShippingRate::findRate($userId, $auctionType, $validated['location']);
-
-        if ($baseRate === null) {
-            return response()->json([
-                'success' => false,
-                'error' => 'ტარიფი ვერ მოიძებნა ამ ლოკაციისთვის',
-            ]);
-        }
-
-        // Vehicle type adjustments
-        $vehicleTypeAdjustments = [
-            'sedan' => 0,
-            'sm_suv' => 0,
-            'big_suv' => 150,
-            'van' => 100,
-            'sprinter' => 200,
-            'pickup' => 250,
-            'heavy_equip' => 500,
-            'bob_cat' => 400,
-        ];
-
-        // Port adjustments (Batumi is slightly more expensive)
-        $portAdjustments = [
-            'poti' => 0,
-            'batumi' => 50,
-        ];
-
-        $vehicleAdjustment = $vehicleTypeAdjustments[$validated['vehicle_type']] ?? 0;
-        $portAdjustment = $portAdjustments[$validated['destination_port']] ?? 0;
-
-        $totalCost = $baseRate + $vehicleAdjustment + $portAdjustment;
-
-        return response()->json([
-            'success' => true,
-            'base_rate' => $baseRate,
-            'vehicle_adjustment' => $vehicleAdjustment,
-            'port_adjustment' => $portAdjustment,
-            'total_cost' => round($totalCost, 2),
-            'vehicle_type' => $validated['vehicle_type'],
-            'auction' => $validated['auction'],
-            'location' => $validated['location'],
-            'destination_port' => $validated['destination_port'],
-        ]);
-    }
 }
 
 
