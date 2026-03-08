@@ -15,26 +15,26 @@
 
 @section('content')
     <div class="space-y-6" x-data="{ 
-                                                                 activeTab: 'shipping',
-                                                                 init() {
-                                                                     this.$watch('activeTab', (value) => {
-                                                                         setTimeout(() => {
-                                                                             if (value === 'shipping') {
-                                                                                 if (typeof updateLocationDropdown === 'function') {
-                                                                                     updateLocationDropdown();
+                                                                     activeTab: 'shipping',
+                                                                     init() {
+                                                                         this.$watch('activeTab', (value) => {
+                                                                             setTimeout(() => {
+                                                                                 if (value === 'shipping') {
+                                                                                     if (typeof updateLocationDropdown === 'function') {
+                                                                                         updateLocationDropdown();
+                                                                                     }
+                                                                                     if (typeof calculateShipping === 'function') {
+                                                                                         calculateShipping();
+                                                                                     }
+                                                                                 } else if (value === 'auction' && typeof calculateFees === 'function') {
+                                                                                     calculateFees();
+                                                                                 } else if (value === 'customs' && typeof calculateCustoms === 'function') {
+                                                                                     calculateCustoms();
                                                                                  }
-                                                                                 if (typeof calculateShipping === 'function') {
-                                                                                     calculateShipping();
-                                                                                 }
-                                                                             } else if (value === 'auction' && typeof calculateFees === 'function') {
-                                                                                 calculateFees();
-                                                                             } else if (value === 'customs' && typeof calculateCustoms === 'function') {
-                                                                                 calculateCustoms();
-                                                                             }
-                                                                         }, 150);
-                                                                     });
-                                                                 }
-                                                             }">
+                                                                             }, 150);
+                                                                         });
+                                                                     }
+                                                                 }">
         <!-- Tabs Navigation -->
         <div class="glass-card p-2">
             <div class="flex flex-wrap gap-2">
@@ -443,22 +443,22 @@
 
                             <!-- Engine Capacity (dropdown style as in design) -->
                             <div class="relative mb-4" x-data="{
-                                                                                    engineOpen: false,
-                                                                                    engineDisplay: 'აირჩიეთ',
-                                                                                    get engineOptions() {
-                                                                                        var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
-                                                                                    },
-                                                                                    selectEngine(val) {
-                                                                                        this.engineDisplay = val;
-                                                                                        this.engineOpen = false;
-                                                                                        var inp = document.getElementById('engine');
-                                                                                        if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
-                                                                                    },
-                                                                                    init() {
-                                                                                        var inp = document.getElementById('engine');
-                                                                                        if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
-                                                                                    }
-                                                                                }" @click.outside="engineOpen = false">
+                                                                                        engineOpen: false,
+                                                                                        engineDisplay: 'აირჩიეთ',
+                                                                                        get engineOptions() {
+                                                                                            var o = []; for (var i = 1; i <= 100; i++) o.push((i/10).toFixed(1)); return o;
+                                                                                        },
+                                                                                        selectEngine(val) {
+                                                                                            this.engineDisplay = val;
+                                                                                            this.engineOpen = false;
+                                                                                            var inp = document.getElementById('engine');
+                                                                                            if (inp) { inp.value = val; inp.dispatchEvent(new Event('input')); }
+                                                                                        },
+                                                                                        init() {
+                                                                                            var inp = document.getElementById('engine');
+                                                                                            if (inp && inp.value) this.engineDisplay = inp.value; else this.engineDisplay = 'აირჩიეთ';
+                                                                                        }
+                                                                                    }" @click.outside="engineOpen = false">
                                 <label class="block text-xs font-semibold text-dark-400 uppercase tracking-wider mb-2">
                                     ძრავის მოცულობა
                                 </label>
@@ -650,7 +650,7 @@
                         this.debugInfo = null;
 
                         try {
-                            const response = await fetch(`/calculator/get-locations?auction=${this.auction}`);
+                            const response = await fetch(`{{ route('calculator.get-locations') }}?auction=${this.auction}&_t=${new Date().getTime()}`);
                             const data = await response.json();
 
                             this.hasRates = data.has_rates || false;
@@ -686,7 +686,7 @@
                         }
 
                         try {
-                            const response = await fetch('/calculator/calculate-from-rates', {
+                            const response = await fetch('{{ route('calculator.calculate-from-rates') }}', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -943,14 +943,14 @@
 
                 // --- შედეგების პანელი (ორივე შემთხვევაში მხოლოდ სულ დანარიცხი) ---
                 feeBreakdownDiv.innerHTML = `
-                                                                                                                    <div class="fee-item-color">
-                                                                                                                        <span class="fee-name-group">
-                                                                                                                            <span class="color-dot dot-black"></span>
-                                                                                                                            <span>დარიცხვა :</span>
-                                                                                                                        </span>
-                                                                                                                        <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
-                                                                                                                    </div>
-                                                                                                                `;
+                                                                                                                            <div class="fee-item-color">
+                                                                                                                                <span class="fee-name-group">
+                                                                                                                                    <span class="color-dot dot-black"></span>
+                                                                                                                                    <span>დარიცხვა :</span>
+                                                                                                                                </span>
+                                                                                                                                <span class="fee-value">${formatCurrency(totalAuctionFee)}</span>
+                                                                                                                            </div>
+                                                                                                                        `;
 
                 // --- გრაფიკის განახლება (Conic Gradient) ---
                 const chartContainer = document.getElementById('chartContainer');
