@@ -26,23 +26,18 @@
         {{-- Right Side --}}
         <div class="flex items-center space-x-3">
 
-            {{-- Balance (for dealers/admins) - click to show/hide --}}
+            {{-- Balance (for dealers/admins) - single unified element, click to toggle show/hide --}}
             @if(auth()->user()->isDealer() || auth()->user()->isAdmin())
                 <div x-data="{ balanceVisible: localStorage.getItem('balanceVisible') !== 'false' }"
                      x-init="$watch('balanceVisible', val => localStorage.setItem('balanceVisible', val))"
-                     class="hidden md:flex items-center">
-                    {{-- Clicking the wallet icon navigates; clicking the amount toggles visibility --}}
-                    <a href="{{ route('wallet.index') }}"
-                        class="flex items-center px-3 py-2 rounded-l-lg bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 transition-colors">
-                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     class="hidden md:block">
+                    <button @click="balanceVisible = !balanceVisible"
+                            :title="balanceVisible ? 'თანხის დამალვა' : 'თანხის ჩვენება'"
+                            class="flex items-center px-4 py-2 rounded-lg cursor-pointer select-none transition-all duration-200 bg-primary-500/10 border border-primary-500/30 hover:bg-primary-500/20">
+                        <svg class="w-5 h-5 mr-2 flex-shrink-0 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
-                    </a>
-                    {{-- Clickable balance amount --}}
-                    <button @click="balanceVisible = !balanceVisible"
-                            :title="balanceVisible ? 'თანხის დამალვა' : 'თანხის ჩვენება'"
-                            class="px-3 py-2 rounded-r-lg bg-green-500/10 border border-green-500/20 border-l-0 hover:bg-green-500/20 transition-colors cursor-pointer select-none">
                         <span x-show="balanceVisible"
                               x-transition:enter="transition ease-out duration-150"
                               x-transition:enter-start="opacity-0"
@@ -50,7 +45,7 @@
                               x-transition:leave="transition ease-in duration-100"
                               x-transition:leave-start="opacity-100"
                               x-transition:leave-end="opacity-0"
-                              class="text-green-400 font-semibold text-sm">{{ auth()->user()->getFormattedBalance() }}</span>
+                              class="font-semibold text-sm text-primary-400">{{ auth()->user()->getFormattedBalance() }}</span>
                         <span x-show="!balanceVisible"
                               x-transition:enter="transition ease-out duration-150"
                               x-transition:enter-start="opacity-0"
@@ -58,7 +53,7 @@
                               x-transition:leave="transition ease-in duration-100"
                               x-transition:leave-start="opacity-100"
                               x-transition:leave-end="opacity-0"
-                              class="text-green-400 font-semibold text-sm tracking-widest">••••</span>
+                              class="font-semibold text-sm text-primary-400 tracking-widest">••••</span>
                     </button>
                 </div>
             @endif
