@@ -182,6 +182,8 @@
             padding: 20px;
             border-radius: 8px;
             border: 1px dashed #ccc;
+            max-width: 380px;
+            margin-left: auto;
         }
         
         .bank-info h5 {
@@ -214,6 +216,18 @@
             color: #333;
         }
         
+        .invoice-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            color: #999;
+            font-size: 0.8rem;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
         .no-print {
             display: block;
         }
@@ -280,7 +294,7 @@
                 box-shadow: none;
                 width: 210mm;
                 min-height: 297mm;
-                padding: 15mm 20mm;
+                padding: 15mm 20mm 30mm 20mm;
                 margin: 0 auto;
             }
             
@@ -372,35 +386,35 @@
             <strong>დანიშნულება:</strong> {{ $paymentPurpose }}
         </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <div style="max-width: 400px; width: 100%;">
-                <div class="bank-info">
-                    <h5>
-                        <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                        </svg>
-                        საბანკო რეკვიზიტები
-                    </h5>
-                    <div class="bank-row">
-                        <span class="bank-label">ბანკი:</span>
-                        <span class="bank-val">{{ $bankName }}</span>
-                    </div>
-                    <div class="bank-row">
-                        <span class="bank-label">მიმღები:</span>
-                        <span class="bank-val">{{ $bankRecipient }}</span>
-                    </div>
-                    <div class="bank-row">
-                        <span class="bank-label">IBAN:</span>
-                        <span class="bank-val">{{ $bankIban }}</span>
-                    </div>
-                    <div class="bank-row">
-                        <span class="bank-label">SWIFT:</span>
-                        <span class="bank-val">{{ $bankSwift }}</span>
-                    </div>
+        {{-- Bank info - bottom right --}}
+        <div style="margin-top: 30px;">
+            <div class="bank-info">
+                <h5>
+                    <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                    </svg>
+                    საბანკო რეკვიზიტები
+                </h5>
+                <div class="bank-row">
+                    <span class="bank-label">ბანკი:</span>
+                    <span class="bank-val">{{ $bankName }}</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">მიმღები:</span>
+                    <span class="bank-val">{{ $bankRecipient }}</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">IBAN:</span>
+                    <span class="bank-val">{{ $bankIban }}</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">SWIFT:</span>
+                    <span class="bank-val">{{ $bankSwift }}</span>
                 </div>
             </div>
         </div>
 
+        {{-- Print buttons (hidden on print) --}}
         <div class="text-center mt-5 no-print">
             <button onclick="window.print()" class="btn btn-primary">
                 <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -413,7 +427,8 @@
             </button>
         </div>
 
-        <div class="text-center mt-4 text-muted small" style="color: #666; font-size: 0.85rem;">
+        {{-- Footer - absolute bottom --}}
+        <div class="invoice-footer">
             გმადლობთ რომ სარგებლობთ ჩვენი მომსახურებით!
         </div>
     </div>
