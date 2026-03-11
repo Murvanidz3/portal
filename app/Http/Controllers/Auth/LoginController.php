@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -28,6 +29,16 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        // Rate limiting: max 5 attempts per IP per 5 minutes
+        $key = 'login:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            throw ValidationException::withMessages([
+                'username' => ["ძალიან ბევრი მცდელობა. სცადეთ {$seconds} წამში."],
+            ]);
+        }
+
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
@@ -41,6 +52,7 @@ class LoginController extends Controller
 
         // Check if user exists and password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
+            RateLimiter::hit($key, 300); // 5 minute lockout
             throw ValidationException::withMessages([
                 'username' => ['მომხმარებელი ან პაროლი არასწორია'],
             ]);
@@ -48,10 +60,14 @@ class LoginController extends Controller
 
         // Check if user is active
         if (isset($user->is_active) && !$user->is_active) {
+            RateLimiter::hit($key, 300);
             throw ValidationException::withMessages([
                 'username' => ['თქვენი ანგარიში დაბლოკილია'],
             ]);
         }
+
+        // Clear rate limiter on successful login
+        RateLimiter::clear($key);
 
         // Login user
         Auth::login($user, $request->boolean('remember'));

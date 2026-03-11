@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Car;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WalletController extends Controller
 {
@@ -145,6 +146,7 @@ class WalletController extends Controller
 
     /**
      * Transfer from current user's wallet to a car.
+     * Uses DB transaction + pessimistic locking to prevent race conditions.
      */
     public function transferWalletToCar(Request $request)
     {
@@ -159,23 +161,33 @@ class WalletController extends Controller
             abort(403, 'ამ მანქანაზე წვდომა არ გაქვთ.');
         }
 
-        $balance = (float) $user->balance;
         $amount = (float) $validated['amount'];
-        if ($amount > $balance) {
-            if ($request->expectsJson()) {
-                return response()->json(['success' => false, 'message' => 'საფულეში არასაკმარისი თანხა. მაქსიმუმ: $' . number_format($balance, 2)], 422);
-            }
-            return redirect()->back()->with('error', 'საფულეში არასაკმარისი თანხა. მაქსიმუმ: $' . number_format($balance, 2));
-        }
 
-        Transaction::create([
-            'user_id' => $user->id,
-            'car_id' => $car->id,
-            'amount' => $amount,
-            'payment_date' => now(),
-            'purpose' => Transaction::PURPOSE_WALLET_TO_CAR,
-            'comment' => 'საფულიდან მანქანაზე (VIN: ' . $car->vin . ')',
-        ]);
+        try {
+            DB::transaction(function () use ($user, $car, $amount) {
+                // Lock user row to prevent race condition
+                $lockedUser = User::lockForUpdate()->find($user->id);
+                $balance = (float) $lockedUser->balance;
+
+                if ($amount > $balance) {
+                    throw new \RuntimeException('საფულეში არასაკმარისი თანხა. მაქსიმუმ: $' . number_format($balance, 2));
+                }
+
+                Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'car_id' => $car->id,
+                    'amount' => $amount,
+                    'payment_date' => now(),
+                    'purpose' => Transaction::PURPOSE_WALLET_TO_CAR,
+                    'comment' => 'საფულიდან მანქანაზე (VIN: ' . $car->vin . ')',
+                ]);
+            });
+        } catch (\RuntimeException $e) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+            }
+            return redirect()->back()->with('error', $e->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -189,6 +201,7 @@ class WalletController extends Controller
 
     /**
      * Transfer from one car to another (only overpayment amount).
+     * Uses DB transaction + pessimistic locking to prevent race conditions.
      */
     public function transferCarToCar(Request $request)
     {
@@ -213,31 +226,41 @@ class WalletController extends Controller
             abort(403, 'ამ მანქანებზე წვდომა არ გაქვთ.');
         }
 
-        $transferable = max(0, (float) $fromCar->paid_amount - (float) $fromCar->total_cost);
         $amount = (float) $validated['amount'];
-        if ($amount > $transferable) {
-            if ($request->expectsJson()) {
-                return response()->json(['success' => false, 'message' => 'გადასატანი თანხა არ უნდა აღემატებოდეს პლიუს დეპოზიტს. მაქსიმუმ: $' . number_format($transferable, 2)], 422);
-            }
-            return redirect()->back()->with('error', 'გადასატანი თანხა არ უნდა აღემატებოდეს პლიუს დეპოზიტს. მაქსიმუმ: $' . number_format($transferable, 2));
-        }
 
-        Transaction::create([
-            'user_id' => $user->id,
-            'car_id' => $fromCar->id,
-            'amount' => $amount,
-            'payment_date' => now(),
-            'purpose' => Transaction::PURPOSE_CAR_TO_CAR_OUT,
-            'comment' => 'გადაცემა მანქანაზე VIN: ' . $toCar->vin,
-        ]);
-        Transaction::create([
-            'user_id' => $user->id,
-            'car_id' => $toCar->id,
-            'amount' => $amount,
-            'payment_date' => now(),
-            'purpose' => Transaction::PURPOSE_CAR_TO_CAR_IN,
-            'comment' => 'მიღებული მანქანიდან VIN: ' . $fromCar->vin,
-        ]);
+        try {
+            DB::transaction(function () use ($user, $fromCar, $toCar, $amount) {
+                // Lock both car rows to prevent race condition
+                $lockedFromCar = Car::lockForUpdate()->find($fromCar->id);
+                $transferable = max(0, (float) $lockedFromCar->paid_amount - (float) $lockedFromCar->total_cost);
+
+                if ($amount > $transferable) {
+                    throw new \RuntimeException('გადასატანი თანხა არ უნდა აღემატებოდეს პლიუს დეპოზიტს. მაქსიმუმ: $' . number_format($transferable, 2));
+                }
+
+                Transaction::create([
+                    'user_id' => $user->id,
+                    'car_id' => $lockedFromCar->id,
+                    'amount' => $amount,
+                    'payment_date' => now(),
+                    'purpose' => Transaction::PURPOSE_CAR_TO_CAR_OUT,
+                    'comment' => 'გადაცემა მანქანაზე VIN: ' . $toCar->vin,
+                ]);
+                Transaction::create([
+                    'user_id' => $user->id,
+                    'car_id' => $toCar->id,
+                    'amount' => $amount,
+                    'payment_date' => now(),
+                    'purpose' => Transaction::PURPOSE_CAR_TO_CAR_IN,
+                    'comment' => 'მიღებული მანქანიდან VIN: ' . $lockedFromCar->vin,
+                ]);
+            });
+        } catch (\RuntimeException $e) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+            }
+            return redirect()->back()->with('error', $e->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'თანხა წარმატებით გადაირიცხა მანქანიდან მანქანაზე.']);

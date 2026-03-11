@@ -21,7 +21,7 @@ class StoreCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vin' => 'required|string|max:17',
+            'vin' => 'required|string|max:17|unique:cars,vin',
             'make' => 'required|string|max:100',
             'model' => 'required|string|max:100',
             'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),

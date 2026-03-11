@@ -31,7 +31,7 @@ Route::middleware('guest')->group(function () {
 Route::post('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Protected routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'approved'])->group(function () {
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -121,27 +121,37 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-// Uploads route - serve files from uploads directory
+// Uploads route - serve files from uploads directory (auth required)
 Route::get('/uploads/{path}', function ($path) {
-    // Try storage path first
+    // Path traversal prevention
+    $path = ltrim($path, '/');
+    if (str_contains($path, '..') || str_contains($path, "\0") || str_contains($path, '//')) {
+        abort(403);
+    }
+
+    // Only serve from storage/app/public/uploads - no backupv1 fallback
     $filePath = storage_path('app/public/uploads/' . $path);
 
-    // Fallback to old uploads location in backupv1
-    if (!file_exists($filePath)) {
-        $filePath = base_path('backupv1/uploads/' . $path);
-    }
-
-    // Final fallback
-    if (!file_exists($filePath)) {
-        $filePath = base_path('backupv1/public/uploads/' . $path);
-    }
-
-    if (!file_exists($filePath)) {
+    if (!file_exists($filePath) || !is_file($filePath)) {
         abort(404);
     }
 
+    // MIME type whitelist - only allow safe file types
+    $allowedMimes = [
+        'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+        'video/mp4', 'video/webm', 'video/quicktime',
+        'application/pdf',
+    ];
+
+    $finfo = new \finfo(FILEINFO_MIME_TYPE);
+    $mime = $finfo->file($filePath);
+
+    if (!in_array($mime, $allowedMimes)) {
+        abort(403);
+    }
+
     return response()->file($filePath);
-})->where('path', '.*')->name('uploads');
+})->where('path', '[a-zA-Z0-9/_\-\.]+')->middleware('auth')->name('uploads');
 
 /*
 |--------------------------------------------------------------------------

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Car;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCarRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'vin' => 'required|string|max:17',
+            'vin' => ['required', 'string', 'max:17', Rule::unique('cars', 'vin')->ignore($this->route('car'))],
             'make' => 'required|string|max:100',
             'model' => 'required|string|max:100',
             'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),

@@ -60,11 +60,21 @@ class SettingsController extends Controller
 
     /**
      * Update single setting.
+     * Only allows whitelisted keys to prevent arbitrary setting writes.
      */
     public function updateSingle(Request $request)
     {
+        // Whitelist of keys that can be updated via this endpoint
+        $allowedKeys = [
+            'company_name', 'company_address', 'company_phone', 'company_email',
+            'bank_name', 'bank_recipient', 'bank_iban', 'bank_swift',
+            'site_logo', 'site_logo_dark', 'site_favicon',
+            'sms_sender', 'sms_enabled',
+            'transfer_commission_rate', 'default_currency',
+        ];
+
         $validated = $request->validate([
-            'key' => 'required|string|max:100',
+            'key' => ['required', 'string', 'max:100', \Illuminate\Validation\Rule::in($allowedKeys)],
             'value' => 'nullable|string|max:1000',
             'group' => 'nullable|string|max:50',
         ]);

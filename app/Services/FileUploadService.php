@@ -202,6 +202,7 @@ class FileUploadService
 
     /**
      * Validate file before upload.
+     * Uses server-side MIME detection (finfo) instead of client-provided extension.
      */
     public function validateFile(UploadedFile $file): bool
     {
@@ -210,7 +211,34 @@ class FileUploadService
             return false;
         }
 
-        // Check extension
+        // Server-side MIME type detection using finfo (not client-provided)
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType = $finfo->file($file->getPathname());
+
+        $allowedMimes = [
+            // Images
+            'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+            // Videos
+            'video/mp4', 'video/webm', 'video/quicktime',
+            // Documents
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+
+        if (!in_array($mimeType, $allowedMimes)) {
+            return false;
+        }
+
+        // Additional integrity check for images
+        if (str_starts_with($mimeType, 'image/')) {
+            $imageInfo = @getimagesize($file->getPathname());
+            if ($imageInfo === false) {
+                return false;
+            }
+        }
+
+        // Also verify client extension matches detected MIME (double check)
         $extension = strtolower($file->getClientOriginalExtension());
         $allowedTypes = array_merge(
             $this->allowedImageTypes,
@@ -220,14 +248,6 @@ class FileUploadService
 
         if (!in_array($extension, $allowedTypes)) {
             return false;
-        }
-
-        // Additional check for images
-        if (in_array($extension, $this->allowedImageTypes)) {
-            $imageInfo = @getimagesize($file->getPathname());
-            if ($imageInfo === false) {
-                return false;
-            }
         }
 
         return true;

@@ -16,9 +16,13 @@ class User extends Authenticatable
         'full_name',
         'email',
         'phone',
+        'sms_enabled',
+    ];
+
+    // Sensitive fields must be set explicitly, not via mass assignment
+    protected $guarded = [
         'role',
         'balance',
-        'sms_enabled',
         'approved',
     ];
 
