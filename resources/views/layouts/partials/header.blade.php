@@ -26,16 +26,52 @@
         {{-- Right Side --}}
         <div class="flex items-center space-x-3">
 
-            {{-- Balance (for dealers) --}}
+            {{-- Balance (for dealers/admins) with show/hide toggle --}}
             @if(auth()->user()->isDealer() || auth()->user()->isAdmin())
-                <a href="{{ route('wallet.index') }}"
-                    class="hidden md:flex items-center px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 transition-colors">
-                    <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                    </svg>
-                    <span class="text-green-400 font-semibold">{{ auth()->user()->getFormattedBalance() }}</span>
-                </a>
+                <div x-data="{ balanceVisible: localStorage.getItem('balanceVisible') !== 'false' }"
+                     x-init="$watch('balanceVisible', val => localStorage.setItem('balanceVisible', val))"
+                     class="hidden md:flex items-center rounded-lg bg-green-500/10 border border-green-500/20 overflow-hidden">
+                    {{-- Wallet link --}}
+                    <a href="{{ route('wallet.index') }}"
+                        class="flex items-center pl-3 pr-2 py-2 hover:bg-green-500/20 transition-colors">
+                        <svg class="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                        {{-- Balance amount (visible) --}}
+                        <span x-show="balanceVisible"
+                              x-transition:enter="transition ease-out duration-200"
+                              x-transition:enter-start="opacity-0 scale-95"
+                              x-transition:enter-end="opacity-100 scale-100"
+                              x-transition:leave="transition ease-in duration-150"
+                              x-transition:leave-start="opacity-100 scale-100"
+                              x-transition:leave-end="opacity-0 scale-95"
+                              class="text-green-400 font-semibold">{{ auth()->user()->getFormattedBalance() }}</span>
+                        {{-- Balance hidden placeholder --}}
+                        <span x-show="!balanceVisible"
+                              x-transition:enter="transition ease-out duration-200"
+                              x-transition:enter-start="opacity-0"
+                              x-transition:enter-end="opacity-100"
+                              class="text-green-400 font-semibold tracking-widest">••••••</span>
+                    </a>
+                    {{-- Toggle eye button --}}
+                    <button @click="balanceVisible = !balanceVisible"
+                            class="px-2 py-2 text-green-400/60 hover:text-green-400 hover:bg-green-500/20 transition-colors border-l border-green-500/20"
+                            :title="balanceVisible ? 'თანხის დამალვა' : 'თანხის ჩვენება'">
+                        {{-- Eye open icon --}}
+                        <svg x-show="balanceVisible" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        {{-- Eye closed icon --}}
+                        <svg x-show="!balanceVisible" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                        </svg>
+                    </button>
+                </div>
             @endif
 
             {{-- Day/Night Mode Toggle --}}
