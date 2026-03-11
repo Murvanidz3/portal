@@ -42,6 +42,32 @@ class Invoice extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Generate the next sequential invoice number.
+     * Format: INV-CR00101, INV-CR00102, ...
+     * Starts from INV-CR00101 if no invoices exist.
+     */
+    public static function generateNextNumber(): string
+    {
+        $prefix = 'INV-CR';
+        $startNumber = 101;
+
+        // Get the last invoice number matching our format
+        $last = static::where('invoice_number', 'like', $prefix . '%')
+            ->orderByRaw('CAST(SUBSTRING(invoice_number, ' . (strlen($prefix) + 1) . ') AS UNSIGNED) DESC')
+            ->value('invoice_number');
+
+        if ($last) {
+            // Extract numeric part and increment
+            $numericPart = (int) substr($last, strlen($prefix));
+            $next = $numericPart + 1;
+        } else {
+            $next = $startNumber;
+        }
+
+        return $prefix . str_pad($next, 5, '0', STR_PAD_LEFT);
+    }
+
     // Accessors
     public function getTypeLabelAttribute(): string
     {

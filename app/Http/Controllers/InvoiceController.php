@@ -111,8 +111,8 @@ class InvoiceController extends Controller
             $shippingCost = $car->shipping_cost;
         }
         
-        // Generate invoice number
-        $invoiceNumber = 'INV-' . strtoupper(substr($type, 0, 1)) . '-' . date('Ymd') . '-' . Str::random(6);
+        // Generate sequential invoice number: INV-CR00101, INV-CR00102, ...
+        $invoiceNumber = Invoice::generateNextNumber();
         
         // Create invoice
         $invoice = Invoice::create([
@@ -159,8 +159,8 @@ class InvoiceController extends Controller
             $totalAmount = $validated['shipping_cost'] ?? 0;
         }
 
-        // Generate invoice number
-        $invoiceNumber = 'INV-' . strtoupper(substr($validated['type'], 0, 1)) . '-' . date('Ymd') . '-' . Str::random(6);
+        // Generate sequential invoice number: INV-CR00101, INV-CR00102, ...
+        $invoiceNumber = Invoice::generateNextNumber();
 
         // Create invoice
         $invoice = Invoice::create([
@@ -205,7 +205,7 @@ class InvoiceController extends Controller
         // Get company settings
         $companyName = Setting::get('company_name', 'ONECAR LLC');
         $companyAddress = Setting::get('company_address', 'Tbilisi, Georgia');
-        $companyPhone = Setting::get('company_phone', '+995 555 123 456');
+        $companyPhone = Setting::get('company_phone', '+995 599 780 780');
         $companyEmail = Setting::get('company_email', 'info@onecar.ge');
         $companyLogo = Setting::get('site_logo_dark', asset('favicon.ico'));
 
