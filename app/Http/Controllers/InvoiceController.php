@@ -244,8 +244,18 @@ class InvoiceController extends Controller
             
             // Use total_amount which includes shipping_cost + additional_cost
             if ($invoice->total_amount > 0) {
+                $desc = 'ტრანსპორტირება / Shipping Cost';
+                if ($invoice->make_model) {
+                    $desc .= "\n" . $invoice->make_model;
+                    if ($invoice->year) {
+                        $desc .= ' (' . $invoice->year . ')';
+                    }
+                }
+                if ($invoice->vin) {
+                    $desc .= "\nVIN: " . $invoice->vin;
+                }
                 $invoiceItems[] = [
-                    'desc' => 'ტრანსპორტირება / Shipping Cost',
+                    'desc' => $desc,
                     'amount' => $invoice->total_amount
                 ];
             }

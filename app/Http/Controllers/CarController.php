@@ -360,7 +360,7 @@ class CarController extends Controller
 
             if ($car->shipping_cost > 0) {
                 $invoiceItems[] = [
-                    'desc' => 'ტრანსპორტირება / Shipping Cost',
+                    'desc' => "ტრანსპორტირება / Shipping Cost\n" . $car->make_model . ($car->year ? ' (' . $car->year . ')' : '') . "\nVIN: " . $car->vin,
                     'amount' => $car->shipping_cost
                 ];
             }

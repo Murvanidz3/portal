@@ -25,9 +25,10 @@
         
         .invoice-container {
             background: #fff;
-            max-width: 800px;
+            width: 210mm;
+            min-height: 297mm;
             margin: 0 auto;
-            padding: 40px;
+            padding: 20mm 20mm 15mm 20mm;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
             position: relative;
         }
@@ -138,6 +139,11 @@
             text-align: left;
             font-weight: 600;
         }
+
+        .invoice-table th.th-amount {
+            text-align: right;
+            padding-right: 12px;
+        }
         
         .invoice-table td {
             padding: 15px 12px;
@@ -150,6 +156,7 @@
             text-align: right;
             font-weight: 600;
             white-space: nowrap;
+            padding-right: 12px;
         }
         
         .total-row td {
@@ -266,12 +273,15 @@
             body {
                 background: #fff;
                 padding: 0;
+                margin: 0;
             }
             
             .invoice-container {
                 box-shadow: none;
-                max-width: 100%;
-                padding: 20px;
+                width: 210mm;
+                min-height: 297mm;
+                padding: 15mm 20mm;
+                margin: 0 auto;
             }
             
             .no-print {
@@ -340,7 +350,7 @@
             <thead>
                 <tr>
                     <th>აღწერა / Description</th>
-                    <th class="text-end">თანხა / Amount ($)</th>
+                    <th class="th-amount">თანხა / Amount ($)</th>
                 </tr>
             </thead>
             <tbody>
