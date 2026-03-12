@@ -141,7 +141,7 @@
                 </div>
 
                 <!-- Dealer -->
-                @if(auth()->user()->isAdmin() && $dealers->count() > 1)
+                @if(auth()->user()->isAdmin())
                     <div>
                         <label for="user_id" class="block text-sm font-medium text-dark-300 mb-2">დილერი</label>
                         <select name="user_id" id="user_id" class="form-input w-full">
@@ -251,7 +251,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <!-- Client User -->
-                @if($clients->count() > 0)
+                @if(auth()->user()->isAdmin())
                     <div>
                         <label for="client_user_id" class="block text-sm font-medium text-dark-300 mb-2">კლიენტი
                             (სისტემიდან)</label>
