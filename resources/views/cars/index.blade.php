@@ -38,6 +38,7 @@
             @endif
         </form>
     </div>
+    @if(auth()->user()->isAdmin())
     <div class="flex-shrink-0">
         <a href="{{ route('cars.create') }}" class="btn-primary inline-flex items-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,6 +47,7 @@
             დამატება
         </a>
     </div>
+    @endif
 </div>
 @endsection
 
@@ -109,7 +111,7 @@
                 </span>
             </div>
             
-            @if($car->hasDebt())
+            @if($car->hasDebt() && !auth()->user()->isClient())
             <div class="absolute top-2 left-2">
                 <span class="bg-red-500/90 text-white px-2 py-1 rounded-full text-xs font-medium">
                     დავალიანება: {{ $car->formatted_debt }}
@@ -130,14 +132,16 @@
             <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
                 <span class="text-sm text-dark-300">{{ $car->getClientDisplayName() }}</span>
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('cars.edit', $car) }}" 
+                    @if(auth()->user()->isAdmin())
+                    <a href="{{ route('cars.edit', $car) }}"
                        class="p-2 text-dark-400 hover:text-primary-400 transition-colors"
                        title="რედაქტირება">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                     </a>
-                    <a href="{{ route('cars.show', $car) }}" 
+                    @endif
+                    <a href="{{ route('cars.show', $car) }}"
                        class="p-2 text-dark-400 hover:text-primary-400 transition-colors"
                        title="ნახვა">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,12 +168,14 @@
     </svg>
     <h3 class="text-lg font-medium text-white mb-2">მანქანები ვერ მოიძებნა</h3>
     <p class="text-dark-400 mb-4">დაამატეთ ახალი მანქანა ან შეცვალეთ ფილტრები</p>
+    @if(auth()->user()->isAdmin())
     <a href="{{ route('cars.create') }}" class="btn-primary inline-flex items-center">
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         დამატება
     </a>
+    @endif
 </div>
 @endif
 

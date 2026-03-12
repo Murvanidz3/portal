@@ -109,7 +109,8 @@ class CarController extends Controller
         $warehousePhotos = $car->files()->whereIn('category', ['warehouse', 'port'])->where('file_type', 'image')->get();
         $potiPhotos = $car->files()->whereIn('category', ['poti', 'terminal'])->where('file_type', 'image')->get();
 
-        $canEditCar = auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id());
+        // Only admin can edit cars
+        $canEditCar = auth()->user()->isAdmin();
         $clients = $canEditCar ? User::clients()->approved()->get() : collect();
 
         return view('cars.show', compact('car', 'auctionPhotos', 'pickupPhotos', 'warehousePhotos', 'potiPhotos', 'canEditCar', 'clients'));
@@ -313,11 +314,8 @@ class CarController extends Controller
     {
         $user = auth()->user();
 
+        // Only admin can edit cars
         if ($user->isAdmin()) {
-            return;
-        }
-
-        if ($user->isDealer() && $car->user_id === $user->id) {
             return;
         }
 

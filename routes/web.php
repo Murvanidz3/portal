@@ -36,34 +36,55 @@ Route::middleware(['auth', 'approved'])->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Cars
-    Route::resource('cars', CarController::class);
-    Route::patch('cars/{car}/status', [CarController::class, 'updateStatus'])->name('cars.update-status');
-    Route::patch('cars/{car}/recipient', [CarController::class, 'updateRecipient'])->name('cars.update-recipient');
-    Route::delete('cars/{car}/files/{file}', [CarController::class, 'deleteFile'])->name('cars.delete-file');
-    Route::post('cars/{car}/files/{file}/main', [CarController::class, 'setMainPhoto'])->name('cars.set-main-photo');
-    Route::post('cars/{car}/files/bulk-delete', [CarController::class, 'bulkDeleteFiles'])->name('cars.bulk-delete-files');
+    // Cars - view routes (all authenticated+approved users including clients)
+    Route::get('cars', [CarController::class, 'index'])->name('cars.index');
+
+    // Cars - edit routes (admin only) - create must be before {car} wildcard
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('cars/create', [CarController::class, 'create'])->name('cars.create');
+        Route::post('cars', [CarController::class, 'store'])->name('cars.store');
+        Route::get('cars/{car}/edit', [CarController::class, 'edit'])->name('cars.edit');
+        Route::put('cars/{car}', [CarController::class, 'update'])->name('cars.update');
+        Route::delete('cars/{car}', [CarController::class, 'destroy'])->name('cars.destroy');
+        Route::patch('cars/{car}/status', [CarController::class, 'updateStatus'])->name('cars.update-status');
+        Route::patch('cars/{car}/recipient', [CarController::class, 'updateRecipient'])->name('cars.update-recipient');
+        Route::delete('cars/{car}/files/{file}', [CarController::class, 'deleteFile'])->name('cars.delete-file');
+        Route::post('cars/{car}/files/{file}/main', [CarController::class, 'setMainPhoto'])->name('cars.set-main-photo');
+        Route::post('cars/{car}/files/bulk-delete', [CarController::class, 'bulkDeleteFiles'])->name('cars.bulk-delete-files');
+    });
+
+    // Cars - view routes with wildcard (must be after /create)
+    Route::get('cars/{car}', [CarController::class, 'show'])->name('cars.show');
     Route::get('cars/{car}/invoice/{type}', [CarController::class, 'invoice'])->name('cars.invoice');
 
-    // Finance
-    Route::get('finance', [FinanceController::class, 'index'])->name('finance.index');
-    Route::get('finance/{dealer}', [FinanceController::class, 'show'])->name('finance.show');
+    // Finance, Wallet, Transactions, Invoices, Calculator - admin and dealer only
+    Route::middleware(['role:admin,dealer'])->group(function () {
+        // Finance
+        Route::get('finance', [FinanceController::class, 'index'])->name('finance.index');
+        Route::get('finance/{dealer}', [FinanceController::class, 'show'])->name('finance.show');
 
-    // Wallet
-    Route::get('wallet', [WalletController::class, 'index'])->name('wallet.index');
-    Route::get('wallet/create', [WalletController::class, 'create'])->name('wallet.create')->middleware('role:admin');
-    Route::post('wallet', [WalletController::class, 'store'])->name('wallet.store')->middleware('role:admin');
-    Route::get('wallet/{user}', [WalletController::class, 'show'])->name('wallet.show');
-    Route::post('wallet/transfer-wallet-to-car', [WalletController::class, 'transferWalletToCar'])->name('wallet.transfer-wallet-to-car');
-    Route::post('wallet/transfer-car-to-car', [WalletController::class, 'transferCarToCar'])->name('wallet.transfer-car-to-car');
+        // Wallet
+        Route::get('wallet', [WalletController::class, 'index'])->name('wallet.index');
+        Route::get('wallet/create', [WalletController::class, 'create'])->name('wallet.create')->middleware('role:admin');
+        Route::post('wallet', [WalletController::class, 'store'])->name('wallet.store')->middleware('role:admin');
+        Route::get('wallet/{user}', [WalletController::class, 'show'])->name('wallet.show');
+        Route::post('wallet/transfer-wallet-to-car', [WalletController::class, 'transferWalletToCar'])->name('wallet.transfer-wallet-to-car');
+        Route::post('wallet/transfer-car-to-car', [WalletController::class, 'transferCarToCar'])->name('wallet.transfer-car-to-car');
 
-    // Transactions
-    Route::resource('transactions', TransactionController::class);
+        // Transactions
+        Route::resource('transactions', TransactionController::class);
 
-    // Invoices
-    Route::resource('invoices', InvoiceController::class)->except(['edit', 'update']);
-    Route::get('invoices/car/{car}/data', [InvoiceController::class, 'getCarData'])->name('invoices.car-data');
-    Route::get('invoices/car/{car}/generate/{type}', [InvoiceController::class, 'generateFromCar'])->name('invoices.generate-from-car');
+        // Invoices
+        Route::resource('invoices', InvoiceController::class)->except(['edit', 'update']);
+        Route::get('invoices/car/{car}/data', [InvoiceController::class, 'getCarData'])->name('invoices.car-data');
+        Route::get('invoices/car/{car}/generate/{type}', [InvoiceController::class, 'generateFromCar'])->name('invoices.generate-from-car');
+
+        // Calculator
+        Route::get('calculator', [CalculatorController::class, 'index'])->name('calculator.index');
+        Route::post('calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
+        Route::get('calculator/get-locations', [CalculatorController::class, 'getLocations'])->name('calculator.get-locations');
+        Route::post('calculator/calculate-from-rates', [CalculatorController::class, 'calculateShippingFromRates'])->name('calculator.calculate-from-rates');
+    });
 
     // Notifications
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -73,12 +94,6 @@ Route::middleware(['auth', 'approved'])->group(function () {
     Route::post('notifications/{notification}/mark-read', [NotificationController::class, 'markRead'])->name('notifications.mark-read');
     Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark-all-read');
     Route::delete('notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
-
-    // Calculator
-    Route::get('calculator', [CalculatorController::class, 'index'])->name('calculator.index');
-    Route::post('calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
-    Route::get('calculator/get-locations', [CalculatorController::class, 'getLocations'])->name('calculator.get-locations');
-    Route::post('calculator/calculate-from-rates', [CalculatorController::class, 'calculateShippingFromRates'])->name('calculator.calculate-from-rates');
 
     // Profile
     Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

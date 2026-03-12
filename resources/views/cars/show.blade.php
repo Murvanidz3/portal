@@ -20,29 +20,33 @@
                 {{ $car->status_label }}
             </span>
 
-            <!-- Invoice Buttons -->
-            @if($car->vehicle_cost > 0)
-                <a href="{{ route('invoices.generate-from-car', [$car, 'vehicle']) }}" target="_blank"
-                    class="flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg text-sm font-medium transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    ავტომობილის ინვოისი
-                </a>
+            {{-- Invoice Buttons - admin and dealer only --}}
+            @if(!auth()->user()->isClient())
+                @if($car->vehicle_cost > 0)
+                    <a href="{{ route('invoices.generate-from-car', [$car, 'vehicle']) }}" target="_blank"
+                        class="flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg text-sm font-medium transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        ავტომობილის ინვოისი
+                    </a>
+                @endif
+
+                @if($car->shipping_cost > 0 || $car->additional_cost > 0)
+                    <a href="{{ route('invoices.generate-from-car', [$car, 'shipping']) }}" target="_blank"
+                        class="flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg text-sm font-medium transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        ტრანსპორტირების ინვოისი
+                    </a>
+                @endif
             @endif
 
-            @if($car->shipping_cost > 0 || $car->additional_cost > 0)
-                <a href="{{ route('invoices.generate-from-car', [$car, 'shipping']) }}" target="_blank"
-                    class="flex items-center gap-2 px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg text-sm font-medium transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    ტრანსპორტირების ინვოისი
-                </a>
-            @endif
-
+            {{-- Edit button - admin only --}}
+            @if(auth()->user()->isAdmin())
             <a href="{{ route('cars.edit', $car) }}"
                 class="flex items-center gap-2 px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,6 +55,7 @@
                 </svg>
                 რედაქტირება
             </a>
+            @endif
         </div>
     </div>
 @endsection
@@ -188,7 +193,7 @@
                         </button>
                     </div>
 
-                    @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+                    @if(auth()->user()->isAdmin())
                         <div class="flex items-center gap-2">
                             <!-- Selected count badge -->
                             <span x-show="selectedPhotos.length > 0" x-cloak
@@ -223,7 +228,7 @@
                             <img src="{{ $photo->url }}" alt=""
                                 class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
                                 @click="setSliderPhoto({{ $car->files->search(fn($f) => $f->id === $photo->id) }})">
-                            @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+                            @if(auth()->user()->isAdmin())
                                 <!-- Checkbox -->
                                 <div class="absolute top-1 left-1">
                                     <input type="checkbox" :checked="selectedPhotos.includes({{ $photo->id }})"
@@ -264,7 +269,7 @@
                             <img src="{{ $photo->url }}" alt=""
                                 class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
                                 @click="setSliderPhoto({{ $car->files->search(fn($f) => $f->id === $photo->id) }})">
-                            @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+                            @if(auth()->user()->isAdmin())
                                 <!-- Checkbox -->
                                 <div class="absolute top-1 left-1">
                                     <input type="checkbox" :checked="selectedPhotos.includes({{ $photo->id }})"
@@ -305,7 +310,7 @@
                             <img src="{{ $photo->url }}" alt=""
                                 class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
                                 @click="setSliderPhoto({{ $car->files->search(fn($f) => $f->id === $photo->id) }})">
-                            @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+                            @if(auth()->user()->isAdmin())
                                 <!-- Checkbox -->
                                 <div class="absolute top-1 left-1">
                                     <input type="checkbox" :checked="selectedPhotos.includes({{ $photo->id }})"
@@ -346,7 +351,7 @@
                             <img src="{{ $photo->url }}" alt=""
                                 class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
                                 @click="setSliderPhoto({{ $car->files->search(fn($f) => $f->id === $photo->id) }})">
-                            @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+                            @if(auth()->user()->isAdmin())
                                 <!-- Checkbox -->
                                 <div class="absolute top-1 left-1">
                                     <input type="checkbox" :checked="selectedPhotos.includes({{ $photo->id }})"
@@ -391,8 +396,8 @@
 
         <!-- Sidebar -->
         <div class="space-y-6">
-            <!-- Status Change (for admins/dealers) -->
-            @if(auth()->user()->isAdmin() || (auth()->user()->isDealer() && $car->user_id === auth()->id()))
+            <!-- Status Change (admin only) -->
+            @if(auth()->user()->isAdmin())
                 <div class="glass-card p-6">
                     <h3 class="text-lg font-semibold text-white mb-4">სტატუსის შეცვლა</h3>
 
@@ -580,7 +585,7 @@
                 </dl>
             </div>
 
-            <!-- Transactions -->
+            <!-- Transactions (payment history - visible to all) -->
             @if($car->transactions->count() > 0)
                 <div class="glass-card p-6">
                     <h3 class="text-lg font-semibold text-white mb-4">გადახდები</h3>
@@ -592,10 +597,39 @@
                                     <p class="text-sm text-white">${{ number_format($transaction->amount, 2) }}</p>
                                     <p class="text-xs text-dark-500">{{ $transaction->payment_date->format('d.m.Y') }}</p>
                                 </div>
-                                <span class="text-xs text-dark-400">{{ $transaction->purpose_label }}</span>
+                                @if(!auth()->user()->isClient())
+                                    <span class="text-xs text-dark-400">{{ $transaction->purpose_label }}</span>
+                                @endif
                             </div>
                         @endforeach
                     </div>
+                </div>
+            @endif
+
+            {{-- Dates section for clients --}}
+            @if(auth()->user()->isClient())
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">თარიღები</h3>
+                    <dl class="space-y-3">
+                        @if($car->purchase_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">შეძენის თარიღი:</dt>
+                                <dd class="text-white">{{ $car->purchase_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                        @if($car->loading_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">ჩატვირთვის თარიღი:</dt>
+                                <dd class="text-white">{{ $car->loading_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                        @if($car->estimated_arrival_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">სავარაუდო ჩამოსვლა:</dt>
+                                <dd class="text-white">{{ $car->estimated_arrival_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                    </dl>
                 </div>
             @endif
         </div>

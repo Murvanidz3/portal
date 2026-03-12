@@ -42,6 +42,7 @@
 
     <div class="flex min-h-screen">
 
+        @if(!auth()->check() || !auth()->user()->isClient())
         <!-- Sidebar Overlay (Mobile) -->
         <div x-show="sidebarOpen" x-transition:enter="transition-opacity ease-linear duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -51,9 +52,10 @@
 
         <!-- Sidebar -->
         @include('layouts.partials.sidebar')
+        @endif
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col min-w-0 lg:ml-64">
+        <div class="flex-1 flex flex-col min-w-0 {{ (!auth()->check() || !auth()->user()->isClient()) ? 'lg:ml-64' : '' }}">
 
             <!-- Top Header -->
             @include('layouts.partials.header')

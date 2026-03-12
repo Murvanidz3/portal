@@ -100,12 +100,14 @@
                 <div class="p-3">
                     <h3 class="font-medium text-white truncate">{{ $car->make_model }}</h3>
                     <p class="text-sm text-dark-400 truncate">{{ $car->vin }}</p>
+                    @if(!auth()->user()->isClient())
                     <div class="flex items-center justify-between mt-2 text-xs">
                         <span class="text-green-400">{{ $car->formatted_paid }}</span>
                         <span class="{{ $car->hasDebt() ? 'text-red-400' : 'text-green-400' }}">
                             {{ $car->formatted_debt }}
                         </span>
                     </div>
+                    @endif
                 </div>
             </a>
             @endforeach
@@ -116,28 +118,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             <p class="text-dark-400">მანქანები არ არის</p>
+            @if(auth()->user()->isAdmin())
             <a href="{{ route('cars.create') }}" class="btn-primary mt-4 inline-flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 დამატება
             </a>
+            @endif
         </div>
         @endif
     </div>
     
-    {{-- Quick Actions & Recent Transactions --}}
+    {{-- Quick Actions & Recent Transactions (hidden for clients) --}}
+    @if(!auth()->user()->isClient())
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {{-- Quick Actions --}}
         <div class="glass-card p-6">
             <h2 class="text-lg font-semibold text-white mb-4">სწრაფი მოქმედებები</h2>
             <div class="grid grid-cols-2 gap-3">
+                @if(auth()->user()->isAdmin())
                 <a href="{{ route('cars.create') }}" class="p-4 rounded-xl bg-primary-500/10 border border-primary-500/20 hover:bg-primary-500/20 transition-colors text-center">
                     <svg class="w-8 h-8 mx-auto text-primary-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
                     <span class="text-sm text-dark-300">მანქანის დამატება</span>
                 </a>
+                @endif
                 
                 <a href="{{ route('calculator.index') }}" class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 transition-colors text-center">
                     <svg class="w-8 h-8 mx-auto text-blue-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +170,6 @@
         </div>
         
         {{-- Recent Transactions --}}
-        @if(!auth()->user()->isClient())
         <div class="glass-card p-6">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-semibold text-white">ბოლო გადახდები</h2>
@@ -186,8 +192,8 @@
             <p class="text-center text-dark-500 py-8">გადახდები არ არის</p>
             @endif
         </div>
-        @endif
     </div>
+    @endif
     
 </div>
 @endsection
