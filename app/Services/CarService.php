@@ -137,16 +137,22 @@ class CarService
     }
 
     /**
-     * If user_id points to a client user, auto-set client_user_id for visibility.
-     * Clients see cars via client_user_id, dealers see via user_id.
+     * Auto-manage client_user_id based on the assigned user's role.
+     * - If user_id is a client → set client_user_id so client can see the car
+     * - If user_id is a dealer → clear client_user_id so car leaves client's view
      */
     protected function autoSetClientUserId(array $data): array
     {
         if (!empty($data['user_id'])) {
             $assignedUser = User::find($data['user_id']);
-            if ($assignedUser && $assignedUser->isClient()) {
-                // Set client_user_id so client can see the car
-                $data['client_user_id'] = $assignedUser->id;
+            if ($assignedUser) {
+                if ($assignedUser->isClient()) {
+                    // Set client_user_id so client can see the car
+                    $data['client_user_id'] = $assignedUser->id;
+                } elseif ($assignedUser->isDealer()) {
+                    // Clear client_user_id - car moves back to dealer, no longer visible to client
+                    $data['client_user_id'] = null;
+                }
             }
         }
         return $data;
