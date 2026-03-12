@@ -76,17 +76,22 @@ class UserController extends Controller
 
         $validated['password'] = Hash::make($validated['password']);
         $validated['sms_enabled'] = $request->boolean('sms_enabled');
-        
-        // Administrators are always approved
-        if ($validated['role'] === 'admin') {
-            $validated['approved'] = true;
-        } else {
-            $validated['approved'] = $request->boolean('approved', true);
-        }
-        
-        $validated['balance'] = $validated['balance'] ?? 0;
+
+        // Extract guarded fields before mass assignment
+        $role = $validated['role'];
+        $balance = $validated['balance'] ?? 0;
+        $approved = ($role === 'admin') ? true : $request->boolean('approved', true);
+
+        // Remove guarded fields from mass assignment data
+        unset($validated['role'], $validated['balance'], $validated['approved']);
 
         $user = User::create($validated);
+
+        // Explicitly set guarded fields (role, balance, approved)
+        $user->role = $role;
+        $user->balance = $balance;
+        $user->approved = $approved;
+        $user->save();
 
         return redirect()->route('users.index')
             ->with('success', 'მომხმარებელი წარმატებით დაემატა!');
@@ -144,17 +149,23 @@ class UserController extends Controller
         }
 
         $validated['sms_enabled'] = $request->boolean('sms_enabled');
-        
-        // Administrators are always approved - don't allow changing their approval status
-        if ($user->role === 'admin') {
-            unset($validated['approved']);
-            // Ensure admin is always approved
-            $validated['approved'] = true;
-        } else {
-            $validated['approved'] = $request->boolean('approved');
-        }
+
+        // Extract guarded fields before mass assignment
+        $role = $validated['role'];
+        $approved = ($role === 'admin') ? true : $request->boolean('approved');
+
+        // Remove guarded fields from mass assignment data
+        unset($validated['role'], $validated['balance'], $validated['approved']);
 
         $user->update($validated);
+
+        // Explicitly set guarded fields
+        $user->role = $role;
+        $user->approved = $approved;
+        if ($request->has('balance')) {
+            $user->balance = $request->input('balance', $user->balance);
+        }
+        $user->save();
 
         return redirect()->route('users.index')
             ->with('success', 'მომხმარებელი წარმატებით განახლდა!');
