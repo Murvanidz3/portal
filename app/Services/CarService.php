@@ -30,6 +30,9 @@ class CarService
                 $data['user_id'] = auth()->id();
             }
 
+            // Auto-set client_user_id when user_id points to a client user
+            $data = $this->autoSetClientUserId($data);
+
             // Create car
             $car = Car::create($data);
 
@@ -62,6 +65,9 @@ class CarService
 
             // Prepare data
             $data = $this->prepareCarData($data);
+
+            // Auto-set client_user_id when user_id points to a client user
+            $data = $this->autoSetClientUserId($data);
 
             $car->update($data);
 
@@ -128,6 +134,22 @@ class CarService
         ]);
 
         return $car;
+    }
+
+    /**
+     * If user_id points to a client user, auto-set client_user_id for visibility.
+     * Clients see cars via client_user_id, dealers see via user_id.
+     */
+    protected function autoSetClientUserId(array $data): array
+    {
+        if (!empty($data['user_id'])) {
+            $assignedUser = User::find($data['user_id']);
+            if ($assignedUser && $assignedUser->isClient()) {
+                // Set client_user_id so client can see the car
+                $data['client_user_id'] = $assignedUser->id;
+            }
+        }
+        return $data;
     }
 
     protected function prepareCarData(array $data): array

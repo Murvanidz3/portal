@@ -66,8 +66,9 @@ class CarController extends Controller
      */
     public function create()
     {
+        // Get dealers and clients for assignment dropdowns
         $dealers = auth()->user()->isAdmin()
-            ? User::dealers()->approved()->get()
+            ? User::whereIn('role', ['dealer', 'client'])->approved()->orderBy('role')->orderBy('full_name')->get()
             : collect([auth()->user()]);
 
         $clients = User::clients()->approved()->get();
@@ -125,8 +126,9 @@ class CarController extends Controller
     {
         $this->authorizeEdit($car);
 
+        // Get dealers and clients for assignment dropdowns
         $dealers = auth()->user()->isAdmin()
-            ? User::dealers()->approved()->get()
+            ? User::whereIn('role', ['dealer', 'client'])->approved()->orderBy('role')->orderBy('full_name')->get()
             : collect([auth()->user()]);
 
         $clients = User::clients()->approved()->get();

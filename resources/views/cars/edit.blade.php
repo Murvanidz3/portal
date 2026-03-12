@@ -173,16 +173,33 @@
                         class="form-input w-full">
                 </div>
 
-                <!-- Dealer -->
+                <!-- Dealer / Client Assignment -->
                 @if(auth()->user()->isAdmin())
                     <div>
-                        <label for="user_id" class="block text-sm font-medium text-dark-300 mb-2">დილერი</label>
+                        <label for="user_id" class="block text-sm font-medium text-dark-300 mb-2">მფლობელი (დილერი/კლიენტი)</label>
                         <select name="user_id" id="user_id" class="form-input w-full">
-                            @foreach($dealers as $dealer)
-                                <option value="{{ $dealer->id }}" {{ old('user_id', $car->user_id) == $dealer->id ? 'selected' : '' }}>
-                                    {{ $dealer->full_name ?? $dealer->username }}
-                                </option>
-                            @endforeach
+                            <option value="">აირჩიეთ</option>
+                            @php
+                                $groupedDealers = $dealers->groupBy('role');
+                            @endphp
+                            @if($groupedDealers->has('dealer'))
+                                <optgroup label="დილერები">
+                                    @foreach($groupedDealers['dealer'] as $dealer)
+                                        <option value="{{ $dealer->id }}" {{ old('user_id', $car->user_id) == $dealer->id ? 'selected' : '' }}>
+                                            {{ $dealer->full_name ?? $dealer->username }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
+                            @if($groupedDealers->has('client'))
+                                <optgroup label="კლიენტები">
+                                    @foreach($groupedDealers['client'] as $client)
+                                        <option value="{{ $client->id }}" {{ old('user_id', $car->user_id) == $client->id ? 'selected' : '' }}>
+                                            {{ $client->full_name ?? $client->username }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endif
                         </select>
                     </div>
                 @endif
