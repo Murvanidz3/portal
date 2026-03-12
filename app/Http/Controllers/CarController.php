@@ -104,10 +104,12 @@ class CarController extends Controller
 
         $car->load(['user', 'client', 'files', 'transactions']);
 
-        $auctionPhotos = $car->files()->where('category', 'auction')->where('file_type', 'image')->get();
-        $pickupPhotos = $car->files()->where('category', 'pickup')->where('file_type', 'image')->get();
-        $warehousePhotos = $car->files()->whereIn('category', ['warehouse', 'port'])->where('file_type', 'image')->get();
-        $potiPhotos = $car->files()->whereIn('category', ['poti', 'terminal'])->where('file_type', 'image')->get();
+        // Filter already-loaded files collection instead of making 4 extra DB queries
+        $imageFiles = $car->files->where('file_type', 'image');
+        $auctionPhotos = $imageFiles->where('category', 'auction')->values();
+        $pickupPhotos = $imageFiles->where('category', 'pickup')->values();
+        $warehousePhotos = $imageFiles->whereIn('category', ['warehouse', 'port'])->values();
+        $potiPhotos = $imageFiles->whereIn('category', ['poti', 'terminal'])->values();
 
         // Only admin can edit cars
         $canEditCar = auth()->user()->isAdmin();

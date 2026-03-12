@@ -24,19 +24,14 @@ class GodModeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Share styles with all views (except god-mode views)
-        View::composer('*', function ($view) {
-            // Skip god-mode views to avoid recursion
-            if (str_starts_with($view->getName(), 'god-mode')) {
-                return;
-            }
-
+        // Share styles only with layout views that actually use them (not every partial)
+        View::composer(['layouts.app', 'layouts.auth', 'god-mode.layout'], function ($view) {
             try {
-                // Get CSS variables
+                // Get CSS variables (cached)
                 $godModeStyles = GodModeStyle::generateCssVariables();
                 $view->with('godModeStyles', $godModeStyles);
 
-                // Get branding
+                // Get branding (cached)
                 $godModeBranding = GodModeStyle::getBranding();
                 $view->with('godModeBranding', $godModeBranding);
             } catch (\Exception $e) {

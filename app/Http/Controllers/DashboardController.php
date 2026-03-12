@@ -85,14 +85,16 @@ class DashboardController extends Controller
         $stats['in_transit'] = (clone $query)->inTransit()->count();
         $stats['delivered'] = (clone $query)->delivered()->count();
 
-        // Financial stats - load cars and use Car model accessors for accurate calculation
-        $cars = (clone $query)->get();
-        
-        $stats['total_cost'] = $cars->sum('total_cost');
-        $stats['total_paid'] = $cars->sum('paid_amount');
-        $stats['total_debt'] = $cars->sum(function ($car) {
-            return max(0, $car->debt);
-        });
+        // Financial stats - use aggregate queries instead of loading all cars into memory
+        $financials = (clone $query)->selectRaw('
+            COALESCE(SUM(vehicle_cost + auction_fee + shipping_cost + additional_cost), 0) as total_cost,
+            COALESCE(SUM(paid_amount), 0) as total_paid,
+            COALESCE(SUM(GREATEST(0, (vehicle_cost + auction_fee + shipping_cost + additional_cost) - paid_amount)), 0) as total_debt
+        ')->first();
+
+        $stats['total_cost'] = (float) $financials->total_cost;
+        $stats['total_paid'] = (float) $financials->total_paid;
+        $stats['total_debt'] = (float) $financials->total_debt;
 
         // Admin-specific stats
         if ($user->isAdmin()) {
