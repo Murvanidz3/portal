@@ -118,8 +118,7 @@
 
                 <!-- Arrival Date -->
                 <div>
-                    <label for="arrival_date" class="block text-sm font-medium text-dark-300 mb-2">სავარაუდო ჩამოსვლის
-                        თარიღი</label>
+                    <label for="arrival_date" class="block text-sm font-medium text-dark-300 mb-2">ავტომობილის აყვანა აუქციონიდან</label>
                     <input type="date" name="arrival_date" id="arrival_date" value="{{ old('arrival_date') }}"
                         class="form-input w-full">
                 </div>
