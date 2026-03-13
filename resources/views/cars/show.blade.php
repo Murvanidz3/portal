@@ -572,6 +572,33 @@
             </div>
             @endif
 
+            {{-- ავტომობილის მიმღები — client-ისთვის, დეტალების შემდეგ, ფინანსებამდე --}}
+            @if(auth()->user()->isClient() && ($car->client_name || $car->client_id_number))
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        ავტომობილის მიმღები
+                    </h3>
+                    <dl class="space-y-3">
+                        @if($car->client_name)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">სახელი და გვარი:</dt>
+                                <dd class="text-white font-medium">{{ $car->client_name }}</dd>
+                            </div>
+                        @endif
+                        @if($car->client_id_number)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">პირადი ნომერი:</dt>
+                                <dd class="text-white font-medium">{{ $car->client_id_number }}</dd>
+                            </div>
+                        @endif
+                    </dl>
+                </div>
+            @endif
+
             <!-- Financial Info -->
             <div class="glass-card p-6">
                 <h3 class="text-lg font-semibold text-white mb-4">ფინანსები</h3>
@@ -632,33 +659,6 @@
 
             {{-- Dates section for clients --}}
             @if(auth()->user()->isClient())
-                {{-- მიმღების ინფორმაცია მომხმარებლისთვის --}}
-                @if($car->client_name || $car->client_id_number)
-                    <div class="glass-card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                            ავტომობილის მიმღები
-                        </h3>
-                        <dl class="space-y-3">
-                            @if($car->client_name)
-                                <div class="flex justify-between">
-                                    <dt class="text-dark-400">სახელი და გვარი:</dt>
-                                    <dd class="text-white font-medium">{{ $car->client_name }}</dd>
-                                </div>
-                            @endif
-                            @if($car->client_id_number)
-                                <div class="flex justify-between">
-                                    <dt class="text-dark-400">პირადი ნომერი:</dt>
-                                    <dd class="text-white font-medium">{{ $car->client_id_number }}</dd>
-                                </div>
-                            @endif
-                        </dl>
-                    </div>
-                @endif
-
                 <div class="glass-card p-6">
                     <h3 class="text-lg font-semibold text-white mb-4">თარიღები</h3>
                     <dl class="space-y-3">
