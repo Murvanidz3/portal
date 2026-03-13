@@ -85,16 +85,25 @@ class DashboardController extends Controller
         $stats['in_transit'] = (clone $query)->inTransit()->count();
         $stats['delivered'] = (clone $query)->delivered()->count();
 
-        // Financial stats - use aggregate queries instead of loading all cars into memory
+        // Financial stats
         $financials = (clone $query)->selectRaw('
-            COALESCE(SUM(vehicle_cost + auction_fee + shipping_cost + additional_cost + dealer_profit), 0) as total_cost,
+            COALESCE(SUM(vehicle_cost + auction_fee + shipping_cost + additional_cost), 0) as total_cost,
             COALESCE(SUM(paid_amount), 0) as total_paid,
-            COALESCE(SUM(GREATEST(0, (vehicle_cost + auction_fee + shipping_cost + additional_cost + dealer_profit) - paid_amount)), 0) as total_debt
+            COALESCE(SUM(GREATEST(0, (vehicle_cost + auction_fee + shipping_cost + additional_cost) - paid_amount)), 0) as total_debt
         ')->first();
 
-        $stats['total_cost'] = (float) $financials->total_cost;
-        $stats['total_paid'] = (float) $financials->total_paid;
-        $stats['total_debt'] = (float) $financials->total_debt;
+        $totalCost = (float) $financials->total_cost;
+        $totalPaid = (float) $financials->total_paid;
+        $totalDebt = (float) $financials->total_debt;
+
+        // For clients: if vehicle_cost fields are empty (0), derive total_cost from paid + debt
+        if ($user->isClient() && $totalCost == 0 && ($totalPaid > 0 || $totalDebt > 0)) {
+            $totalCost = $totalPaid + $totalDebt;
+        }
+
+        $stats['total_cost'] = $totalCost;
+        $stats['total_paid'] = $totalPaid;
+        $stats['total_debt'] = $totalDebt;
 
         // Admin-specific stats
         if ($user->isAdmin()) {
