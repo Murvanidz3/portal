@@ -118,42 +118,42 @@
                 </div>
 
                 <!-- Lightbox Modal -->
+                @php $lightboxUrls = $allPhotos->pluck('url')->values()->toJson(); @endphp
                 <div x-show="lightboxOpen" x-cloak
                     @keydown.escape.window="lightboxOpen = false; zoomLevel = 1"
-                    @keydown.arrow-left.window="if(!zoomed) prevSlide()"
-                    @keydown.arrow-right.window="if(!zoomed) nextSlide()"
-                    @keydown.plus.window="zoomIn()" @keydown.minus.window="zoomOut()"
+                    @keydown.arrow-left.window="prevSlide()"
+                    @keydown.arrow-right.window="nextSlide()"
                     class="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
                     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                     @click.self="lightboxOpen = false; zoomLevel = 1">
 
-                    {{-- Top controls: close + zoom --}}
+                    {{-- Top controls: zoom + close --}}
                     <div class="absolute top-4 right-4 z-[60] flex items-center gap-2">
                         {{-- Zoom out --}}
                         <button @click.stop="zoomOut()" :disabled="zoomLevel <= 1"
                             :class="zoomLevel <= 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-white/20'"
-                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="დაპატარავება (-)">
+                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="დაპატარავება">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zM8 11h6"/>
                             </svg>
                         </button>
-                        {{-- Zoom level indicator --}}
-                        <span x-show="zoomLevel > 1" x-text="Math.round(zoomLevel * 100) + '%'"
-                            class="text-white text-sm font-medium bg-black/40 px-2 py-1 rounded-full min-w-[52px] text-center"></span>
+                        {{-- Zoom % label --}}
+                        <span x-show="zoomLevel > 1" x-cloak x-text="Math.round(zoomLevel * 100) + '%'"
+                            class="text-white text-sm font-medium bg-black/50 px-2 py-1 rounded-full min-w-[52px] text-center"></span>
                         {{-- Zoom in --}}
                         <button @click.stop="zoomIn()" :disabled="zoomLevel >= 4"
                             :class="zoomLevel >= 4 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-white/20'"
-                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="გადიდება (+)">
+                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="გადიდება">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zM11 8v6M8 11h6"/>
                             </svg>
                         </button>
                         {{-- Reset zoom --}}
-                        <button x-show="zoomLevel > 1" @click.stop="zoomLevel = 1"
+                        <button x-show="zoomLevel > 1" x-cloak @click.stop="zoomLevel = 1"
                             class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all text-xs font-bold" title="საწყისი ზომა">
                             1:1
                         </button>
@@ -167,37 +167,31 @@
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Image container — click on it when zoomed does NOT close --}}
-                        <div class="relative max-w-6xl max-h-[90vh] w-full mx-4 flex items-center justify-center"
-                            :style="zoomLevel > 1 ? 'overflow: auto; max-height: 90vh;' : ''"
-                            @click.stop>
-                            @foreach($allPhotos as $index => $photo)
-                                <img src="{{ $photo->url }}" alt="{{ $car->make_model }}"
-                                    x-show="currentSlide === {{ $index }}"
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 scale-95"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    :style="`transform: scale(${zoomLevel}); transform-origin: center; transition: transform 0.2s ease; cursor: ${zoomLevel > 1 ? 'move' : 'zoom-in'};`"
-                                    @dblclick.stop="zoomLevel === 1 ? zoomIn() : zoomLevel = 1"
-                                    class="max-w-full max-h-[90vh] mx-auto object-contain select-none">
-                            @endforeach
+                        {{-- Single img tag — src swaps on slide change, zoom applies only here --}}
+                        <div class="relative flex items-center justify-center w-full h-full" @click.stop
+                             style="overflow: hidden;">
+                            <img
+                                :src="photoUrls[currentSlide]"
+                                alt="{{ $car->make_model }}"
+                                :style="`transform: scale(${zoomLevel}); transform-origin: center center; transition: transform 0.2s ease; cursor: ${zoomLevel < 4 ? 'zoom-in' : 'zoom-out'};`"
+                                @dblclick.stop="zoomLevel < 4 ? zoomIn() : zoomLevel = 1"
+                                class="max-w-[90vw] max-h-[85vh] object-contain select-none block">
                         </div>
 
                         @if($allPhotos->count() > 1)
-                            <button @click.stop="prevSlide(); zoomLevel = 1"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all">
+                            <button @click.stop="prevSlide()"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-[60]">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
-                            <button @click.stop="nextSlide(); zoomLevel = 1"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all">
+                            <button @click.stop="nextSlide()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-[60]">
                                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
-
-                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 text-white text-sm pointer-events-none">
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 text-white text-sm pointer-events-none z-[60]">
                                 <span x-text="currentSlide + 1"></span> / {{ $allPhotos->count() }}
                             </div>
                         @endif
@@ -737,10 +731,7 @@
                     totalSlides: totalPhotos,
                     lightboxOpen: false,
                     zoomLevel: 1,
-
-                    get zoomed() {
-                        return this.zoomLevel > 1;
-                    },
+                    photoUrls: {!! $lightboxUrls ?? '[]' !!},
 
                     nextSlide() {
                         this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
@@ -765,13 +756,13 @@
 
                     zoomIn() {
                         if (this.zoomLevel < 4) {
-                            this.zoomLevel = Math.min(4, Math.round((this.zoomLevel + 0.5) * 10) / 10);
+                            this.zoomLevel = Math.min(4, parseFloat((this.zoomLevel + 0.5).toFixed(1)));
                         }
                     },
 
                     zoomOut() {
                         if (this.zoomLevel > 1) {
-                            this.zoomLevel = Math.max(1, Math.round((this.zoomLevel - 0.5) * 10) / 10);
+                            this.zoomLevel = Math.max(1, parseFloat((this.zoomLevel - 0.5).toFixed(1)));
                         }
                     }
                 }
