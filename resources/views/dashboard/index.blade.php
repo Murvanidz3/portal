@@ -77,30 +77,30 @@
     
     {{-- Financial Overview for clients --}}
     @if(auth()->user()->isClient())
-    <div class="glass-card p-6">
-        <h2 class="text-sm font-semibold text-dark-400 uppercase tracking-wider mb-4">ფინანსური მიმოხილვა</h2>
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="glass-card px-4 py-3">
+        <p class="text-xs font-semibold text-dark-400 uppercase tracking-wider mb-3">ფინანსური მიმოხილვა</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
 
-            <div class="bg-dark-800/60 rounded-xl p-4">
-                <p class="text-xs text-dark-400 uppercase tracking-wider mb-1">სულ ღირებულება</p>
-                <p class="text-xl font-bold text-white">${{ number_format($stats['total_cost'], 2) }}</p>
+            <div class="bg-dark-800/60 rounded-lg px-3 py-2.5">
+                <p class="text-[10px] text-dark-400 uppercase tracking-wider leading-tight mb-1">სულ ღირებულება</p>
+                <p class="text-base font-bold text-white">${{ number_format($stats['total_cost'], 2) }}</p>
             </div>
 
-            <div class="bg-dark-800/60 rounded-xl p-4">
-                <p class="text-xs text-dark-400 uppercase tracking-wider mb-1">გადახდილი</p>
-                <p class="text-xl font-bold text-green-400">${{ number_format($stats['total_paid'], 2) }}</p>
+            <div class="bg-dark-800/60 rounded-lg px-3 py-2.5">
+                <p class="text-[10px] text-dark-400 uppercase tracking-wider leading-tight mb-1">გადახდილი</p>
+                <p class="text-base font-bold text-green-400">${{ number_format($stats['total_paid'], 2) }}</p>
             </div>
 
-            <div class="bg-dark-800/60 rounded-xl p-4">
-                <p class="text-xs text-dark-400 uppercase tracking-wider mb-1">დარჩენილი დავალიანება</p>
-                <p class="text-xl font-bold {{ $stats['total_debt'] > 0 ? 'text-red-400' : 'text-green-400' }}">
+            <div class="bg-dark-800/60 rounded-lg px-3 py-2.5">
+                <p class="text-[10px] text-dark-400 uppercase tracking-wider leading-tight mb-1">დარჩენილი დავალიანება</p>
+                <p class="text-base font-bold {{ $stats['total_debt'] > 0 ? 'text-red-400' : 'text-green-400' }}">
                     ${{ number_format($stats['total_debt'], 2) }}
                 </p>
             </div>
 
-            <div class="bg-dark-800/60 rounded-xl p-4">
-                <p class="text-xs text-dark-400 uppercase tracking-wider mb-1">სულ მანქანები</p>
-                <p class="text-xl font-bold text-yellow-400">{{ $stats['total_cars'] }}</p>
+            <div class="bg-dark-800/60 rounded-lg px-3 py-2.5">
+                <p class="text-[10px] text-dark-400 uppercase tracking-wider leading-tight mb-1">სულ მანქანები</p>
+                <p class="text-base font-bold text-yellow-400">{{ $stats['total_cars'] }}</p>
             </div>
 
         </div>
