@@ -128,9 +128,8 @@
                     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-                    {{-- Layer 1: backdrop — click here closes lightbox --}}
-                    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"
-                        @click="closeLightbox()"></div>
+                    {{-- Layer 1: backdrop --}}
+                    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
 
                     {{-- Layer 2: UI controls (pointer events, no click-close) --}}
 
@@ -154,7 +153,6 @@
                             <div class="relative flex items-center justify-center pointer-events-auto"
                                 style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
                                 x-ref="imgContainer"
-                                @click.stop
                                 @touchstart.passive="onTouchStart($event)"
                                 @touchend.passive="onTouchEnd($event)">
                                 <img x-ref="lightboxImg"
@@ -737,13 +735,14 @@
                     isPanning: false,
                     panStartX: 0,
                     panStartY: 0,
+                    _didPan: false,
                     showScrollHint: false,
                     isMobile: false,
                     _hintTimer: null,
                     _wheelHandler: null,
+                    _mouseDownHandler: null,
                     _mouseMoveHandler: null,
                     _mouseUpHandler: null,
-                    // touch swipe tracking
                     _touchStartX: 0,
                     _touchStartY: 0,
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
@@ -753,7 +752,7 @@
                         this.isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
                         if (!this.isMobile) {
-                            // Scroll-to-zoom: must use passive:false to call preventDefault()
+                            // Scroll-to-zoom
                             this._wheelHandler = (e) => {
                                 if (!this.lightboxOpen) return;
                                 e.preventDefault();
@@ -762,33 +761,40 @@
                             };
                             document.addEventListener('wheel', this._wheelHandler, { passive: false });
 
-                            // Document-level pan handlers — arrow functions preserve 'this'
+                            // mousedown — decide: pan (inside image) or close (outside image)
+                            this._mouseDownHandler = (e) => {
+                                if (!this.lightboxOpen || e.button !== 0) return;
+                                const container = this.$refs.imgContainer;
+                                const insideImage = container && container.contains(e.target);
+                                if (insideImage && this.zoomLevel > 1) {
+                                    // start pan
+                                    e.preventDefault();
+                                    this.isPanning = true;
+                                    this._didPan = false;
+                                    this.panStartX = e.clientX - this.panX;
+                                    this.panStartY = e.clientY - this.panY;
+                                } else if (!insideImage) {
+                                    // click outside image — close
+                                    this.closeLightbox();
+                                }
+                                // inside image but zoom=1 — do nothing (just view)
+                            };
+
                             this._mouseMoveHandler = (e) => {
                                 if (!this.lightboxOpen || !this.isPanning) return;
                                 e.preventDefault();
+                                this._didPan = true;
                                 this.panX = e.clientX - this.panStartX;
                                 this.panY = e.clientY - this.panStartY;
                             };
-                            this._mouseUpHandler = (e) => {
-                                if (!this.isPanning) return;
-                                e.preventDefault();
+
+                            this._mouseUpHandler = () => {
                                 this.isPanning = false;
                             };
-                            this._mouseDownHandler = (e) => {
-                                if (!this.lightboxOpen || this.zoomLevel <= 1) return;
-                                if (e.button !== 0) return;
-                                // Only start pan if click is inside the image container
-                                const container = this.$refs.imgContainer;
-                                if (!container || !container.contains(e.target)) return;
-                                e.preventDefault();
-                                e.stopPropagation();
-                                this.isPanning = true;
-                                this.panStartX = e.clientX - this.panX;
-                                this.panStartY = e.clientY - this.panY;
-                            };
+
                             document.addEventListener('mousedown', this._mouseDownHandler);
                             document.addEventListener('mousemove', this._mouseMoveHandler);
-                            document.addEventListener('mouseup', this._mouseUpHandler);
+                            document.addEventListener('mouseup',   this._mouseUpHandler);
                         }
                     },
 
