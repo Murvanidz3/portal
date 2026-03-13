@@ -21,7 +21,7 @@
         <p class="text-2xl font-bold text-green-400 mt-1">${{ number_format($totals['total_paid'], 2) }}</p>
     </div>
     <div class="stat-card">
-        <p class="text-dark-400 text-sm">დარჩენილი დავალიანება</p>
+        <p class="text-dark-400 text-sm">დავალიანება</p>
         <p class="text-2xl font-bold text-red-400 mt-1">${{ number_format($totals['total_debt'], 2) }}</p>
     </div>
     <div class="stat-card">

@@ -87,9 +87,9 @@ class DashboardController extends Controller
 
         // Financial stats - use aggregate queries instead of loading all cars into memory
         $financials = (clone $query)->selectRaw('
-            COALESCE(SUM(vehicle_cost + auction_fee + shipping_cost + additional_cost), 0) as total_cost,
+            COALESCE(SUM(vehicle_cost + auction_fee + shipping_cost + additional_cost + dealer_profit), 0) as total_cost,
             COALESCE(SUM(paid_amount), 0) as total_paid,
-            COALESCE(SUM(GREATEST(0, (vehicle_cost + auction_fee + shipping_cost + additional_cost) - paid_amount)), 0) as total_debt
+            COALESCE(SUM(GREATEST(0, (vehicle_cost + auction_fee + shipping_cost + additional_cost + dealer_profit) - paid_amount)), 0) as total_debt
         ')->first();
 
         $stats['total_cost'] = (float) $financials->total_cost;

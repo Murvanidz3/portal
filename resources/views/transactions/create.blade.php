@@ -22,7 +22,7 @@
                 <div class="p-3 rounded-lg bg-primary-500/10 border border-primary-500/20">
                     <p class="text-sm text-dark-400">მანქანა:</p>
                     <p class="text-white font-medium">{{ $car->make_model }} - {{ $car->vin }}</p>
-                    <p class="text-sm text-dark-400 mt-1">დარჩენილი დავალიანება: <span
+                    <p class="text-sm text-dark-400 mt-1">დავალიანება: <span
                             class="text-red-400">{{ $car->formatted_debt }}</span></p>
                 </div>
                 <input type="hidden" name="car_id" value="{{ $car->id }}">

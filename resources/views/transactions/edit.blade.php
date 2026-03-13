@@ -34,7 +34,7 @@
             <p class="text-sm text-dark-400">მანქანა:</p>
             <p class="text-white font-medium">{{ $transaction->car->make_model }} - {{ $transaction->car->vin }}</p>
             @if($transaction->car->debt > 0)
-            <p class="text-sm text-dark-400 mt-1">დარჩენილი დავალიანება: <span class="text-red-400">{{ number_format($transaction->car->debt, 2) }} $</span></p>
+            <p class="text-sm text-dark-400 mt-1">დავალიანება: <span class="text-red-400">{{ number_format($transaction->car->debt, 2) }} $</span></p>
             @endif
         </div>
         <input type="hidden" name="car_id" value="{{ $transaction->car_id }}">
