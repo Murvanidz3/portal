@@ -129,7 +129,7 @@
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
                     {{-- Layer 1: backdrop — click here closes lightbox --}}
-                    <div class="absolute inset-0 bg-black/85 backdrop-blur-sm"
+                    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"
                         @click="closeLightbox()"></div>
 
                     {{-- Layer 2: UI controls (pointer events, no click-close) --}}
@@ -149,12 +149,11 @@
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Layer 3: image + wheel/pan — sits above backdrop, does NOT propagate clicks to backdrop --}}
+                        {{-- Layer 3: image + pan — wheel handled via vanilla JS in init() --}}
                         <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <div class="relative flex items-center justify-center pointer-events-auto"
                                 style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
                                 x-ref="imgContainer"
-                                @wheel.prevent="onWheel($event)"
                                 @mousedown="startPan($event)"
                                 @mousemove="doPan($event)"
                                 @mouseup="endPan()"
@@ -741,7 +740,19 @@
                     panStartY: 0,
                     showScrollHint: false,
                     _hintTimer: null,
+                    _wheelHandler: null,
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
+
+                    init() {
+                        // Register wheel with { passive: false } so we can preventDefault()
+                        this._wheelHandler = (e) => {
+                            if (!this.lightboxOpen) return;
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.onWheel(e);
+                        };
+                        this.$refs.imgContainer.addEventListener('wheel', this._wheelHandler, { passive: false });
+                    },
 
                     nextSlide() {
                         this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
