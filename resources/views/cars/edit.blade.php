@@ -149,7 +149,7 @@
 
                 <!-- Arrival Date -->
                 <div>
-                    <label for="arrival_date" class="block text-sm font-medium text-dark-300 mb-2">ავტომობილის აყვანა აუქციონიდან</label>
+                    <label for="arrival_date" class="block text-sm font-medium text-dark-300 mb-2">საწყობში მიყვანა</label>
                     <input type="date" name="arrival_date" id="arrival_date"
                         value="{{ old('arrival_date', $car->arrival_date?->format('Y-m-d')) }}" class="form-input w-full">
                 </div>

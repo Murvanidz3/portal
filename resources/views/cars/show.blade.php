@@ -654,7 +654,7 @@
                         @endif
                         @if($car->arrival_date)
                             <div class="flex justify-between">
-                                <dt class="text-dark-400">ავტომობილის აყვანა:</dt>
+                                <dt class="text-dark-400">საწყობში მიყვანა:</dt>
                                 <dd class="text-white">{{ $car->arrival_date->format('d.m.Y') }}</dd>
                             </div>
                         @endif
