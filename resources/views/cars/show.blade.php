@@ -486,7 +486,8 @@
                 </dl>
             </div>
 
-            <!-- Recipient (მიმღები) Info - editable on view -->
+            <!-- Recipient (მიმღები) Info - editable on view, hidden for clients -->
+            @if(!auth()->user()->isClient())
             <div class="glass-card p-6" x-data="recipientCard({
                     updateUrl: @js(route('cars.update-recipient', $car)),
                     displayName: @js($car->getClientDisplayName()),
@@ -569,6 +570,7 @@
                     <p x-show="errorMsg" class="text-sm text-red-400" x-text="errorMsg"></p>
                 </form>
             </div>
+            @endif
 
             <!-- Financial Info -->
             <div class="glass-card p-6">
@@ -630,30 +632,6 @@
 
             {{-- Dates section for clients --}}
             @if(auth()->user()->isClient())
-                <div class="glass-card p-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">თარიღები</h3>
-                    <dl class="space-y-3">
-                        @if($car->purchase_date)
-                            <div class="flex justify-between">
-                                <dt class="text-dark-400">შეძენის თარიღი:</dt>
-                                <dd class="text-white">{{ $car->purchase_date->format('d.m.Y') }}</dd>
-                            </div>
-                        @endif
-                        @if($car->loading_date)
-                            <div class="flex justify-between">
-                                <dt class="text-dark-400">ჩატვირთვის თარიღი:</dt>
-                                <dd class="text-white">{{ $car->loading_date->format('d.m.Y') }}</dd>
-                            </div>
-                        @endif
-                        @if($car->estimated_arrival_date)
-                            <div class="flex justify-between">
-                                <dt class="text-dark-400">სავარაუდო ჩამოსვლა:</dt>
-                                <dd class="text-white">{{ $car->estimated_arrival_date->format('d.m.Y') }}</dd>
-                            </div>
-                        @endif
-                    </dl>
-                </div>
-
                 {{-- მიმღების ინფორმაცია მომხმარებლისთვის --}}
                 @if($car->client_name || $car->client_id_number)
                     <div class="glass-card p-6">
@@ -680,6 +658,30 @@
                         </dl>
                     </div>
                 @endif
+
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">თარიღები</h3>
+                    <dl class="space-y-3">
+                        @if($car->purchase_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">შეძენის თარიღი:</dt>
+                                <dd class="text-white">{{ $car->purchase_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                        @if($car->loading_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">ჩატვირთვის თარიღი:</dt>
+                                <dd class="text-white">{{ $car->loading_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                        @if($car->estimated_arrival_date)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">სავარაუდო ჩამოსვლა:</dt>
+                                <dd class="text-white">{{ $car->estimated_arrival_date->format('d.m.Y') }}</dd>
+                            </div>
+                        @endif
+                    </dl>
+                </div>
             @endif
         </div>
     </div>
