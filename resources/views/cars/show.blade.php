@@ -120,6 +120,7 @@
                 <!-- Lightbox Modal -->
                 @php $lightboxUrls = $allPhotos->pluck('url')->values()->toJson(); @endphp
                 <div x-show="lightboxOpen" x-cloak
+                    id="lightbox-root"
                     @keydown.escape.window="closeLightbox()"
                     @keydown.arrow-left.window="if(zoomLevel === 1) prevSlide()"
                     @keydown.arrow-right.window="if(zoomLevel === 1) nextSlide()"
@@ -128,10 +129,8 @@
                     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-                    {{-- Layer 1: backdrop --}}
-                    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
-
-                    {{-- Layer 2: UI controls (pointer events, no click-close) --}}
+                    {{-- Backdrop --}}
+                    <div id="lightbox-backdrop" class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
 
                     {{-- Close button --}}
                     <button @click.stop="closeLightbox()"
@@ -148,10 +147,12 @@
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Layer 3: image — wheel & pan handled via vanilla JS in init() --}}
-                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <div class="relative flex items-center justify-center pointer-events-auto"
-                                style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
+                        {{-- Image wrapper --}}
+                        <div id="lightbox-img-wrap"
+                            class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div id="lightbox-img-box"
+                                class="relative flex items-center justify-center"
+                                style="width:90vw;height:88vh;max-width:90vw;max-height:88vh;"
                                 x-ref="imgContainer"
                                 @touchstart.passive="onTouchStart($event)"
                                 @touchend.passive="onTouchEnd($event)">
@@ -159,12 +160,11 @@
                                     :src="photoUrls[currentSlide]"
                                     alt="{{ $car->make_model }}"
                                     :style="`
-                                        transform: scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px);
+                                        transform: scale(${zoomLevel}) translate(${panX/zoomLevel}px,${panY/zoomLevel}px);
                                         transform-origin: center center;
                                         transition: ${isPanning ? 'none' : 'transform 0.15s ease'};
                                         cursor: ${!isMobile && zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
-                                        max-width: 90vw;
-                                        max-height: 88vh;
+                                        max-width:90vw; max-height:88vh;
                                     `"
                                     class="object-contain block"
                                     draggable="false">
@@ -174,7 +174,7 @@
                         {{-- Scroll hint — desktop only --}}
                         <div x-show="showScrollHint && !isMobile" x-cloak
                             class="absolute bottom-14 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/60 text-white/70 text-xs pointer-events-none">
-                            გადაახვიეთ scroll-ით გასადიდებლად
+                            scroll-ით გასადიდებლად
                         </div>
 
                         @if($allPhotos->count() > 1)
@@ -748,54 +748,50 @@
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
 
                     init() {
-                        // Detect mobile/touch device
                         this.isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+                        if (this.isMobile) return;
 
-                        if (!this.isMobile) {
-                            // Scroll-to-zoom
-                            this._wheelHandler = (e) => {
-                                if (!this.lightboxOpen) return;
-                                e.preventDefault();
-                                e.stopPropagation();
-                                this.onWheel(e);
-                            };
-                            document.addEventListener('wheel', this._wheelHandler, { passive: false });
+                        // Scroll-to-zoom (passive:false required)
+                        this._wheelHandler = (e) => {
+                            if (!this.lightboxOpen) return;
+                            e.preventDefault();
+                            this.onWheel(e);
+                        };
+                        document.addEventListener('wheel', this._wheelHandler, { passive: false });
 
-                            // mousedown — decide: pan (inside image) or close (outside image)
-                            this._mouseDownHandler = (e) => {
-                                if (!this.lightboxOpen || e.button !== 0) return;
-                                const container = this.$refs.imgContainer;
-                                const insideImage = container && container.contains(e.target);
-                                if (insideImage && this.zoomLevel > 1) {
-                                    // start pan
-                                    e.preventDefault();
-                                    this.isPanning = true;
-                                    this._didPan = false;
-                                    this.panStartX = e.clientX - this.panX;
-                                    this.panStartY = e.clientY - this.panY;
-                                } else if (!insideImage) {
-                                    // click outside image — close
-                                    this.closeLightbox();
-                                }
-                                // inside image but zoom=1 — do nothing (just view)
-                            };
+                        // mousedown: check by element id whether inside image box or outside
+                        this._mouseDownHandler = (e) => {
+                            if (!this.lightboxOpen || e.button !== 0) return;
 
-                            this._mouseMoveHandler = (e) => {
-                                if (!this.lightboxOpen || !this.isPanning) return;
-                                e.preventDefault();
-                                this._didPan = true;
-                                this.panX = e.clientX - this.panStartX;
-                                this.panY = e.clientY - this.panStartY;
-                            };
+                            const imgBox = document.getElementById('lightbox-img-box');
+                            const insideImg = imgBox && imgBox.contains(e.target);
 
-                            this._mouseUpHandler = () => {
-                                this.isPanning = false;
-                            };
+                            if (insideImg) {
+                                // always start pan attempt (we need mousedown coords)
+                                this.isPanning = true;
+                                this._didPan = false;
+                                this.panStartX = e.clientX - this.panX;
+                                this.panStartY = e.clientY - this.panY;
+                            } else {
+                                // outside image area → close
+                                this.closeLightbox();
+                            }
+                        };
 
-                            document.addEventListener('mousedown', this._mouseDownHandler);
-                            document.addEventListener('mousemove', this._mouseMoveHandler);
-                            document.addEventListener('mouseup',   this._mouseUpHandler);
-                        }
+                        this._mouseMoveHandler = (e) => {
+                            if (!this.lightboxOpen || !this.isPanning || this.zoomLevel <= 1) return;
+                            this._didPan = true;
+                            this.panX = e.clientX - this.panStartX;
+                            this.panY = e.clientY - this.panStartY;
+                        };
+
+                        this._mouseUpHandler = () => {
+                            this.isPanning = false;
+                        };
+
+                        document.addEventListener('mousedown', this._mouseDownHandler);
+                        document.addEventListener('mousemove', this._mouseMoveHandler);
+                        document.addEventListener('mouseup',   this._mouseUpHandler);
                     },
 
                     nextSlide() {
