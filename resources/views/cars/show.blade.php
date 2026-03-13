@@ -802,10 +802,11 @@
                             this._didPan = false;
 
                             if (!wasPanning) {
-                                // it was a clean click (no drag) — check if outside image
                                 const imgBox = document.getElementById('lightbox-img-box');
                                 const insideImg = imgBox && imgBox.contains(e.target);
-                                if (!insideImg) {
+                                // don't close if click was on a button or inside a button (arrows, close btn)
+                                const insideButton = e.target.closest('button') !== null;
+                                if (!insideImg && !insideButton) {
                                     this.closeLightbox();
                                 }
                             }
