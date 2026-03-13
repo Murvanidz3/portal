@@ -713,33 +713,42 @@
                 }
             });
 
-            // Compress photos client-side
+            // Compress photos client-side (parallel batches of 5)
             async function compressPhotos(files, onProgress) {
-                const compressedFiles = [];
                 const maxWidth = 1920;
                 const maxHeight = 1920;
                 const quality = 0.85;
+                const batchSize = 5;
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    if (!file.type.startsWith('image/')) {
-                        compressedFiles.push(file);
-                        if (onProgress) onProgress(i);
-                        continue;
-                    }
+                const results = new Array(files.length);
+                let completed = 0;
 
-                    try {
-                        const compressedFile = await compressImage(file, maxWidth, maxHeight, quality);
-                        compressedFiles.push(compressedFile);
-                        if (onProgress) onProgress(i);
-                    } catch (error) {
-                        console.error('Error compressing file:', file.name, error);
-                        compressedFiles.push(file); // Fallback to original
-                        if (onProgress) onProgress(i);
-                    }
+                for (let i = 0; i < files.length; i += batchSize) {
+                    const batch = files.slice(i, i + batchSize);
+                    const batchPromises = batch.map((file, batchIndex) => {
+                        const globalIndex = i + batchIndex;
+                        if (!file.type.startsWith('image/')) {
+                            results[globalIndex] = file;
+                            completed++;
+                            if (onProgress) onProgress(completed - 1);
+                            return Promise.resolve();
+                        }
+                        return compressImage(file, maxWidth, maxHeight, quality)
+                            .then(compressed => {
+                                results[globalIndex] = compressed;
+                            })
+                            .catch(() => {
+                                results[globalIndex] = file;
+                            })
+                            .finally(() => {
+                                completed++;
+                                if (onProgress) onProgress(completed - 1);
+                            });
+                    });
+                    await Promise.all(batchPromises);
                 }
 
-                return compressedFiles;
+                return results;
             }
 
             // Compress single image
