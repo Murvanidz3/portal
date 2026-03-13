@@ -154,7 +154,6 @@
                             <div class="relative flex items-center justify-center pointer-events-auto"
                                 style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
                                 x-ref="imgContainer"
-                                @mousedown="startPan($event)"
                                 @touchstart.passive="onTouchStart($event)"
                                 @touchend.passive="onTouchEnd($event)">
                                 <img x-ref="lightboxImg"
@@ -762,13 +761,28 @@
                             };
                             document.addEventListener('wheel', this._wheelHandler, { passive: false });
 
-                            // Document-level mousemove/mouseup so pan doesn't break on fast moves
+                            // Document-level pan handlers — arrow functions preserve 'this'
                             this._mouseMoveHandler = (e) => {
                                 if (!this.lightboxOpen || !this.isPanning) return;
+                                e.preventDefault();
                                 this.panX = e.clientX - this.panStartX;
                                 this.panY = e.clientY - this.panStartY;
                             };
-                            this._mouseUpHandler = () => { this.isPanning = false; };
+                            this._mouseUpHandler = (e) => {
+                                if (!this.isPanning) return;
+                                e.preventDefault();
+                                this.isPanning = false;
+                            };
+                            this._mouseDownHandler = (e) => {
+                                if (!this.lightboxOpen || this.zoomLevel <= 1) return;
+                                // Only trigger on left mouse button
+                                if (e.button !== 0) return;
+                                e.preventDefault();
+                                this.isPanning = true;
+                                this.panStartX = e.clientX - this.panX;
+                                this.panStartY = e.clientY - this.panY;
+                            };
+                            document.addEventListener('mousedown', this._mouseDownHandler);
                             document.addEventListener('mousemove', this._mouseMoveHandler);
                             document.addEventListener('mouseup', this._mouseUpHandler);
                         }
@@ -832,13 +846,6 @@
                         if (this.zoomLevel <= 1) this.resetZoom();
                     },
 
-                    startPan(e) {
-                        if (this.isMobile || this.zoomLevel <= 1) return;
-                        e.preventDefault();
-                        this.isPanning = true;
-                        this.panStartX = e.clientX - this.panX;
-                        this.panStartY = e.clientY - this.panY;
-                    },
 
                     // Touch swipe handlers (mobile — no zoom, just slide navigation)
                     onTouchStart(e) {
