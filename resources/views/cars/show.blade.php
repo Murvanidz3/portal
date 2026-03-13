@@ -483,6 +483,38 @@
                             <dd class="text-white">{{ $car->purchase_date->format('d.m.Y') }}</dd>
                         </div>
                     @endif
+                    @if(auth()->user()->isClient())
+                        @if($car->booking_number)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">ბუქინგის ნომერი:</dt>
+                                <dd class="text-white font-mono">{{ $car->booking_number }}</dd>
+                            </div>
+                        @endif
+                        @if($car->shipping_line)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">საზღვაო ხაზი:</dt>
+                                <dd class="text-white">{{ $car->shipping_line }}</dd>
+                            </div>
+                        @endif
+                        @if($car->auction_location)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">გამშვები პორტი:</dt>
+                                <dd class="text-white">{{ $car->auction_location }}</dd>
+                            </div>
+                        @endif
+                        @if($car->vessel)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">გემი:</dt>
+                                <dd class="text-white">{{ $car->vessel }}</dd>
+                            </div>
+                        @endif
+                        @if($car->terminal)
+                            <div class="flex justify-between">
+                                <dt class="text-dark-400">ტერმინალი:</dt>
+                                <dd class="text-white">{{ $car->terminal }}</dd>
+                            </div>
+                        @endif
+                    @endif
                 </dl>
             </div>
 
