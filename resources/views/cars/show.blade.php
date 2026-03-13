@@ -550,7 +550,7 @@
 
                 <form x-show="editing" @submit.prevent="save()" class="space-y-4" x-cloak>
                     <div>
-                        <label class="block text-sm font-medium text-dark-300 mb-1">სახელი და გვარი</label>
+                        <label class="block text-sm font-medium text-dark-300 mb-1">სახელი</label>
                         <input type="text" x-model="clientName" maxlength="100"
                             class="input-field w-full bg-dark-800 border-dark-600 text-white rounded-lg px-3 py-2 text-sm"
                             placeholder="სახელი">
@@ -585,7 +585,7 @@
                     <dl class="space-y-3">
                         @if($car->client_name)
                             <div class="flex justify-between">
-                                <dt class="text-dark-400">სახელი და გვარი:</dt>
+                                <dt class="text-dark-400">სახელი:</dt>
                                 <dd class="text-white font-medium">{{ $car->client_name }}</dd>
                             </div>
                         @endif
@@ -636,27 +636,6 @@
                 </dl>
             </div>
 
-            <!-- Transactions (payment history - visible to all) -->
-            @if($car->transactions->count() > 0)
-                <div class="glass-card p-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">გადახდები</h3>
-
-                    <div class="space-y-2">
-                        @foreach($car->transactions as $transaction)
-                            <div class="flex justify-between items-center p-2 rounded-lg bg-dark-800/50">
-                                <div>
-                                    <p class="text-sm text-white">${{ number_format($transaction->amount, 2) }}</p>
-                                    <p class="text-xs text-dark-500">{{ $transaction->payment_date->format('d.m.Y') }}</p>
-                                </div>
-                                @if(!auth()->user()->isClient())
-                                    <span class="text-xs text-dark-400">{{ $transaction->purpose_label }}</span>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
             {{-- Dates section for clients --}}
             @if(auth()->user()->isClient())
                 <div class="glass-card p-6">
@@ -681,6 +660,26 @@
                             </div>
                         @endif
                     </dl>
+                </div>
+            @endif
+
+            <!-- Transactions (payment history - visible to all) -->
+            @if($car->transactions->count() > 0)
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">გადახდები</h3>
+                    <div class="space-y-2">
+                        @foreach($car->transactions as $transaction)
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-dark-800/50">
+                                <div>
+                                    <p class="text-sm text-white">${{ number_format($transaction->amount, 2) }}</p>
+                                    <p class="text-xs text-dark-500">{{ $transaction->payment_date->format('d.m.Y') }}</p>
+                                </div>
+                                @if(!auth()->user()->isClient())
+                                    <span class="text-xs text-dark-400">{{ $transaction->purpose_label }}</span>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             @endif
         </div>

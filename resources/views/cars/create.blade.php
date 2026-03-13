@@ -266,21 +266,6 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Client User -->
-                @if(auth()->user()->isAdmin())
-                    <div>
-                        <label for="client_user_id" class="block text-sm font-medium text-dark-300 mb-2">მომხმარებელი
-                            (სისტემიდან)</label>
-                        <select name="client_user_id" id="client_user_id" class="form-input w-full">
-                            <option value="">აირჩიეთ მომხმარებელი</option>
-                            @foreach($clients as $client)
-                                <option value="{{ $client->id }}" {{ old('client_user_id') == $client->id ? 'selected' : '' }}>
-                                    {{ $client->full_name ?? $client->username }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endif
 
                 <!-- Client Name -->
                 <div>
