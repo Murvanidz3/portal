@@ -14,15 +14,14 @@
             </button>
             @endif
 
-            {{-- Logo link for clients (replaces sidebar logo) --}}
             @if(auth()->user()->isClient())
-            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 mr-4 hover:opacity-80 transition-opacity">
+            {{-- Clients: only clickable logo, no page title --}}
+            <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8 w-auto" onerror="this.style.display='none'">
                 <span class="text-lg font-bold text-white">{{ \App\Models\Setting::getSiteName() }}</span>
             </a>
-            @endif
-
-            {{-- Page Title --}}
+            @else
+            {{-- Page Title for admins/dealers --}}
             <div>
                 <h1 class="text-lg font-semibold text-white">@yield('title', 'Dashboard')</h1>
                 @hasSection('breadcrumb')
@@ -31,6 +30,7 @@
                     </nav>
                 @endif
             </div>
+            @endif
         </div>
 
         {{-- Right Side --}}
