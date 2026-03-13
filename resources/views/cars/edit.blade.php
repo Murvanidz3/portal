@@ -302,41 +302,29 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Client User -->
-                @if(auth()->user()->isAdmin())
-                    <div>
-                        <label for="client_user_id" class="block text-sm font-medium text-dark-300 mb-2">მომხმარებელი
-                            (სისტემიდან)</label>
-                        <select name="client_user_id" id="client_user_id" class="form-input w-full">
-                            <option value="">აირჩიეთ მომხმარებელი</option>
-                            @foreach($clients as $client)
-                                <option value="{{ $client->id }}" {{ old('client_user_id', $car->client_user_id) == $client->id ? 'selected' : '' }}>
-                                    {{ $client->full_name ?? $client->username }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endif
 
                 <!-- Client Name -->
                 <div>
                     <label for="client_name" class="block text-sm font-medium text-dark-300 mb-2">სახელი და გვარი</label>
                     <input type="text" name="client_name" id="client_name"
-                        value="{{ old('client_name', $car->client_name) }}" class="form-input w-full">
+                        value="{{ old('client_name', $car->client_name) }}" class="form-input w-full"
+                        placeholder="მიმღების სახელი და გვარი">
                 </div>
 
                 <!-- Client ID Number -->
                 <div>
                     <label for="client_id_number" class="block text-sm font-medium text-dark-300 mb-2">პირადი ნომერი</label>
                     <input type="text" name="client_id_number" id="client_id_number"
-                        value="{{ old('client_id_number', $car->client_id_number) }}" class="form-input w-full">
+                        value="{{ old('client_id_number', $car->client_id_number) }}" class="form-input w-full"
+                        placeholder="პირადი ნომერი">
                 </div>
 
                 <!-- Client Phone -->
                 <div>
                     <label for="client_phone" class="block text-sm font-medium text-dark-300 mb-2">ტელეფონი</label>
                     <input type="text" name="client_phone" id="client_phone"
-                        value="{{ old('client_phone', $car->client_phone) }}" class="form-input w-full">
+                        value="{{ old('client_phone', $car->client_phone) }}" class="form-input w-full"
+                        placeholder="ტელეფონის ნომერი">
                 </div>
 
                 <!-- Dealer Phone -->
