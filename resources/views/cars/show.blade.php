@@ -154,6 +154,7 @@
                             <div class="relative flex items-center justify-center pointer-events-auto"
                                 style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
                                 x-ref="imgContainer"
+                                @click.stop
                                 @touchstart.passive="onTouchStart($event)"
                                 @touchend.passive="onTouchEnd($event)">
                                 <img x-ref="lightboxImg"
@@ -775,9 +776,12 @@
                             };
                             this._mouseDownHandler = (e) => {
                                 if (!this.lightboxOpen || this.zoomLevel <= 1) return;
-                                // Only trigger on left mouse button
                                 if (e.button !== 0) return;
+                                // Only start pan if click is inside the image container
+                                const container = this.$refs.imgContainer;
+                                if (!container || !container.contains(e.target)) return;
                                 e.preventDefault();
+                                e.stopPropagation();
                                 this.isPanning = true;
                                 this.panStartX = e.clientX - this.panX;
                                 this.panStartY = e.clientY - this.panY;
