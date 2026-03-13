@@ -120,78 +120,75 @@
                 <!-- Lightbox Modal -->
                 @php $lightboxUrls = $allPhotos->pluck('url')->values()->toJson(); @endphp
                 <div x-show="lightboxOpen" x-cloak
-                    @keydown.escape.window="lightboxOpen = false; zoomLevel = 1"
-                    @keydown.arrow-left.window="prevSlide()"
-                    @keydown.arrow-right.window="nextSlide()"
-                    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-                    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+                    @keydown.escape.window="closeLightbox()"
+                    @keydown.arrow-left.window="if(zoomLevel === 1) prevSlide()"
+                    @keydown.arrow-right.window="if(zoomLevel === 1) nextSlide()"
+                    class="fixed inset-0 z-50 bg-black/92 select-none"
+                    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                    @click.self="lightboxOpen = false; zoomLevel = 1">
+                    @click="closeLightbox()"
+                    x-ref="lightboxBackdrop">
 
-                    {{-- Top controls: zoom + close --}}
-                    <div class="absolute top-4 right-4 z-[60] flex items-center gap-2">
-                        {{-- Zoom out --}}
-                        <button @click.stop="zoomOut()" :disabled="zoomLevel <= 1"
-                            :class="zoomLevel <= 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-white/20'"
-                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="დაპატარავება">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zM8 11h6"/>
-                            </svg>
-                        </button>
-                        {{-- Zoom % label --}}
-                        <span x-show="zoomLevel > 1" x-cloak x-text="Math.round(zoomLevel * 100) + '%'"
-                            class="text-white text-sm font-medium bg-black/50 px-2 py-1 rounded-full min-w-[52px] text-center"></span>
-                        {{-- Zoom in --}}
-                        <button @click.stop="zoomIn()" :disabled="zoomLevel >= 4"
-                            :class="zoomLevel >= 4 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-white/20'"
-                            class="p-2 rounded-full bg-white/10 text-white transition-all" title="გადიდება">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0zM11 8v6M8 11h6"/>
-                            </svg>
-                        </button>
-                        {{-- Reset zoom --}}
-                        <button x-show="zoomLevel > 1" x-cloak @click.stop="zoomLevel = 1"
-                            class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all text-xs font-bold" title="საწყისი ზომა">
-                            1:1
-                        </button>
-                        {{-- Close --}}
-                        <button @click.stop="lightboxOpen = false; zoomLevel = 1"
-                            class="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all" title="დახურვა (Esc)">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                    {{-- Close button --}}
+                    <button @click.stop="closeLightbox()"
+                        class="absolute top-4 right-4 z-[70] p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition-all" title="დახურვა (Esc)">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+
+                    {{-- Zoom % badge (top-left, visible only when zoomed) --}}
+                    <div x-show="zoomLevel > 1" x-cloak
+                        class="absolute top-4 left-4 z-[70] px-3 py-1 rounded-full bg-black/60 text-white text-sm font-medium pointer-events-none">
+                        <span x-text="Math.round(zoomLevel * 100) + '%'"></span>
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Single img tag — src swaps on slide change, zoom applies only here --}}
-                        <div class="relative flex items-center justify-center w-full h-full" @click.stop
-                             style="overflow: hidden;">
-                            <img
+                        {{-- Scrollable/pannable image container --}}
+                        <div class="absolute inset-0 flex items-center justify-center overflow-hidden"
+                            x-ref="imgContainer"
+                            @click.stop
+                            @wheel.prevent="onWheel($event)"
+                            @mousedown.stop="startPan($event)"
+                            @mousemove.stop="doPan($event)"
+                            @mouseup.stop="endPan()"
+                            @mouseleave.stop="endPan()">
+                            <img x-ref="lightboxImg"
                                 :src="photoUrls[currentSlide]"
                                 alt="{{ $car->make_model }}"
-                                :style="`transform: scale(${zoomLevel}); transform-origin: center center; transition: transform 0.2s ease; cursor: ${zoomLevel < 4 ? 'zoom-in' : 'zoom-out'};`"
-                                @dblclick.stop="zoomLevel < 4 ? zoomIn() : zoomLevel = 1"
-                                class="max-w-[90vw] max-h-[85vh] object-contain select-none block">
+                                :style="`
+                                    transform: scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px);
+                                    transform-origin: center center;
+                                    transition: ${isPanning ? 'none' : 'transform 0.15s ease'};
+                                    cursor: ${zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
+                                    max-width: 90vw;
+                                    max-height: 88vh;
+                                `"
+                                class="object-contain block pointer-events-none"
+                                draggable="false">
+                        </div>
+
+                        {{-- Scroll hint (shown briefly on open) --}}
+                        <div x-show="showScrollHint" x-cloak
+                            class="absolute bottom-16 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/60 text-white/70 text-xs pointer-events-none">
+                            გადაახვიეთ scroll-ით გასადიდებლად
                         </div>
 
                         @if($allPhotos->count() > 1)
                             <button @click.stop="prevSlide()"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-[60]">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                class="absolute left-4 top-1/2 -translate-y-1/2 z-[70] p-3 rounded-full bg-white/10 hover:bg-white/25 text-white transition-all">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                                 </svg>
                             </button>
                             <button @click.stop="nextSlide()"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all z-[60]">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                class="absolute right-4 top-1/2 -translate-y-1/2 z-[70] p-3 rounded-full bg-white/10 hover:bg-white/25 text-white transition-all">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </button>
-                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 text-white text-sm pointer-events-none z-[60]">
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/50 text-white text-sm pointer-events-none">
                                 <span x-text="currentSlide + 1"></span> / {{ $allPhotos->count() }}
                             </div>
                         @endif
@@ -731,39 +728,92 @@
                     totalSlides: totalPhotos,
                     lightboxOpen: false,
                     zoomLevel: 1,
+                    panX: 0,
+                    panY: 0,
+                    isPanning: false,
+                    panStartX: 0,
+                    panStartY: 0,
+                    showScrollHint: false,
+                    _hintTimer: null,
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
 
                     nextSlide() {
                         this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
-                        this.zoomLevel = 1;
+                        this.resetZoom();
                     },
 
                     prevSlide() {
                         this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
-                        this.zoomLevel = 1;
+                        this.resetZoom();
                     },
 
                     goToSlide(index) {
                         this.currentSlide = index;
-                        this.zoomLevel = 1;
+                        this.resetZoom();
                     },
 
                     openLightbox(index) {
                         this.currentSlide = index;
-                        this.zoomLevel = 1;
+                        this.resetZoom();
                         this.lightboxOpen = true;
+                        // Show scroll hint briefly
+                        this.showScrollHint = true;
+                        clearTimeout(this._hintTimer);
+                        this._hintTimer = setTimeout(() => { this.showScrollHint = false; }, 2500);
                     },
 
-                    zoomIn() {
-                        if (this.zoomLevel < 4) {
-                            this.zoomLevel = Math.min(4, parseFloat((this.zoomLevel + 0.5).toFixed(1)));
+                    closeLightbox() {
+                        this.lightboxOpen = false;
+                        this.resetZoom();
+                    },
+
+                    resetZoom() {
+                        this.zoomLevel = 1;
+                        this.panX = 0;
+                        this.panY = 0;
+                    },
+
+                    onWheel(e) {
+                        const delta = e.deltaY < 0 ? 1 : -1;
+                        const step = 0.15;
+                        const newZoom = Math.min(5, Math.max(1, this.zoomLevel + delta * step));
+
+                        // Zoom toward mouse cursor position
+                        if (newZoom !== this.zoomLevel) {
+                            const container = this.$refs.imgContainer;
+                            const rect = container.getBoundingClientRect();
+                            const mouseX = e.clientX - rect.left - rect.width / 2;
+                            const mouseY = e.clientY - rect.top - rect.height / 2;
+
+                            // Adjust pan so zoom centers on cursor
+                            const scale = newZoom / this.zoomLevel;
+                            this.panX = mouseX - scale * (mouseX - this.panX);
+                            this.panY = mouseY - scale * (mouseY - this.panY);
+
+                            this.zoomLevel = parseFloat(newZoom.toFixed(2));
+
+                            // Clamp pan when zoomed out to 1x
+                            if (this.zoomLevel <= 1) {
+                                this.resetZoom();
+                            }
                         }
                     },
 
-                    zoomOut() {
-                        if (this.zoomLevel > 1) {
-                            this.zoomLevel = Math.max(1, parseFloat((this.zoomLevel - 0.5).toFixed(1)));
-                        }
+                    startPan(e) {
+                        if (this.zoomLevel <= 1) return;
+                        this.isPanning = true;
+                        this.panStartX = e.clientX - this.panX;
+                        this.panStartY = e.clientY - this.panY;
+                    },
+
+                    doPan(e) {
+                        if (!this.isPanning) return;
+                        this.panX = e.clientX - this.panStartX;
+                        this.panY = e.clientY - this.panStartY;
+                    },
+
+                    endPan() {
+                        this.isPanning = false;
                     }
                 }
             }
