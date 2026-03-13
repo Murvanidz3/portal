@@ -759,34 +759,37 @@
                         };
                         document.addEventListener('wheel', this._wheelHandler, { passive: false });
 
-                        // mousedown: check by element id whether inside image box or outside
+                        // mousedown: start pan tracking always (move only happens when zoom > 1)
                         this._mouseDownHandler = (e) => {
                             if (!this.lightboxOpen || e.button !== 0) return;
-
-                            const imgBox = document.getElementById('lightbox-img-box');
-                            const insideImg = imgBox && imgBox.contains(e.target);
-
-                            if (insideImg) {
-                                // always start pan attempt (we need mousedown coords)
-                                this.isPanning = true;
-                                this._didPan = false;
-                                this.panStartX = e.clientX - this.panX;
-                                this.panStartY = e.clientY - this.panY;
-                            } else {
-                                // outside image area → close
-                                this.closeLightbox();
-                            }
+                            this.isPanning = true;
+                            this.panStartX = e.clientX - this.panX;
+                            this.panStartY = e.clientY - this.panY;
                         };
 
                         this._mouseMoveHandler = (e) => {
-                            if (!this.lightboxOpen || !this.isPanning || this.zoomLevel <= 1) return;
-                            this._didPan = true;
-                            this.panX = e.clientX - this.panStartX;
-                            this.panY = e.clientY - this.panStartY;
+                            if (!this.lightboxOpen || !this.isPanning) return;
+                            if (this.zoomLevel > 1) {
+                                this._didPan = true;
+                                this.panX = e.clientX - this.panStartX;
+                                this.panY = e.clientY - this.panStartY;
+                            }
                         };
 
-                        this._mouseUpHandler = () => {
+                        this._mouseUpHandler = (e) => {
+                            if (!this.lightboxOpen) return;
+                            const wasPanning = this.isPanning && this._didPan;
                             this.isPanning = false;
+                            this._didPan = false;
+
+                            if (!wasPanning) {
+                                // it was a clean click (no drag) — check if outside image
+                                const imgBox = document.getElementById('lightbox-img-box');
+                                const insideImg = imgBox && imgBox.contains(e.target);
+                                if (!insideImg) {
+                                    this.closeLightbox();
+                                }
+                            }
                         };
 
                         document.addEventListener('mousedown', this._mouseDownHandler);
