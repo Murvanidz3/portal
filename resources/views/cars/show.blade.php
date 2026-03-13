@@ -744,14 +744,15 @@
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
 
                     init() {
-                        // Register wheel with { passive: false } so we can preventDefault()
+                        // Must use document-level listener with passive:false
+                        // because browsers default wheel to passive:true and Alpine's .prevent is ignored
                         this._wheelHandler = (e) => {
                             if (!this.lightboxOpen) return;
                             e.preventDefault();
                             e.stopPropagation();
                             this.onWheel(e);
                         };
-                        this.$refs.imgContainer.addEventListener('wheel', this._wheelHandler, { passive: false });
+                        document.addEventListener('wheel', this._wheelHandler, { passive: false });
                     },
 
                     nextSlide() {
