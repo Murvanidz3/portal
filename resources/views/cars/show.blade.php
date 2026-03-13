@@ -639,19 +639,13 @@
             {{-- Dates section for clients --}}
             @if(auth()->user()->isClient())
                 @php
-                    $hasAnyDate = $car->purchase_date || $car->arrival_date || $car->loading_date
+                    $hasAnyDate = $car->arrival_date || $car->loading_date
                         || $car->estimated_arrival_date || $car->document_received_at || $car->document_issued_at;
                 @endphp
                 @if($hasAnyDate)
                 <div class="glass-card p-6">
                     <h3 class="text-lg font-semibold text-white mb-4">თარიღები</h3>
                     <dl class="space-y-3">
-                        @if($car->purchase_date)
-                            <div class="flex justify-between">
-                                <dt class="text-dark-400">შეძენის თარიღი:</dt>
-                                <dd class="text-white">{{ $car->purchase_date->format('d.m.Y') }}</dd>
-                            </div>
-                        @endif
                         @if($car->arrival_date)
                             <div class="flex justify-between">
                                 <dt class="text-dark-400">ავტომობილის აყვანა:</dt>
