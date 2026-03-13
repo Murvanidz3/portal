@@ -68,7 +68,7 @@ class User extends Authenticatable
         return [
             self::ROLE_ADMIN => 'ადმინი',
             self::ROLE_DEALER => 'დილერი',
-            self::ROLE_CLIENT => 'კლიენტი',
+            self::ROLE_CLIENT => 'მომხმარებელი',
         ];
     }
 

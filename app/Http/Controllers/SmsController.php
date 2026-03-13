@@ -172,7 +172,7 @@ class SmsController extends Controller
         if (empty($phone)) {
             return response()->json([
                 'success' => false,
-                'message' => 'კლიენტს არ აქვს ტელეფონის ნომერი!'
+                'message' => 'მომხმარებელს არ აქვს ტელეფონის ნომერი!'
             ], 400);
         }
 

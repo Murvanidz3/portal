@@ -161,7 +161,7 @@
             
             <!-- Client Name -->
             <div class="md:col-span-2">
-                <label for="client_name" class="block text-sm font-medium text-dark-300 mb-2">კლიენტის სახელი</label>
+                <label for="client_name" class="block text-sm font-medium text-dark-300 mb-2">მომხმარებლის სახელი</label>
                 <input type="text" name="client_name" id="client_name" 
                        x-model="formData.client_name"
                        value="{{ old('client_name') }}" 

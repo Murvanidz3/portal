@@ -187,7 +187,7 @@
                 @csrf
                 @method('PUT')
                 <textarea name="template_text" id="modal-template-text" rows="4" class="form-input w-full mb-4"></textarea>
-                <p class="text-xs text-dark-500 mb-4">ცვლადები: [მანქანა] [წელი] [ვინ] [ლოტი] [კონტეინერი] [კლიენტი]</p>
+                <p class="text-xs text-dark-500 mb-4">ცვლადები: [მანქანა] [წელი] [ვინ] [ლოტი] [კონტეინერი] [მომხმარებელი]</p>
                 <div class="flex justify-end gap-4">
                     <button type="button" onclick="closeModal()" class="btn-secondary">გაუქმება</button>
                     <button type="submit" class="btn-primary">შენახვა</button>

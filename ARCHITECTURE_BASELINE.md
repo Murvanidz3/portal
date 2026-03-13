@@ -72,3 +72,9 @@
 - Maintain the strict strict types for financial calculations (`decimal:2` casts).
 - Respect the existing Service layer (`SmsService`, `FileUploadService`).
 - When refactoring, aim to move logic out of `CarController` into Services.
+
+GITHUB REPOSITORY
+
+https://github.com/Murvanidz3/portal
+
+after making changes we need to push project, it works based on webhook and deployment key on hostinger.

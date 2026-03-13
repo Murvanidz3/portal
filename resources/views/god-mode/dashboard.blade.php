@@ -68,7 +68,7 @@
                     <td style="text-align: right;"><strong>{{ $stats['dealers_count'] }}</strong></td>
                 </tr>
                 <tr>
-                    <td>კლიენტები</td>
+                    <td>მომხმარებლები</td>
                     <td style="text-align: right;"><strong>{{ $stats['clients_count'] }}</strong></td>
                 </tr>
                 <tr>

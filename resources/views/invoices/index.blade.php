@@ -26,7 +26,7 @@
                 <tr class="border-b border-white/10">
                     <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">ინვოისის ნომერი</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">ტიპი</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">კლიენტი</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">მომხმარებელი</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">VIN</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">თანხა</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-dark-400 uppercase tracking-wider">თარიღი</th>

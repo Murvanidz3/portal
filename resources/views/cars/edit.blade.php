@@ -176,7 +176,7 @@
                 <!-- Dealer / Client Assignment -->
                 @if(auth()->user()->isAdmin())
                     <div>
-                        <label for="user_id" class="block text-sm font-medium text-dark-300 mb-2">მფლობელი (დილერი/კლიენტი)</label>
+                        <label for="user_id" class="block text-sm font-medium text-dark-300 mb-2">მფლობელი (დილერი/მომხმარებელი)</label>
                         <select name="user_id" id="user_id" class="form-input w-full">
                             <option value="">აირჩიეთ</option>
                             @php
@@ -192,7 +192,7 @@
                                 </optgroup>
                             @endif
                             @if($groupedDealers->has('client'))
-                                <optgroup label="კლიენტები">
+                                <optgroup label="მომხმარებლები">
                                     @foreach($groupedDealers['client'] as $client)
                                         <option value="{{ $client->id }}" {{ old('user_id', $car->user_id) == $client->id ? 'selected' : '' }}>
                                             {{ $client->full_name ?? $client->username }}
@@ -306,10 +306,10 @@
                 <!-- Client User -->
                 @if(auth()->user()->isAdmin())
                     <div>
-                        <label for="client_user_id" class="block text-sm font-medium text-dark-300 mb-2">კლიენტი
+                        <label for="client_user_id" class="block text-sm font-medium text-dark-300 mb-2">მომხმარებელი
                             (სისტემიდან)</label>
                         <select name="client_user_id" id="client_user_id" class="form-input w-full">
-                            <option value="">აირჩიეთ კლიენტი</option>
+                            <option value="">აირჩიეთ მომხმარებელი</option>
                             @foreach($clients as $client)
                                 <option value="{{ $client->id }}" {{ old('client_user_id', $car->client_user_id) == $client->id ? 'selected' : '' }}>
                                     {{ $client->full_name ?? $client->username }}

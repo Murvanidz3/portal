@@ -112,3 +112,9 @@ portalv2/
 ## License
 
 Proprietary - All rights reserved.
+
+GITHUB REPOSITORY
+
+https://github.com/Murvanidz3/portal
+
+after making changes we need to push project, it works based on webhook and deployment key on hostinger.

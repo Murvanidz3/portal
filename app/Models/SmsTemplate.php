@@ -36,6 +36,7 @@ class SmsTemplate extends Model
             '[ვინ]' => $car->vin,
             '[ლოტი]' => $car->lot_number ?? '',
             '[კონტეინერი]' => $car->container_number ?? 'უცნობია',
+            '[მომხმარებელი]' => $car->getClientDisplayName(),
             '[კლიენტი]' => $car->getClientDisplayName(),
         ];
         

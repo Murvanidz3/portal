@@ -77,8 +77,8 @@ class StoreCarRequest extends FormRequest
             'vehicle_cost' => 'მანქანის ფასი',
             'shipping_cost' => 'ტრანსპორტირება',
             'paid_amount' => 'გადახდილი თანხა',
-            'client_name' => 'კლიენტის სახელი',
-            'client_phone' => 'კლიენტის ტელეფონი',
+            'client_name' => 'მომხმარებლის სახელი',
+            'client_phone' => 'მომხმარებლის ტელეფონი',
             'photos.*' => 'ფოტო',
         ];
     }

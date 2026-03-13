@@ -76,7 +76,7 @@ class UpdateCarRequest extends FormRequest
             'container_number' => 'კონტეინერის ნომერი',
             'vehicle_cost' => 'მანქანის ფასი',
             'shipping_cost' => 'ტრანსპორტირება',
-            'client_name' => 'კლიენტის სახელი',
+            'client_name' => 'მომხმარებლის სახელი',
         ];
     }
 }
