@@ -149,15 +149,14 @@
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Layer 3: image + pan — wheel handled via vanilla JS in init() --}}
+                        {{-- Layer 3: image — wheel & pan handled via vanilla JS in init() --}}
                         <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <div class="relative flex items-center justify-center pointer-events-auto"
                                 style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
                                 x-ref="imgContainer"
                                 @mousedown="startPan($event)"
-                                @mousemove="doPan($event)"
-                                @mouseup="endPan()"
-                                @mouseleave="endPan()">
+                                @touchstart.passive="onTouchStart($event)"
+                                @touchend.passive="onTouchEnd($event)">
                                 <img x-ref="lightboxImg"
                                     :src="photoUrls[currentSlide]"
                                     alt="{{ $car->make_model }}"
@@ -165,7 +164,7 @@
                                         transform: scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px);
                                         transform-origin: center center;
                                         transition: ${isPanning ? 'none' : 'transform 0.15s ease'};
-                                        cursor: ${zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
+                                        cursor: ${!isMobile && zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
                                         max-width: 90vw;
                                         max-height: 88vh;
                                     `"
@@ -174,8 +173,8 @@
                             </div>
                         </div>
 
-                        {{-- Scroll hint --}}
-                        <div x-show="showScrollHint" x-cloak
+                        {{-- Scroll hint — desktop only --}}
+                        <div x-show="showScrollHint && !isMobile" x-cloak
                             class="absolute bottom-14 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/60 text-white/70 text-xs pointer-events-none">
                             გადაახვიეთ scroll-ით გასადიდებლად
                         </div>
@@ -739,20 +738,40 @@
                     panStartX: 0,
                     panStartY: 0,
                     showScrollHint: false,
+                    isMobile: false,
                     _hintTimer: null,
                     _wheelHandler: null,
+                    _mouseMoveHandler: null,
+                    _mouseUpHandler: null,
+                    // touch swipe tracking
+                    _touchStartX: 0,
+                    _touchStartY: 0,
                     photoUrls: {!! $lightboxUrls ?? '[]' !!},
 
                     init() {
-                        // Must use document-level listener with passive:false
-                        // because browsers default wheel to passive:true and Alpine's .prevent is ignored
-                        this._wheelHandler = (e) => {
-                            if (!this.lightboxOpen) return;
-                            e.preventDefault();
-                            e.stopPropagation();
-                            this.onWheel(e);
-                        };
-                        document.addEventListener('wheel', this._wheelHandler, { passive: false });
+                        // Detect mobile/touch device
+                        this.isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+                        if (!this.isMobile) {
+                            // Scroll-to-zoom: must use passive:false to call preventDefault()
+                            this._wheelHandler = (e) => {
+                                if (!this.lightboxOpen) return;
+                                e.preventDefault();
+                                e.stopPropagation();
+                                this.onWheel(e);
+                            };
+                            document.addEventListener('wheel', this._wheelHandler, { passive: false });
+
+                            // Document-level mousemove/mouseup so pan doesn't break on fast moves
+                            this._mouseMoveHandler = (e) => {
+                                if (!this.lightboxOpen || !this.isPanning) return;
+                                this.panX = e.clientX - this.panStartX;
+                                this.panY = e.clientY - this.panStartY;
+                            };
+                            this._mouseUpHandler = () => { this.isPanning = false; };
+                            document.addEventListener('mousemove', this._mouseMoveHandler);
+                            document.addEventListener('mouseup', this._mouseUpHandler);
+                        }
                     },
 
                     nextSlide() {
@@ -774,10 +793,11 @@
                         this.currentSlide = index;
                         this.resetZoom();
                         this.lightboxOpen = true;
-                        // Show scroll hint briefly
-                        this.showScrollHint = true;
-                        clearTimeout(this._hintTimer);
-                        this._hintTimer = setTimeout(() => { this.showScrollHint = false; }, 2500);
+                        if (!this.isMobile) {
+                            this.showScrollHint = true;
+                            clearTimeout(this._hintTimer);
+                            this._hintTimer = setTimeout(() => { this.showScrollHint = false; }, 2500);
+                        }
                     },
 
                     closeLightbox() {
@@ -789,6 +809,7 @@
                         this.zoomLevel = 1;
                         this.panX = 0;
                         this.panY = 0;
+                        this.isPanning = false;
                     },
 
                     onWheel(e) {
@@ -796,42 +817,41 @@
                         const step = 0.15;
                         const newZoom = Math.min(5, Math.max(1, this.zoomLevel + delta * step));
 
-                        // Zoom toward mouse cursor position
-                        if (newZoom !== this.zoomLevel) {
-                            const container = this.$refs.imgContainer;
-                            const rect = container.getBoundingClientRect();
-                            const mouseX = e.clientX - rect.left - rect.width / 2;
-                            const mouseY = e.clientY - rect.top - rect.height / 2;
+                        if (newZoom === this.zoomLevel) return;
 
-                            // Adjust pan so zoom centers on cursor
-                            const scale = newZoom / this.zoomLevel;
-                            this.panX = mouseX - scale * (mouseX - this.panX);
-                            this.panY = mouseY - scale * (mouseY - this.panY);
+                        const container = this.$refs.imgContainer;
+                        const rect = container.getBoundingClientRect();
+                        const mouseX = e.clientX - rect.left - rect.width / 2;
+                        const mouseY = e.clientY - rect.top - rect.height / 2;
 
-                            this.zoomLevel = parseFloat(newZoom.toFixed(2));
+                        const scale = newZoom / this.zoomLevel;
+                        this.panX = mouseX - scale * (mouseX - this.panX);
+                        this.panY = mouseY - scale * (mouseY - this.panY);
+                        this.zoomLevel = parseFloat(newZoom.toFixed(2));
 
-                            // Clamp pan when zoomed out to 1x
-                            if (this.zoomLevel <= 1) {
-                                this.resetZoom();
-                            }
-                        }
+                        if (this.zoomLevel <= 1) this.resetZoom();
                     },
 
                     startPan(e) {
-                        if (this.zoomLevel <= 1) return;
+                        if (this.isMobile || this.zoomLevel <= 1) return;
+                        e.preventDefault();
                         this.isPanning = true;
                         this.panStartX = e.clientX - this.panX;
                         this.panStartY = e.clientY - this.panY;
                     },
 
-                    doPan(e) {
-                        if (!this.isPanning) return;
-                        this.panX = e.clientX - this.panStartX;
-                        this.panY = e.clientY - this.panStartY;
+                    // Touch swipe handlers (mobile — no zoom, just slide navigation)
+                    onTouchStart(e) {
+                        this._touchStartX = e.touches[0].clientX;
+                        this._touchStartY = e.touches[0].clientY;
                     },
 
-                    endPan() {
-                        this.isPanning = false;
+                    onTouchEnd(e) {
+                        const dx = e.changedTouches[0].clientX - this._touchStartX;
+                        const dy = e.changedTouches[0].clientY - this._touchStartY;
+                        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+                            dx < 0 ? this.nextSlide() : this.prevSlide();
+                        }
                     }
                 }
             }
