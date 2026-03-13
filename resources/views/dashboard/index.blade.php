@@ -75,11 +75,15 @@
     </div>
     @endif
     
-    {{-- Recent Cars --}}
+    {{-- Cars --}}
     <div class="glass-card p-6">
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold text-white">ბოლო მანქანები</h2>
-            <a href="{{ route('cars.index') }}" class="text-sm text-primary-400 hover:text-primary-300">ყველა</a>
+            <h2 class="text-lg font-semibold text-white">
+                {{ auth()->user()->isClient() ? 'ჩემი მანქანები' : 'ბოლო მანქანები' }}
+            </h2>
+            @if(!auth()->user()->isClient())
+                <a href="{{ route('cars.index') }}" class="text-sm text-primary-400 hover:text-primary-300">ყველა</a>
+            @endif
         </div>
         
         @if($recentCars->count() > 0)

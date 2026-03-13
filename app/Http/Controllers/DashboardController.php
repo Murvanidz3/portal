@@ -32,14 +32,14 @@ class DashboardController extends Controller
             $query->byStatus($request->status);
         }
 
-        // Get recent cars - order by created_at desc, then by id desc to ensure consistent ordering
-        // This ensures all cars are shown, including the first one (id-1)
-        // Show only 4 most recent cars on dashboard
-        $recentCars = (clone $query)
+        // Clients see all their cars; admins/dealers see 4 most recent
+        $carsQuery = (clone $query)
             ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->limit(4)
-            ->get();
+            ->orderBy('id', 'desc');
+
+        $recentCars = $user->isClient()
+            ? $carsQuery->get()
+            : $carsQuery->limit(4)->get();
 
         // Status counts for current user
         $statusCounts = Car::forUser($user)

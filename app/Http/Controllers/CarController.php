@@ -25,6 +25,11 @@ class CarController extends Controller
      */
     public function index(Request $request)
     {
+        // Clients have no separate cars page — redirect to dashboard
+        if (auth()->user()->isClient()) {
+            return redirect()->route('dashboard');
+        }
+
         $query = Car::with(['user', 'client'])
             ->forUser(auth()->user())
             ->orderBy('created_at', 'desc');
