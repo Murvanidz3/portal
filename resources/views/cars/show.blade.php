@@ -640,7 +640,7 @@
             @if(auth()->user()->isClient())
                 @php
                     $hasAnyDate = $car->purchase_date || $car->arrival_date || $car->loading_date
-                        || $car->estimated_arrival_date || $car->document_received_at || $car->document_issued_at;
+                        || $car->estimated_arrival_date || $car->document_issued_at;
                 @endphp
                 @if($hasAnyDate)
                 <div class="glass-card p-6">
@@ -668,12 +668,6 @@
                             <div class="flex justify-between">
                                 <dt class="text-dark-400">სავარაუდო შემოსვლა:</dt>
                                 <dd class="text-white">{{ $car->estimated_arrival_date->format('d.m.Y') }}</dd>
-                            </div>
-                        @endif
-                        @if($car->document_received_at)
-                            <div class="flex justify-between">
-                                <dt class="text-dark-400">საბუთის მიღება:</dt>
-                                <dd class="text-white">{{ $car->document_received_at->format('d.m.Y') }}</dd>
                             </div>
                         @endif
                         @if($car->document_issued_at)
