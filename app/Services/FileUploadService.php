@@ -116,8 +116,8 @@ class FileUploadService
             $width = $image->width();
             $height = $image->height();
 
-            // Resize if larger than 1920px on the longest side (preserving aspect ratio)
-            $maxDimension = 1920;
+            // Resize if larger than 1280px on the longest side (preserving aspect ratio)
+            $maxDimension = 1280;
             if ($width > $maxDimension || $height > $maxDimension) {
                 if ($width > $height) {
                     $image->scale(width: $maxDimension);
@@ -126,8 +126,8 @@ class FileUploadService
                 }
             }
 
-            // Encode to JPEG with 85% quality
-            $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(quality: 85));
+            // Encode to JPEG with 75% quality
+            $encoded = $image->encode(new \Intervention\Image\Encoders\JpegEncoder(quality: 75));
 
             // Save to storage
             Storage::disk('public')->put($path, (string) $encoded);

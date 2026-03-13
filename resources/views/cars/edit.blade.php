@@ -715,9 +715,9 @@
 
             // Compress photos client-side (parallel batches of 5)
             async function compressPhotos(files, onProgress) {
-                const maxWidth = 1920;
-                const maxHeight = 1920;
-                const quality = 0.85;
+                const maxWidth = 1280;
+                const maxHeight = 1280;
+                const quality = 0.78;
                 const batchSize = 5;
 
                 const results = new Array(files.length);
