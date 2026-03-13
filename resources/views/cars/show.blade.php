@@ -123,12 +123,16 @@
                     @keydown.escape.window="closeLightbox()"
                     @keydown.arrow-left.window="if(zoomLevel === 1) prevSlide()"
                     @keydown.arrow-right.window="if(zoomLevel === 1) nextSlide()"
-                    class="fixed inset-0 z-50 bg-black/92 select-none"
+                    class="fixed inset-0 z-50 select-none"
                     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                    @click="closeLightbox()"
-                    x-ref="lightboxBackdrop">
+                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+                    {{-- Layer 1: backdrop — click here closes lightbox --}}
+                    <div class="absolute inset-0 bg-black/85 backdrop-blur-sm"
+                        @click="closeLightbox()"></div>
+
+                    {{-- Layer 2: UI controls (pointer events, no click-close) --}}
 
                     {{-- Close button --}}
                     <button @click.stop="closeLightbox()"
@@ -138,40 +142,42 @@
                         </svg>
                     </button>
 
-                    {{-- Zoom % badge (top-left, visible only when zoomed) --}}
+                    {{-- Zoom % badge --}}
                     <div x-show="zoomLevel > 1" x-cloak
                         class="absolute top-4 left-4 z-[70] px-3 py-1 rounded-full bg-black/60 text-white text-sm font-medium pointer-events-none">
                         <span x-text="Math.round(zoomLevel * 100) + '%'"></span>
                     </div>
 
                     @if($allPhotos->count() > 0)
-                        {{-- Scrollable/pannable image container --}}
-                        <div class="absolute inset-0 flex items-center justify-center overflow-hidden"
-                            x-ref="imgContainer"
-                            @click.stop
-                            @wheel.prevent="onWheel($event)"
-                            @mousedown.stop="startPan($event)"
-                            @mousemove.stop="doPan($event)"
-                            @mouseup.stop="endPan()"
-                            @mouseleave.stop="endPan()">
-                            <img x-ref="lightboxImg"
-                                :src="photoUrls[currentSlide]"
-                                alt="{{ $car->make_model }}"
-                                :style="`
-                                    transform: scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px);
-                                    transform-origin: center center;
-                                    transition: ${isPanning ? 'none' : 'transform 0.15s ease'};
-                                    cursor: ${zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
-                                    max-width: 90vw;
-                                    max-height: 88vh;
-                                `"
-                                class="object-contain block pointer-events-none"
-                                draggable="false">
+                        {{-- Layer 3: image + wheel/pan — sits above backdrop, does NOT propagate clicks to backdrop --}}
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div class="relative flex items-center justify-center pointer-events-auto"
+                                style="max-width: 90vw; max-height: 88vh; width: 90vw; height: 88vh;"
+                                x-ref="imgContainer"
+                                @wheel.prevent="onWheel($event)"
+                                @mousedown="startPan($event)"
+                                @mousemove="doPan($event)"
+                                @mouseup="endPan()"
+                                @mouseleave="endPan()">
+                                <img x-ref="lightboxImg"
+                                    :src="photoUrls[currentSlide]"
+                                    alt="{{ $car->make_model }}"
+                                    :style="`
+                                        transform: scale(${zoomLevel}) translate(${panX / zoomLevel}px, ${panY / zoomLevel}px);
+                                        transform-origin: center center;
+                                        transition: ${isPanning ? 'none' : 'transform 0.15s ease'};
+                                        cursor: ${zoomLevel > 1 ? (isPanning ? 'grabbing' : 'grab') : 'default'};
+                                        max-width: 90vw;
+                                        max-height: 88vh;
+                                    `"
+                                    class="object-contain block"
+                                    draggable="false">
+                            </div>
                         </div>
 
-                        {{-- Scroll hint (shown briefly on open) --}}
+                        {{-- Scroll hint --}}
                         <div x-show="showScrollHint" x-cloak
-                            class="absolute bottom-16 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/60 text-white/70 text-xs pointer-events-none">
+                            class="absolute bottom-14 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-full bg-black/60 text-white/70 text-xs pointer-events-none">
                             გადაახვიეთ scroll-ით გასადიდებლად
                         </div>
 
