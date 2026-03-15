@@ -104,7 +104,7 @@
     <button id="load-more-btn"
         data-next-page="{{ $cars->currentPage() + 1 }}"
         data-url="{{ route('cars.index') }}"
-        class="inline-flex items-center gap-3 px-12 py-4 bg-dark-800 hover:bg-dark-700 border border-white/10 hover:border-primary-500/40 text-white text-base rounded-2xl font-medium transition-all shadow-lg">
+        class="inline-flex items-center justify-center gap-3 min-w-[240px] py-4 bg-dark-800 hover:bg-dark-700 border border-white/10 hover:border-primary-500/40 text-white text-base rounded-2xl font-medium transition-all shadow-lg">
         <span id="load-more-text">მეტი</span>
         <svg id="load-more-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
