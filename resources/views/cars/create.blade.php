@@ -112,31 +112,31 @@
                 <!-- Purchase Date -->
                 <div>
                     <label for="purchase_date" class="block text-sm font-medium text-dark-300 mb-2">შეძენის თარიღი</label>
-                    <input type="date" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}"
-                        class="form-input w-full">
+                    <input type="text" name="purchase_date" id="purchase_date" value="{{ old('purchase_date') }}" autocomplete="off"
+                        class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Arrival Date -->
                 <div>
                     <label for="arrival_date" class="block text-sm font-medium text-dark-300 mb-2">საწყობში მიყვანა</label>
-                    <input type="date" name="arrival_date" id="arrival_date" value="{{ old('arrival_date') }}"
-                        class="form-input w-full">
+                    <input type="text" name="arrival_date" id="arrival_date" value="{{ old('arrival_date') }}" autocomplete="off"
+                        class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Document Received At -->
                 <div>
                     <label for="document_received_at" class="block text-sm font-medium text-dark-300 mb-2">საწყობში საბუთის
                         მიღება</label>
-                    <input type="date" name="document_received_at" id="document_received_at"
-                        value="{{ old('document_received_at') }}" class="form-input w-full">
+                    <input type="text" name="document_received_at" id="document_received_at"
+                        value="{{ old('document_received_at') }}" autocomplete="off" class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Document Issued At -->
                 <div>
                     <label for="document_issued_at" class="block text-sm font-medium text-dark-300 mb-2">საბუთის გაცემის
                         თარიღი</label>
-                    <input type="date" name="document_issued_at" id="document_issued_at"
-                        value="{{ old('document_issued_at') }}" class="form-input w-full">
+                    <input type="text" name="document_issued_at" id="document_issued_at"
+                        value="{{ old('document_issued_at') }}" autocomplete="off" class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Dealer / Client Assignment -->
@@ -234,16 +234,16 @@
                 <!-- Loading Date -->
                 <div>
                     <label for="loading_date" class="block text-sm font-medium text-dark-300 mb-2">ჩატვირთვის თარიღი</label>
-                    <input type="date" name="loading_date" id="loading_date" value="{{ old('loading_date') }}"
-                        class="form-input w-full">
+                    <input type="text" name="loading_date" id="loading_date" value="{{ old('loading_date') }}" autocomplete="off"
+                        class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Estimated Arrival Date -->
                 <div>
                     <label for="estimated_arrival_date" class="block text-sm font-medium text-dark-300 mb-2">შემოსვლის
                         სავარაუდო თარიღი</label>
-                    <input type="date" name="estimated_arrival_date" id="estimated_arrival_date"
-                        value="{{ old('estimated_arrival_date') }}" class="form-input w-full">
+                    <input type="text" name="estimated_arrival_date" id="estimated_arrival_date"
+                        value="{{ old('estimated_arrival_date') }}" autocomplete="off" class="form-input w-full date-input" placeholder="dd/mm/yyyy">
                 </div>
 
                 <!-- Terminal -->

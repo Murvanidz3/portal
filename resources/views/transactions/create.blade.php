@@ -125,8 +125,8 @@
 
             <div>
                 <label class="block text-sm font-medium text-dark-300 mb-2">თარიღი *</label>
-                <input type="date" name="payment_date" value="{{ old('payment_date', date('Y-m-d')) }}"
-                    class="form-input w-full" required>
+                <input type="text" name="payment_date" value="{{ old('payment_date', date('Y-m-d')) }}" autocomplete="off"
+                    class="form-input w-full date-input" placeholder="dd/mm/yyyy" required>
             </div>
 
             <div>

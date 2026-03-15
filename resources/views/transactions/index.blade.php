@@ -30,8 +30,8 @@
             @endforeach
         </select>
         
-        <input type="date" name="date_from" value="{{ request('date_from') }}" class="form-input" placeholder="დან">
-        <input type="date" name="date_to" value="{{ request('date_to') }}" class="form-input" placeholder="მდე">
+        <input type="text" name="date_from" value="{{ request('date_from') }}" autocomplete="off" class="form-input date-input" placeholder="dd/mm/yyyy დან">
+        <input type="text" name="date_to" value="{{ request('date_to') }}" autocomplete="off" class="form-input date-input" placeholder="dd/mm/yyyy მდე">
         
         <button type="submit" class="btn-secondary">ძიება</button>
     </form>

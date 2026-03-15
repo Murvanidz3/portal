@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -69,5 +71,20 @@ window.formatDate = function(date) {
         day: 'numeric'
     });
 };
+
+// Date inputs: show dd/mm/yyyy everywhere, submit Y-m-d
+function initDateInputs() {
+    document.querySelectorAll('.date-input').forEach(el => {
+        if (el._flatpickr) return;
+        flatpickr(el, {
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'd/m/Y',
+            allowInput: true
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', initDateInputs);
+window.initDateInputs = initDateInputs;
 
 console.log('🚗 OneCar CRM v2.0 loaded');

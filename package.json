@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@alpinejs/collapse": "^3.14.0",
-        "alpinejs": "^3.14.0"
+        "alpinejs": "^3.14.0",
+        "flatpickr": "^4.6.13"
     }
 }
