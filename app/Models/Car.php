@@ -88,7 +88,7 @@ class Car extends Model
             self::STATUS_LOADED => ['label' => 'ჩატვირთულია', 'icon' => 'box', 'color' => 'blue'],
             self::STATUS_ON_WAY => ['label' => 'გზაშია', 'icon' => 'ship', 'color' => 'indigo'],
             self::STATUS_POTI => ['label' => 'ფოთშია', 'icon' => 'anchor', 'color' => 'purple'],
-            self::STATUS_GREEN => ['label' => 'მწვანეშია', 'icon' => 'check-circle', 'color' => 'green'],
+            self::STATUS_GREEN => ['label' => 'გახსნილია', 'icon' => 'check-circle', 'color' => 'green'],
             self::STATUS_DELIVERED => ['label' => 'გაყვანილია', 'icon' => 'flag-checkered', 'color' => 'emerald'],
         ];
     }
