@@ -51,6 +51,16 @@ class CarController extends Controller
 
         $cars = $query->paginate(12)->withQueryString();
 
+        // AJAX load-more request — return JSON with rendered HTML
+        if ($request->ajax()) {
+            $html = view('cars._card_list', compact('cars'))->render();
+            return response()->json([
+                'html'     => $html,
+                'has_more' => $cars->hasMorePages(),
+                'next_page'=> $cars->currentPage() + 1,
+            ]);
+        }
+
         // Get dealers for filter (admin only)
         $dealers = auth()->user()->isAdmin()
             ? User::dealers()->get()

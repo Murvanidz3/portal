@@ -94,72 +94,28 @@
 
 <!-- Cars Grid -->
 @if($cars->count() > 0)
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-    @foreach($cars as $car)
-    <div class="glass-card glass-card-hover overflow-hidden">
-        <!-- Photo -->
-        <a href="{{ route('cars.show', $car) }}" class="block relative aspect-video bg-dark-800 overflow-hidden">
-            <img src="{{ $car->main_photo_url }}" 
-                 alt="{{ $car->make_model }}" 
-                 class="w-full h-full object-cover"
-                 onerror="this.src='/images/no-photo.png'">
-            
-            <!-- Status Badge -->
-            <div class="absolute top-2 right-2">
-                <span class="badge-{{ $car->status }} px-2 py-1 rounded-full text-xs font-medium">
-                    {{ $car->status_label }}
-                </span>
-            </div>
-            
-            @if($car->hasDebt() && !auth()->user()->isClient())
-            <div class="absolute top-2 left-2">
-                <span class="bg-red-500/90 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    დავალიანება: {{ $car->formatted_debt }}
-                </span>
-            </div>
-            @endif
-        </a>
-        
-        <!-- Info -->
-        <div class="p-4">
-            <h3 class="font-semibold text-white truncate">{{ $car->make_model }}</h3>
-            <p class="text-sm text-dark-400 mt-1">{{ $car->year }} | {{ $car->vin }}</p>
-            
-            @if($car->lot_number)
-            <p class="text-xs text-dark-500 mt-1">ლოტი: {{ $car->lot_number }}</p>
-            @endif
-            
-            <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
-                <span class="text-sm text-dark-300">{{ $car->getClientDisplayName() }}</span>
-                <div class="flex items-center gap-2">
-                    @if(auth()->user()->isAdmin())
-                    <a href="{{ route('cars.edit', $car) }}"
-                       class="p-2 text-dark-400 hover:text-primary-400 transition-colors"
-                       title="რედაქტირება">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                    </a>
-                    @endif
-                    <a href="{{ route('cars.show', $car) }}"
-                       class="p-2 text-dark-400 hover:text-primary-400 transition-colors"
-                       title="ნახვა">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
+<div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    @include('cars._card_list', ['cars' => $cars])
 </div>
 
-<!-- Pagination -->
-<div class="mt-6">
-    {{ $cars->links() }}
+<!-- Load More -->
+@if($cars->hasMorePages())
+<div id="load-more-wrap" class="mt-8 flex justify-center">
+    <button id="load-more-btn"
+        data-next-page="{{ $cars->currentPage() + 1 }}"
+        data-url="{{ route('cars.index') }}"
+        class="inline-flex items-center gap-2 px-8 py-3 bg-dark-800 hover:bg-dark-700 border border-white/10 hover:border-primary-500/40 text-white rounded-xl font-medium transition-all">
+        <span id="load-more-text">მეტი</span>
+        <svg id="load-more-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+        <svg id="load-more-spinner" class="w-4 h-4 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+    </button>
 </div>
+@endif
 @else
 <div class="glass-card p-12 text-center">
     <svg class="w-16 h-16 mx-auto text-dark-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,15 +138,57 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Search auto-submit on Enter
     const searchInput = document.querySelector('input[name="search"]');
     if (searchInput) {
-        // Auto-submit on Enter
         searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                this.closest('form').submit();
-            }
+            if (e.key === 'Enter') this.closest('form').submit();
         });
     }
+
+    // Load More
+    const btn = document.getElementById('load-more-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', function() {
+        const page    = btn.dataset.nextPage;
+        const baseUrl = btn.dataset.url;
+
+        // Collect current filters from URL
+        const params  = new URLSearchParams(window.location.search);
+        params.set('page', page);
+
+        // Show spinner
+        document.getElementById('load-more-text').textContent = '';
+        document.getElementById('load-more-icon').classList.add('hidden');
+        document.getElementById('load-more-spinner').classList.remove('hidden');
+        btn.disabled = true;
+
+        fetch(`${baseUrl}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            // Append new cards
+            document.getElementById('cars-grid').insertAdjacentHTML('beforeend', data.html);
+
+            if (data.has_more) {
+                btn.dataset.nextPage = data.next_page;
+                document.getElementById('load-more-text').textContent = 'მეტი';
+                document.getElementById('load-more-icon').classList.remove('hidden');
+                document.getElementById('load-more-spinner').classList.add('hidden');
+                btn.disabled = false;
+            } else {
+                document.getElementById('load-more-wrap').remove();
+            }
+        })
+        .catch(() => {
+            document.getElementById('load-more-text').textContent = 'მეტი';
+            document.getElementById('load-more-icon').classList.remove('hidden');
+            document.getElementById('load-more-spinner').classList.add('hidden');
+            btn.disabled = false;
+        });
+    });
 });
 </script>
 @endpush
