@@ -319,14 +319,14 @@
 <body>
     <div class="invoice-container">
         <div class="invoice-header">
-            <div class="logo-area">
-                <img src="{{ $companyLogo }}" alt="Company Logo" onerror="this.style.display='none'">
-            </div>
-            <div class="company-info">
+            <div class="company-info" style="text-align: left;">
                 <h4>{{ $companyName }}</h4>
                 <div>{{ $companyAddress }}</div>
                 <div>Tel: {{ $companyPhone }}</div>
                 <div>Email: {{ $companyEmail }}</div>
+            </div>
+            <div class="logo-area">
+                <img src="{{ $companyLogo }}" alt="Company Logo" onerror="this.style.display='none'">
             </div>
         </div>
 

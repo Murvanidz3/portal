@@ -207,7 +207,7 @@ class InvoiceController extends Controller
         $companyAddress = Setting::get('company_address', 'Tbilisi, Georgia');
         $companyPhone = Setting::get('company_phone', '+995 599 780 780');
         $companyEmail = Setting::get('company_email', 'info@onecar.ge');
-        $companyLogo = Setting::get('site_logo_dark', asset('favicon.ico'));
+        $companyLogo = \App\Models\GodModeStyle::getValue('brand_invoice_logo') ?: Setting::get('site_logo_dark', asset('favicon.ico'));
 
         // Bank details
         $bankName = Setting::get('bank_name', 'Bank of Georgia');
