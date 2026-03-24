@@ -180,6 +180,7 @@ use App\Http\Controllers\GodMode\AuthController as GodAuthController;
 use App\Http\Controllers\GodMode\DashboardController as GodDashboardController;
 use App\Http\Controllers\GodMode\PermissionController as GodPermissionController;
 use App\Http\Controllers\GodMode\StyleController as GodStyleController;
+use App\Http\Controllers\GodMode\ShippingRatesController as GodShippingRatesController;
 
 Route::prefix('god')->name('god.')->group(function () {
     // Guest routes (login)
@@ -211,6 +212,12 @@ Route::prefix('god')->name('god.')->group(function () {
         Route::post('styles/{style}/reset', [GodStyleController::class, 'resetToDefault'])->name('styles.reset');
         Route::post('styles/reset-all', [GodStyleController::class, 'resetAll'])->name('styles.reset-all');
         Route::get('styles/css', [GodStyleController::class, 'getCss'])->name('styles.css');
+
+        // Shipping Rates
+        Route::get('shipping-rates', [GodShippingRatesController::class, 'index'])->name('shipping-rates');
+        Route::post('shipping-rates/upload', [GodShippingRatesController::class, 'upload'])->name('shipping-rates.upload');
+        Route::get('shipping-rates/download', [GodShippingRatesController::class, 'download'])->name('shipping-rates.download');
+        Route::get('shipping-rates/preview', [GodShippingRatesController::class, 'preview'])->name('shipping-rates.preview');
 
 
     });
