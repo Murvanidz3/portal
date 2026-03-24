@@ -5,7 +5,22 @@
 @section('content')
     <div class="god-header">
         <h1 class="god-page-title">Audit Logs</h1>
+        <div>
+            <button type="button" class="god-btn god-btn-danger god-btn-sm" id="btn-clear-audit-logs">
+                <i class="fas fa-trash-alt"></i> ლოგების გასუფთავება
+            </button>
+            <form id="form-clear-audit-logs" method="POST" action="{{ route('god.audit-logs.clear') }}" style="display: none;">
+                @csrf
+            </form>
+        </div>
     </div>
+
+    @if(session('success'))
+        <div class="god-alert god-alert-success" style="margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
 
     <div class="god-card">
         <div class="god-card-header">
@@ -31,7 +46,7 @@
                             <td><code>#{{ $log->id }}</code></td>
                             <td>
                                 <span
-                                    class="god-badge {{ in_array($log->action, ['login', 'logout']) ? 'god-badge-success' : 'god-badge-danger' }}">
+                                    class="god-badge {{ in_array($log->action, ['login', 'logout', 'audit.cleared'], true) ? 'god-badge-success' : 'god-badge-danger' }}">
                                     {{ $log->action_label }}
                                 </span>
                             </td>
@@ -94,6 +109,16 @@
 
     @push('scripts')
         <script>
+            document.getElementById('btn-clear-audit-logs')?.addEventListener('click', function () {
+                godConfirm(
+                    'ლოგების გასუფთავება',
+                    'ყველა audit ჩანაწერი წაიშლება. დარწმუნებული ხართ?',
+                    function () {
+                        document.getElementById('form-clear-audit-logs')?.submit();
+                    }
+                );
+            });
+
             function showDetails(id, oldValue, newValue) {
                 document.getElementById('old-value').textContent = JSON.stringify(oldValue, null, 2);
                 document.getElementById('new-value').textContent = JSON.stringify(newValue, null, 2);

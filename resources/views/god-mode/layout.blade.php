@@ -334,6 +334,56 @@
             background: var(--god-surface-hover);
         }
 
+        /* Pagination (God Mode — კომპაქტური, უდიდესი ისრების გარეშე) */
+        .god-pagination {
+            margin-top: 20px;
+            padding: 12px 0;
+        }
+
+        .god-pagination-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+        }
+
+        .god-pagination-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--god-text);
+            background: var(--god-surface-hover);
+            border: 1px solid var(--god-border);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .god-pagination-link:hover:not(.is-disabled) {
+            background: var(--god-primary);
+            border-color: var(--god-primary);
+            color: #fff;
+        }
+
+        .god-pagination-link.is-disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .god-pagination-meta {
+            font-size: 13px;
+            color: var(--god-text-muted);
+        }
+
+        .god-pagination-total {
+            margin-left: 4px;
+            opacity: 0.85;
+        }
+
         /* Form Inputs */
         .god-input {
             background: var(--god-bg);

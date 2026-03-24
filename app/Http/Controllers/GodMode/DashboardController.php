@@ -60,4 +60,23 @@ class DashboardController extends Controller
 
         return view('god-mode.audit-logs', compact('logs'));
     }
+
+    /**
+     * Delete all audit log rows (leaves one new entry recording the purge).
+     */
+    public function clearAuditLogs(Request $request)
+    {
+        $count = GodModeAuditLog::count();
+        GodModeAuditLog::query()->delete();
+
+        $this->godModeService->logAction('audit.cleared', null, null, null, [
+            'deleted_records' => $count,
+        ]);
+
+        return redirect()
+            ->route('god.audit-logs')
+            ->with('success', $count > 0
+                ? "წაიშალა {$count} ჩანაწერი."
+                : 'ლოგები უკვე ცარიელი იყო.');
+    }
 }

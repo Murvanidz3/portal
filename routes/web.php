@@ -260,6 +260,7 @@ Route::prefix('god')->name('god.')->group(function () {
         // Dashboard
         Route::get('/', [GodDashboardController::class, 'index'])->name('dashboard');
         Route::get('audit-logs', [GodDashboardController::class, 'auditLogs'])->name('audit-logs');
+        Route::post('audit-logs/clear', [GodDashboardController::class, 'clearAuditLogs'])->name('audit-logs.clear');
 
         // Permissions
         Route::get('permissions', [GodPermissionController::class, 'index'])->name('permissions');

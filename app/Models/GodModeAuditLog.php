@@ -74,8 +74,11 @@ class GodModeAuditLog extends Model
     {
         $labels = [
             'permission.updated' => 'უფლების შეცვლა',
+            'permissions.reset' => 'უფლებების აღდგენა',
             'style.updated' => 'სტილის შეცვლა',
             'logo.uploaded' => 'ლოგოს ატვირთვა',
+            'styles.reset_all' => 'ყველა სტილის აღდგენა',
+            'audit.cleared' => 'ლოგების გასუფთავება',
             'login' => 'შესვლა',
             'logout' => 'გასვლა',
         ];
