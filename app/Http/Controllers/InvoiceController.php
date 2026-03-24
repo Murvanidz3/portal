@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\Invoice;
-use App\Models\Setting;
+use App\Services\InvoiceDisplaySettings;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
 {
@@ -202,61 +201,62 @@ class InvoiceController extends Controller
             abort(403);
         }
 
-        // Get company settings
-        $companyName = Setting::get('company_name', 'ONECAR LLC');
-        $companyAddress = Setting::get('company_address', 'Tbilisi, Georgia');
-        $companyPhone = Setting::get('company_phone', '+995 599 780 780');
-        $companyEmail = Setting::get('company_email', 'info@onecar.ge');
-        $companyLogo = \App\Models\GodModeStyle::getValue('brand_invoice_logo') ?: Setting::get('site_logo_dark', asset('favicon.ico'));
+        $invoiceHeaderTitle = InvoiceDisplaySettings::headerTitle();
+        $companyName = InvoiceDisplaySettings::companyName();
+        $companyExtraHtml = InvoiceDisplaySettings::companyExtraHtml();
+        $companyAddress = InvoiceDisplaySettings::companyAddress();
+        $companyPhone = InvoiceDisplaySettings::companyPhone();
+        $companyEmail = InvoiceDisplaySettings::companyEmail();
+        $companyLogo = InvoiceDisplaySettings::companyLogo();
 
-        // Bank details
-        $bankName = Setting::get('bank_name', 'Bank of Georgia');
-        $bankRecipient = Setting::get('bank_recipient', 'ლუკა მურვანიძე');
-        $bankIban = Setting::get('bank_iban', 'GE37BG0000000160921689');
-        $bankSwift = Setting::get('bank_swift', 'BAGAGE22');
+        $bankName = InvoiceDisplaySettings::bankName();
+        $bankRecipient = InvoiceDisplaySettings::bankRecipient();
+        $bankIban = InvoiceDisplaySettings::bankIban();
+        $bankSwift = InvoiceDisplaySettings::bankSwift();
+        $bankTitle = InvoiceDisplaySettings::bankTitle();
+        $bankLblBank = InvoiceDisplaySettings::bankLblBank();
+        $bankLblRecipient = InvoiceDisplaySettings::bankLblRecipient();
+        $bankLblIban = InvoiceDisplaySettings::bankLblIban();
+        $bankLblSwift = InvoiceDisplaySettings::bankLblSwift();
 
-        // Prepare invoice items
+        $labelBillTo = InvoiceDisplaySettings::labelBillTo();
+        $labelPurpose = InvoiceDisplaySettings::labelPurpose();
+        $tableColDesc = InvoiceDisplaySettings::tableColDesc();
+        $tableColAmount = InvoiceDisplaySettings::tableColAmount();
+        $tableTotal = InvoiceDisplaySettings::tableTotal();
+        $badgeText = InvoiceDisplaySettings::badgeText();
+        $footerText = InvoiceDisplaySettings::footerText();
+
+        // Prepare invoice items (VIN ყოველთვის ინვოისის მონაცემიდან)
         $invoiceItems = [];
         $paymentPurpose = '';
 
         if ($invoice->type === 'vehicle') {
-            $paymentPurpose = 'ავტომობილის გადასახადი' . ($invoice->vin ? ' VIN: ' . $invoice->vin : '');
-            
+            $paymentPurpose = InvoiceDisplaySettings::buildPaymentPurpose('vehicle', $invoice->vin);
+
             if ($invoice->vehicle_cost > 0) {
-                $desc = 'ავტომობილის ღირებულება / Vehicle Cost';
-                if ($invoice->make_model) {
-                    $desc .= "\n" . $invoice->make_model;
-                    if ($invoice->year) {
-                        $desc .= ' (' . $invoice->year . ')';
-                    }
-                }
-                if ($invoice->vin) {
-                    $desc .= "\nVIN: " . $invoice->vin;
-                }
-                
                 $invoiceItems[] = [
-                    'desc' => $desc,
-                    'amount' => $invoice->vehicle_cost
+                    'desc' => InvoiceDisplaySettings::buildLineDescription(
+                        InvoiceDisplaySettings::lineTitleVehicle(),
+                        $invoice->make_model,
+                        $invoice->year,
+                        $invoice->vin
+                    ),
+                    'amount' => $invoice->vehicle_cost,
                 ];
             }
         } elseif ($invoice->type === 'shipping') {
-            $paymentPurpose = 'ტრანსპორტირების გადასახადი' . ($invoice->vin ? ' VIN: ' . $invoice->vin : '');
-            
-            // Use total_amount which includes shipping_cost + additional_cost
+            $paymentPurpose = InvoiceDisplaySettings::buildPaymentPurpose('shipping', $invoice->vin);
+
             if ($invoice->total_amount > 0) {
-                $desc = 'ტრანსპორტირება / Shipping Cost';
-                if ($invoice->make_model) {
-                    $desc .= "\n" . $invoice->make_model;
-                    if ($invoice->year) {
-                        $desc .= ' (' . $invoice->year . ')';
-                    }
-                }
-                if ($invoice->vin) {
-                    $desc .= "\nVIN: " . $invoice->vin;
-                }
                 $invoiceItems[] = [
-                    'desc' => $desc,
-                    'amount' => $invoice->total_amount
+                    'desc' => InvoiceDisplaySettings::buildLineDescription(
+                        InvoiceDisplaySettings::lineTitleShipping(),
+                        $invoice->make_model,
+                        $invoice->year,
+                        $invoice->vin
+                    ),
+                    'amount' => $invoice->total_amount,
                 ];
             }
         }
@@ -281,7 +281,9 @@ class InvoiceController extends Controller
             'invoice',
             'invoiceItems',
             'paymentPurpose',
+            'invoiceHeaderTitle',
             'companyName',
+            'companyExtraHtml',
             'companyAddress',
             'companyPhone',
             'companyEmail',
@@ -290,6 +292,18 @@ class InvoiceController extends Controller
             'bankRecipient',
             'bankIban',
             'bankSwift',
+            'bankTitle',
+            'bankLblBank',
+            'bankLblRecipient',
+            'bankLblIban',
+            'bankLblSwift',
+            'labelBillTo',
+            'labelPurpose',
+            'tableColDesc',
+            'tableColAmount',
+            'tableTotal',
+            'badgeText',
+            'footerText',
             'billTo'
         ));
     }

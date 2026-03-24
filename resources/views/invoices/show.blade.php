@@ -33,6 +33,21 @@
             position: relative;
         }
         
+        .invoice-doc-title {
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 16px;
+            letter-spacing: 0.04em;
+        }
+
+        .company-extra-lines {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
         .invoice-header {
             display: flex;
             justify-content: space-between;
@@ -318,12 +333,19 @@
 </head>
 <body>
     <div class="invoice-container">
+        @if(!empty($invoiceHeaderTitle))
+            <div class="invoice-doc-title">{{ $invoiceHeaderTitle }}</div>
+        @endif
         <div class="invoice-header">
             <div class="company-info" style="text-align: left;">
                 <h4>{{ $companyName }}</h4>
-                <div>{{ $companyAddress }}</div>
-                <div>Tel: {{ $companyPhone }}</div>
-                <div>Email: {{ $companyEmail }}</div>
+                @if(!empty($companyExtraHtml))
+                    <div class="company-extra-lines">{!! $companyExtraHtml !!}</div>
+                @else
+                    <div>{{ $companyAddress }}</div>
+                    <div>Tel: {{ $companyPhone }}</div>
+                    <div>Email: {{ $companyEmail }}</div>
+                @endif
             </div>
             <div class="logo-area">
                 <img src="{{ $companyLogo }}" alt="Company Logo" onerror="this.style.display='none'">
@@ -332,7 +354,7 @@
 
         <div class="bill-to">
             <div class="client-box">
-                <h5>გადამხდელი / Bill To</h5>
+                <h5>{{ $labelBillTo }}</h5>
                 @if($billTo)
                     <div class="fw-bold">{{ $billTo['name'] }}</div>
                     @if(isset($billTo['id']))
@@ -355,7 +377,7 @@
                 <div class="inv-number">{{ $invoice->invoice_number }}</div>
                 <div class="inv-date">Date: {{ $invoice->created_at->format('d/m/Y') }}</div>
                 <div class="mt-2">
-                    <span class="badge bg-secondary">გადასახდელი</span>
+                    <span class="badge bg-secondary">{{ $badgeText }}</span>
                 </div>
             </div>
         </div>
@@ -363,8 +385,8 @@
         <table class="invoice-table">
             <thead>
                 <tr>
-                    <th>აღწერა / Description</th>
-                    <th class="th-amount">თანხა / Amount ($)</th>
+                    <th>{{ $tableColDesc }}</th>
+                    <th class="th-amount">{{ $tableColAmount }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -376,14 +398,14 @@
                 @endforeach
 
                 <tr class="total-row">
-                    <td class="text-end">სულ / Total:</td>
+                    <td class="text-end">{{ $tableTotal }}</td>
                     <td class="amount">${{ number_format($invoice->total_amount, 2) }}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="purpose-box">
-            <strong>დანიშნულება:</strong> {{ $paymentPurpose }}
+            <strong>{{ $labelPurpose }}</strong> {{ $paymentPurpose }}
         </div>
 
         {{-- Bank info - bottom right --}}
@@ -393,22 +415,22 @@
                     <svg style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
                     </svg>
-                    საბანკო რეკვიზიტები
+                    {{ $bankTitle }}
                 </h5>
                 <div class="bank-row">
-                    <span class="bank-label">ბანკი:</span>
+                    <span class="bank-label">{{ $bankLblBank }}</span>
                     <span class="bank-val">{{ $bankName }}</span>
                 </div>
                 <div class="bank-row">
-                    <span class="bank-label">მიმღები:</span>
+                    <span class="bank-label">{{ $bankLblRecipient }}</span>
                     <span class="bank-val">{{ $bankRecipient }}</span>
                 </div>
                 <div class="bank-row">
-                    <span class="bank-label">IBAN:</span>
+                    <span class="bank-label">{{ $bankLblIban }}</span>
                     <span class="bank-val">{{ $bankIban }}</span>
                 </div>
                 <div class="bank-row">
-                    <span class="bank-label">SWIFT:</span>
+                    <span class="bank-label">{{ $bankLblSwift }}</span>
                     <span class="bank-val">{{ $bankSwift }}</span>
                 </div>
             </div>
@@ -429,7 +451,7 @@
 
         {{-- Footer - absolute bottom --}}
         <div class="invoice-footer">
-            გმადლობთ რომ სარგებლობთ ჩვენი მომსახურებით!
+            {{ $footerText }}
         </div>
     </div>
     

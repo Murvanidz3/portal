@@ -118,8 +118,66 @@
         </div>
     </div>
 
+    @if(!empty($styles['invoice']))
+        <div class="god-card" style="margin-top: 24px;">
+            <div class="god-card-header">
+                <h3 class="god-card-title">
+                    <i class="fas fa-file-invoice" style="margin-right: 10px; color: var(--god-primary);"></i>
+                    ინვოისის რედაქტორი
+                </h3>
+            </div>
+            <p style="padding: 0 20px 16px; color: var(--god-text-muted); font-size: 13px; line-height: 1.6;">
+                VIN და მანქანის მონაცემები ინვოისზე ყოველთვის ავტომატურად მოდის. აქ რედაქტირდება მუდმივი ტექსტები და საბანკო რეკვიზიტები.
+                ბანკის ველები თუ ცარიელია — გამოიყენება <strong>პარამეტრების</strong> გვერდზე შევსებული მნიშვნელობები.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 16px; padding: 0 20px 20px;">
+                @foreach($styles['invoice'] as $s)
+                    <div style="padding: 16px; background: var(--god-bg); border-radius: 8px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 6px;">{{ $s['style_name'] }}</label>
+                        @if(!empty($s['description']))
+                            <p style="color: var(--god-text-muted); font-size: 12px; margin: 0 0 10px;">{{ $s['description'] }}</p>
+                        @endif
+                        @if(($s['style_type'] ?? 'text') === 'textarea')
+                            <textarea id="inv-style-{{ $s['id'] }}" class="god-input" rows="{{ ($s['style_key'] ?? '') === 'invoice_footer_text' ? 3 : 5 }}" style="width: 100%; min-height: 90px; resize: vertical;">{{ $s['style_value'] ?? '' }}</textarea>
+                        @else
+                            <input type="text" id="inv-style-{{ $s['id'] }}" class="god-input" style="width: 100%;" value="{{ $s['style_value'] ?? '' }}">
+                        @endif
+                        <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button type="button" class="god-btn god-btn-sm god-btn-primary" onclick="saveInvoiceStyle({{ $s['id'] }})">შენახვა</button>
+                            <button type="button" class="god-btn god-btn-sm god-btn-secondary" onclick="resetStyle({{ $s['id'] }})">აღდგენა</button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     @push('scripts')
         <script>
+            async function saveInvoiceStyle(styleId) {
+                const el = document.getElementById('inv-style-' + styleId);
+                const value = el ? el.value : '';
+                try {
+                    const response = await fetch(`{{ url('god/styles') }}/${styleId}/text`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ value: value }),
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        godToast(result.message, 'success');
+                    } else {
+                        godToast(result.message || 'შეცდომა', 'error');
+                    }
+                } catch (error) {
+                    godToast('შეცდომა: ' + error.message, 'error');
+                }
+            }
+
             async function updateColor(styleId, value) {
                 if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value)) {
                     godToast('არასწორი ფერის ფორმატი', 'error');

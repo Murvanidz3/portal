@@ -113,6 +113,32 @@ class GodModeSeeder extends Seeder
             ['style_key' => 'color_warning', 'style_name' => 'გაფრთხილების ფერი', 'style_group' => 'status', 'style_type' => 'color', 'default_value' => '#f59e0b', 'sort_order' => 41],
             ['style_key' => 'color_error', 'style_name' => 'შეცდომის ფერი', 'style_group' => 'status', 'style_type' => 'color', 'default_value' => '#ef4444', 'sort_order' => 42],
             ['style_key' => 'color_info', 'style_name' => 'ინფორმაციის ფერი', 'style_group' => 'status', 'style_type' => 'color', 'default_value' => '#0ea5e9', 'sort_order' => 43],
+
+            // Invoice (God Mode → სტილები)
+            ['style_key' => 'invoice_header_title', 'style_name' => 'ინვოისის სათაური (ზედა ხაზი)', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 200],
+            ['style_key' => 'invoice_company_name', 'style_name' => 'კომპანიის სახელი (ინვოისში)', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 201],
+            ['style_key' => 'invoice_company_extra', 'style_name' => 'კომპანიის სრული ტექსტი (მისამართი, ტელ, ელფოსტა)', 'style_group' => 'invoice', 'style_type' => 'textarea', 'default_value' => '', 'sort_order' => 202],
+            ['style_key' => 'invoice_label_bill_to', 'style_name' => 'გადამხდელის ბლოკის სათაური', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'გადამხდელი / Bill To', 'sort_order' => 203],
+            ['style_key' => 'invoice_label_purpose', 'style_name' => 'დანიშნულების ჭდე', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'დანიშნულება:', 'sort_order' => 204],
+            ['style_key' => 'invoice_purpose_vehicle', 'style_name' => 'დანიშნულება — ავტო (პრეფიქსი; VIN ავტომატურად)', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'ავტომობილის გადასახადი', 'sort_order' => 205],
+            ['style_key' => 'invoice_purpose_shipping', 'style_name' => 'დანიშნულება — ტრანსპორტი (პრეფიქსი; VIN ავტომატურად)', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'ტრანსპორტირების გადასახადი', 'sort_order' => 206],
+            ['style_key' => 'invoice_line_vehicle', 'style_name' => 'ცხრილი — ავტომობილის ღირებულების სათაური', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'ავტომობილის ღირებულება / Vehicle Cost', 'sort_order' => 207],
+            ['style_key' => 'invoice_line_shipping', 'style_name' => 'ცხრილი — ტრანსპორტი', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'ტრანსპორტირება / Shipping Cost', 'sort_order' => 208],
+            ['style_key' => 'invoice_line_additional', 'style_name' => 'ცხრილი — დამატებითი ხარჯები', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'დამატებითი ხარჯები / Additional Fees', 'sort_order' => 209],
+            ['style_key' => 'invoice_table_col_desc', 'style_name' => 'ცხრილი: სვეტი „აღწერა“', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'აღწერა / Description', 'sort_order' => 210],
+            ['style_key' => 'invoice_table_col_amount', 'style_name' => 'ცხრილი: სვეტი „თანხა“', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'თანხა / Amount ($)', 'sort_order' => 211],
+            ['style_key' => 'invoice_table_total', 'style_name' => 'ცხრილი: სულ', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'სულ / Total:', 'sort_order' => 212],
+            ['style_key' => 'invoice_badge_text', 'style_name' => 'სტატუსის ბეიჯი', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'გადასახდელი', 'sort_order' => 213],
+            ['style_key' => 'invoice_footer_text', 'style_name' => 'ქვედა ტექსტი', 'style_group' => 'invoice', 'style_type' => 'textarea', 'default_value' => 'გმადლობთ რომ სარგებლობთ ჩვენი მომსახურებით!', 'sort_order' => 214],
+            ['style_key' => 'invoice_bank_title', 'style_name' => 'ბანკის ბლოკის სათაური', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'საბანკო რეკვიზიტები', 'sort_order' => 215],
+            ['style_key' => 'invoice_bank_name', 'style_name' => 'ბანკის სახელი', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 216],
+            ['style_key' => 'invoice_bank_recipient', 'style_name' => 'მიმღები', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 217],
+            ['style_key' => 'invoice_bank_iban', 'style_name' => 'IBAN', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 218],
+            ['style_key' => 'invoice_bank_swift', 'style_name' => 'SWIFT', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => '', 'sort_order' => 219],
+            ['style_key' => 'invoice_bank_lbl_bank', 'style_name' => 'ჭდე: ბანკი', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'ბანკი:', 'sort_order' => 220],
+            ['style_key' => 'invoice_bank_lbl_recipient', 'style_name' => 'ჭდე: მიმღები', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'მიმღები:', 'sort_order' => 221],
+            ['style_key' => 'invoice_bank_lbl_iban', 'style_name' => 'ჭდე: IBAN', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'IBAN:', 'sort_order' => 222],
+            ['style_key' => 'invoice_bank_lbl_swift', 'style_name' => 'ჭდე: SWIFT', 'style_group' => 'invoice', 'style_type' => 'text', 'default_value' => 'SWIFT:', 'sort_order' => 223],
         ];
 
         foreach ($styles as $style) {

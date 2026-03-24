@@ -30,6 +30,7 @@ class StyleController extends Controller
             'buttons' => 'ღილაკები',
             'layout' => 'განლაგება',
             'status' => 'სტატუსის ფერები',
+            'invoice' => 'ინვოისის რედაქტორი',
         ];
 
         return view('god-mode.styles', compact('styles', 'groupLabels'));
@@ -58,11 +59,12 @@ class StyleController extends Controller
      */
     public function updateText(Request $request, GodModeStyle $style)
     {
+        $max = $style->style_type === 'textarea' ? 8000 : 255;
         $validated = $request->validate([
-            'value' => 'required|string|max:255',
+            'value' => ['nullable', 'string', 'max:' . $max],
         ]);
 
-        $this->godModeService->updateStyle($style->id, $validated['value']);
+        $this->godModeService->updateStyle($style->id, $validated['value'] ?? '');
 
         return response()->json([
             'success' => true,

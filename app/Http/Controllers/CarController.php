@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\CarFile;
 use App\Models\User;
-use App\Models\Setting;
 use App\Services\CarService;
+use App\Services\InvoiceDisplaySettings;
 use App\Services\FileUploadService; // Added for file specific actions
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
@@ -360,53 +360,73 @@ class CarController extends Controller
         $paymentPurpose = '';
 
         if ($type === 'vehicle') {
-            // Vehicle invoice
             $invoiceNo = 'INV-CAR-' . $car->id;
-            $paymentPurpose = 'ავტომობილის გადასახადი VIN: ' . $car->vin;
+            $paymentPurpose = InvoiceDisplaySettings::buildPaymentPurpose('vehicle', $car->vin);
 
             if ($car->vehicle_cost > 0) {
                 $invoiceItems[] = [
-                    'desc' => "ავტომობილის ღირებულება / Vehicle Cost\n" . $car->make_model . ($car->year ? ' (' . $car->year . ')' : '') . "\nVIN: " . $car->vin,
-                    'amount' => $car->vehicle_cost
+                    'desc' => InvoiceDisplaySettings::buildLineDescription(
+                        InvoiceDisplaySettings::lineTitleVehicle(),
+                        $car->make_model,
+                        $car->year,
+                        $car->vin
+                    ),
+                    'amount' => $car->vehicle_cost,
                 ];
             }
         } elseif ($type === 'shipping') {
-            // Shipping invoice
             $invoiceNo = 'INV-SHIP-' . $car->id;
-            $paymentPurpose = 'ტრანსპორტირება VIN: ' . $car->vin;
+            $paymentPurpose = InvoiceDisplaySettings::buildPaymentPurpose('shipping', $car->vin);
 
             if ($car->shipping_cost > 0) {
                 $invoiceItems[] = [
-                    'desc' => "ტრანსპორტირება / Shipping Cost\n" . $car->make_model . ($car->year ? ' (' . $car->year . ')' : '') . "\nVIN: " . $car->vin,
-                    'amount' => $car->shipping_cost
+                    'desc' => InvoiceDisplaySettings::buildLineDescription(
+                        InvoiceDisplaySettings::lineTitleShipping(),
+                        $car->make_model,
+                        $car->year,
+                        $car->vin
+                    ),
+                    'amount' => $car->shipping_cost,
                 ];
             }
 
             if ($car->additional_cost > 0) {
                 $invoiceItems[] = [
-                    'desc' => 'დამატებითი ხარჯები / Additional Fees',
-                    'amount' => $car->additional_cost
+                    'desc' => InvoiceDisplaySettings::lineTitleAdditional(),
+                    'amount' => $car->additional_cost,
                 ];
             }
         }
 
-        // Calculate total
         foreach ($invoiceItems as $item) {
             $totalAmount += $item['amount'];
         }
 
-        // Get company settings
-        $companyName = Setting::get('company_name', 'ONECAR LLC');
-        $companyAddress = Setting::get('company_address', 'Tbilisi, Georgia');
-        $companyPhone = Setting::get('company_phone', '+995 599 780 780');
-        $companyEmail = Setting::get('company_email', 'info@onecar.ge');
-        $companyLogo = \App\Models\GodModeStyle::getValue('brand_invoice_logo') ?: Setting::get('site_logo_dark', asset('favicon.ico'));
+        $invoiceHeaderTitle = InvoiceDisplaySettings::headerTitle();
+        $companyName = InvoiceDisplaySettings::companyName();
+        $companyExtraHtml = InvoiceDisplaySettings::companyExtraHtml();
+        $companyAddress = InvoiceDisplaySettings::companyAddress();
+        $companyPhone = InvoiceDisplaySettings::companyPhone();
+        $companyEmail = InvoiceDisplaySettings::companyEmail();
+        $companyLogo = InvoiceDisplaySettings::companyLogo();
 
-        // Bank details
-        $bankName = Setting::get('bank_name', 'Bank of Georgia');
-        $bankRecipient = Setting::get('bank_recipient', 'ლუკა მურვანიძე');
-        $bankIban = Setting::get('bank_iban', 'GE37BG0000000160921689');
-        $bankSwift = Setting::get('bank_swift', 'BAGAGE22');
+        $bankName = InvoiceDisplaySettings::bankName();
+        $bankRecipient = InvoiceDisplaySettings::bankRecipient();
+        $bankIban = InvoiceDisplaySettings::bankIban();
+        $bankSwift = InvoiceDisplaySettings::bankSwift();
+        $bankTitle = InvoiceDisplaySettings::bankTitle();
+        $bankLblBank = InvoiceDisplaySettings::bankLblBank();
+        $bankLblRecipient = InvoiceDisplaySettings::bankLblRecipient();
+        $bankLblIban = InvoiceDisplaySettings::bankLblIban();
+        $bankLblSwift = InvoiceDisplaySettings::bankLblSwift();
+
+        $labelBillTo = InvoiceDisplaySettings::labelBillTo();
+        $labelPurpose = InvoiceDisplaySettings::labelPurpose();
+        $tableColDesc = InvoiceDisplaySettings::tableColDesc();
+        $tableColAmount = InvoiceDisplaySettings::tableColAmount();
+        $tableTotal = InvoiceDisplaySettings::tableTotal();
+        $badgeText = InvoiceDisplaySettings::badgeText();
+        $footerText = InvoiceDisplaySettings::footerText();
 
         // Determine bill to
         $user = auth()->user();
@@ -442,7 +462,9 @@ class CarController extends Controller
             'invoiceItems',
             'totalAmount',
             'paymentPurpose',
+            'invoiceHeaderTitle',
             'companyName',
+            'companyExtraHtml',
             'companyAddress',
             'companyPhone',
             'companyEmail',
@@ -451,6 +473,18 @@ class CarController extends Controller
             'bankRecipient',
             'bankIban',
             'bankSwift',
+            'bankTitle',
+            'bankLblBank',
+            'bankLblRecipient',
+            'bankLblIban',
+            'bankLblSwift',
+            'labelBillTo',
+            'labelPurpose',
+            'tableColDesc',
+            'tableColAmount',
+            'tableTotal',
+            'badgeText',
+            'footerText',
             'billTo'
         ));
     }
