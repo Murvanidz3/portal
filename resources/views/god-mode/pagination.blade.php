@@ -3,9 +3,9 @@
     <nav class="god-pagination" role="navigation" aria-label="Pagination">
         <div class="god-pagination-inner">
             @if ($paginator->onFirstPage())
-                <span class="god-pagination-link is-disabled">‹ წინ</span>
+                <span class="god-pagination-link is-disabled">წინა</span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" class="god-pagination-link" rel="prev">‹ წინ</a>
+                <a href="{{ $paginator->previousPageUrl() }}" class="god-pagination-link" rel="prev">წინა</a>
             @endif
 
             <span class="god-pagination-meta">
@@ -14,9 +14,9 @@
             </span>
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" class="god-pagination-link" rel="next">შემდეგ ›</a>
+                <a href="{{ $paginator->nextPageUrl() }}" class="god-pagination-link" rel="next">შემდეგი</a>
             @else
-                <span class="god-pagination-link is-disabled">შემდეგ ›</span>
+                <span class="god-pagination-link is-disabled">შემდეგი</span>
             @endif
         </div>
     </nav>

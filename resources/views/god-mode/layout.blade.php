@@ -334,7 +334,14 @@
             background: var(--god-surface-hover);
         }
 
-        /* Pagination (God Mode — კომპაქტური, უდიდესი ისრების გარეშე) */
+        /* Pagination (God Mode — კომპაქტური; GeoFont-ზე დიდი გლიფების თავიდან აცილება) */
+        .god-pagination,
+        .god-pagination button,
+        .god-pagination a,
+        .god-pagination span {
+            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+        }
+
         .god-pagination {
             margin-top: 20px;
             padding: 12px 0;
@@ -352,14 +359,23 @@
             display: inline-flex;
             align-items: center;
             padding: 6px 14px;
-            font-size: 13px;
+            font-size: 13px !important;
             font-weight: 500;
+            line-height: 1.3;
             color: var(--god-text);
             background: var(--god-surface-hover);
             border: 1px solid var(--god-border);
             border-radius: 6px;
             text-decoration: none;
             transition: background 0.15s, border-color 0.15s;
+        }
+
+        .god-pagination-wrap svg,
+        .god-pagination svg {
+            max-width: 14px !important;
+            max-height: 14px !important;
+            width: 14px !important;
+            height: 14px !important;
         }
 
         .god-pagination-link:hover:not(.is-disabled) {

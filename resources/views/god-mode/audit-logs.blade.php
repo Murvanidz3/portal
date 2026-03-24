@@ -75,8 +75,8 @@
                 </tbody>
             </table>
 
-            <div style="margin-top: 20px;">
-                {{ $logs->links() }}
+            <div class="god-pagination-wrap">
+                {{ $logs->withQueryString()->links('god-mode.pagination') }}
             </div>
         @else
             <p style="color: var(--god-text-muted); text-align: center; padding: 50px;">ლოგები არ მოიძებნა</p>
