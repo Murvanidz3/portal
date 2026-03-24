@@ -82,7 +82,7 @@ APP_NAME="OneCar CRM"
 APP_ENV=production
 APP_KEY=base64:YOUR_APP_KEY_HERE
 APP_DEBUG=false
-APP_URL=https://yourdomain.com
+APP_URL=https://portal.onecar.ge
 
 DB_CONNECTION=mysql
 DB_HOST=localhost

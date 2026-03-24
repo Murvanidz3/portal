@@ -13,7 +13,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::BeiiaIK2DWlKzL1l',
+            '_route' => 'generated::liwbmbRis7HPdiGa',
           ),
           1 => NULL,
           2 => 
@@ -50,7 +50,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::52EX1Z38i2bKOoaG',
+            '_route' => 'generated::h7wdA2FE0jG8mw4o',
           ),
           1 => NULL,
           2 => 
@@ -742,25 +742,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/settings/toggle-maintenance' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'settings.toggle-maintenance',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
       '/settings/clear-cache' => 
       array (
         0 => 
@@ -773,6 +754,45 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/settings/shipping-rates/upload' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'settings.shipping-rates.upload',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/settings/shipping-rates/download' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'settings.shipping-rates.download',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -941,85 +961,6 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'god.styles.css',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/god/shipping-rates' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'god.shipping-rates',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/god/shipping-rates/upload' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'god.shipping-rates.upload',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/god/shipping-rates/download' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'god.shipping-rates.download',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/god/shipping-rates/preview' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'god.shipping-rates.preview',
           ),
           1 => NULL,
           2 => 
@@ -2201,7 +2142,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::BeiiaIK2DWlKzL1l' => 
+    'generated::liwbmbRis7HPdiGa' => 
     array (
       'methods' => 
       array (
@@ -2230,7 +2171,7 @@ app('router')->setCompiledRoutes(
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
                 }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000003290000000000000000";}}',
-        'as' => 'generated::BeiiaIK2DWlKzL1l',
+        'as' => 'generated::liwbmbRis7HPdiGa',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2284,7 +2225,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::52EX1Z38i2bKOoaG' => 
+    'generated::h7wdA2FE0jG8mw4o' => 
     array (
       'methods' => 
       array (
@@ -2305,7 +2246,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::52EX1Z38i2bKOoaG',
+        'as' => 'generated::h7wdA2FE0jG8mw4o',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5493,46 +5434,6 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'settings.toggle-maintenance' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'settings/toggle-maintenance',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-          4 => 'god.permission:settings.edit',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SettingsController@toggleMaintenance',
-        'controller' => 'App\\Http\\Controllers\\SettingsController@toggleMaintenance',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'settings.toggle-maintenance',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
     'settings.clear-cache' => 
     array (
       'methods' => 
@@ -5558,6 +5459,87 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'settings.clear-cache',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'settings.shipping-rates.upload' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'settings/shipping-rates/upload',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SettingsController@uploadShippingRates',
+        'controller' => 'App\\Http\\Controllers\\SettingsController@uploadShippingRates',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'settings.shipping-rates.upload',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'settings.shipping-rates.download' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'settings/shipping-rates/download',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SettingsController@downloadShippingRates',
+        'controller' => 'App\\Http\\Controllers\\SettingsController@downloadShippingRates',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'settings.shipping-rates.download',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6218,157 +6200,6 @@ app('router')->setCompiledRoutes(
         'uses' => 'App\\Http\\Controllers\\GodMode\\StyleController@getCss',
         'controller' => 'App\\Http\\Controllers\\GodMode\\StyleController@getCss',
         'as' => 'god.styles.css',
-        'namespace' => NULL,
-        'prefix' => '/god',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'god.shipping-rates' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'god/shipping-rates',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'App\\Http\\Middleware\\GodModeAuth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@index',
-        'controller' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@index',
-        'as' => 'god.shipping-rates',
-        'namespace' => NULL,
-        'prefix' => '/god',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'god.shipping-rates.upload' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'god/shipping-rates/upload',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'App\\Http\\Middleware\\GodModeAuth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@upload',
-        'controller' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@upload',
-        'as' => 'god.shipping-rates.upload',
-        'namespace' => NULL,
-        'prefix' => '/god',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'god.shipping-rates.download' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'god/shipping-rates/download',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'App\\Http\\Middleware\\GodModeAuth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@download',
-        'controller' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@download',
-        'as' => 'god.shipping-rates.download',
-        'namespace' => NULL,
-        'prefix' => '/god',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'god.shipping-rates.preview' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'god/shipping-rates/preview',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'App\\Http\\Middleware\\GodModeAuth',
-        ),
-        'uses' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@preview',
-        'controller' => 'App\\Http\\Controllers\\GodMode\\ShippingRatesController@preview',
-        'as' => 'god.shipping-rates.preview',
         'namespace' => NULL,
         'prefix' => '/god',
         'where' => 

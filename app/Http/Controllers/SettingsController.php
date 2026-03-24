@@ -6,6 +6,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class SettingsController extends Controller
 {
@@ -28,7 +29,24 @@ class SettingsController extends Controller
             'appearance' => 'გარეგნობა',
         ];
 
-        return view('settings.index', compact('settings', 'groups'));
+        // Shipping rates CSV info
+        $csvPath = storage_path('app/public/shipping-rates/rates.csv');
+        $csvInfo = null;
+        if (file_exists($csvPath)) {
+            $csv = array_map('str_getcsv', file($csvPath));
+            array_shift($csv);
+            $copart = count(array_filter($csv, fn($r) => count($r) >= 9 && strtoupper(trim($r[0])) === 'COPART'));
+            $iaai = count(array_filter($csv, fn($r) => count($r) >= 9 && strtoupper(trim($r[0])) === 'IAAI'));
+            $csvInfo = [
+                'size' => round(filesize($csvPath) / 1024, 1),
+                'modified' => date('Y-m-d H:i', filemtime($csvPath)),
+                'copart' => $copart,
+                'iaai' => $iaai,
+                'total' => $copart + $iaai,
+            ];
+        }
+
+        return view('settings.index', compact('settings', 'groups', 'csvInfo'));
     }
 
     /**
@@ -92,22 +110,57 @@ class SettingsController extends Controller
     }
 
     /**
-     * Toggle maintenance mode.
+     * Upload shipping rates CSV.
      */
-    public function toggleMaintenance()
+    public function uploadShippingRates(Request $request)
     {
-        $currentMode = Setting::get('maintenance_mode', '0');
-        $newMode = $currentMode === '1' ? '0' : '1';
-        
-        Setting::set('maintenance_mode', $newMode);
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt|max:5120',
+        ]);
+
+        $file = $request->file('csv_file');
+        $rows = array_map('str_getcsv', file($file->getRealPath()));
+
+        if (count($rows) < 2 || count($rows[0]) < 9) {
+            return response()->json([
+                'success' => false,
+                'error' => 'CSV ფაილი არასწორი ფორმატია. მინიმუმ 9 სვეტი საჭიროა.',
+            ], 422);
+        }
+
+        $dir = storage_path('app/public/shipping-rates');
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $file->move($dir, 'rates.csv');
+
+        $csv = array_map('str_getcsv', file(storage_path('app/public/shipping-rates/rates.csv')));
+        array_shift($csv);
+        $copart = count(array_filter($csv, fn($r) => count($r) >= 9 && strtoupper(trim($r[0])) === 'COPART'));
+        $iaai = count(array_filter($csv, fn($r) => count($r) >= 9 && strtoupper(trim($r[0])) === 'IAAI'));
+
+        Log::info('Shipping rates CSV uploaded via admin settings', [
+            'copart_locations' => $copart,
+            'iaai_locations' => $iaai,
+        ]);
 
         return response()->json([
             'success' => true,
-            'maintenance_mode' => $newMode === '1',
-            'message' => $newMode === '1' 
-                ? 'მეინთენანს რეჟიმი ჩართულია!' 
-                : 'მეინთენანს რეჟიმი გამორთულია!'
+            'message' => "CSV წარმატებით აიტვირთა! Copart: {$copart}, IAAI: {$iaai} ლოკაცია.",
         ]);
+    }
+
+    /**
+     * Download current shipping rates CSV.
+     */
+    public function downloadShippingRates()
+    {
+        $path = storage_path('app/public/shipping-rates/rates.csv');
+        if (!file_exists($path)) {
+            abort(404, 'CSV ფაილი ვერ მოიძებნა.');
+        }
+        return response()->download($path, 'rates.csv');
     }
 
     /**

@@ -554,10 +554,6 @@
                         class="god-nav-item {{ request()->routeIs('god.styles') ? 'active' : '' }}">
                         <i class="fas fa-palette"></i> სტილები
                     </a>
-                    <a href="{{ route('god.shipping-rates') }}"
-                        class="god-nav-item {{ request()->routeIs('god.shipping-rates') ? 'active' : '' }}">
-                        <i class="fas fa-truck"></i> ტარიფები
-                    </a>
 
                     <div class="god-nav-section">ლოგები</div>
                     <a href="{{ route('god.audit-logs') }}"
