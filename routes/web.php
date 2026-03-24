@@ -100,17 +100,19 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy')->middleware('god.permission:transactions.delete');
     });
 
-    // Invoices - admin and dealer
+    // Invoices - admin and dealer (static paths before invoices/{invoice} so "create" is not captured as id)
     Route::middleware(['role:admin,dealer'])->group(function () {
         Route::middleware(['god.permission:invoices.access'])->group(function () {
             Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
-            Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
         });
         Route::middleware(['god.permission:invoices.create'])->group(function () {
             Route::get('invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
             Route::post('invoices', [InvoiceController::class, 'store'])->name('invoices.store');
             Route::get('invoices/car/{car}/data', [InvoiceController::class, 'getCarData'])->name('invoices.car-data');
             Route::get('invoices/car/{car}/generate/{type}', [InvoiceController::class, 'generateFromCar'])->name('invoices.generate-from-car');
+        });
+        Route::middleware(['god.permission:invoices.access'])->group(function () {
+            Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
         });
         Route::delete('invoices/{invoice}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
     });
