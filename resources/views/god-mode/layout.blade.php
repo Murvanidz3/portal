@@ -12,6 +12,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
+        @font-face {
+            font-family: 'GeoFont';
+            src: url('/fonts/font.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         :root {
             --god-bg: #0a0a0a;
             --god-surface: #141414;
@@ -34,7 +41,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'GeoFont', 'Inter', ui-sans-serif, system-ui, sans-serif;
             background: var(--god-bg);
             color: var(--god-text);
             min-height: 100vh;
