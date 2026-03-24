@@ -76,7 +76,7 @@ class StyleController extends Controller
     public function uploadImage(Request $request, GodModeStyle $style)
     {
         $validated = $request->validate([
-            'image' => 'required|image|mimes:png,jpg,jpeg,gif,svg,ico,webp|max:2048',
+            'image' => 'required|image|mimes:png,jpg,jpeg,gif,svg,ico,webp|max:10240',
         ]);
 
         $this->godModeService->uploadLogo($style->id, $request->file('image'));
