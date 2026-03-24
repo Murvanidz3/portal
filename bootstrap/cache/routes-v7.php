@@ -13,7 +13,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::xwpZB8MeFfzoNiZB',
+            '_route' => 'generated::dbB7aBQsutBRUCy9',
           ),
           1 => NULL,
           2 => 
@@ -50,7 +50,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::k7EhySWqjt7jkiep',
+            '_route' => 'generated::V3JiRGdqR0UUWWW9',
           ),
           1 => NULL,
           2 => 
@@ -131,26 +131,6 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/cars/create' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.create',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -270,26 +250,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/transactions/create' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'transactions.create',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
       '/invoices' => 
       array (
         0 => 
@@ -319,26 +279,6 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/invoices/create' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'invoices.create',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -612,26 +552,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/users/create' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'users.create',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
       '/sms' => 
       array (
         0 => 
@@ -645,6 +565,44 @@ app('router')->setCompiledRoutes(
           array (
             'GET' => 0,
             'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/sms/clear-old-logs' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'sms.clear-old-logs',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/sms/clear-all-logs' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'sms.clear-all-logs',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -709,44 +667,6 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/sms/clear-old-logs' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'sms.clear-old-logs',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/sms/clear-all-logs' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'sms.clear-all-logs',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
       '/settings' => 
       array (
         0 => 
@@ -776,6 +696,26 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'PUT' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/settings/system-info' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'settings.system-info',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -833,26 +773,6 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      '/settings/system-info' => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'settings.system-info',
-          ),
-          1 => NULL,
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -1116,17 +1036,17 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/cars/([^/]++)(?|/(?|edit(*:32)|status(*:45)|recipient(*:61)|files/(?|([^/]++)(?|(*:88)|/main(*:100))|bulk\\-delete(*:121))|invoice/([^/]++)(*:146))|(*:155))|/finance/([^/]++)(*:181)|/wallet/(?|([^/]++)(*:208)|transfer\\-(?|wallet\\-to\\-car(*:244)|car\\-to\\-car(*:264)))|/transactions/([^/]++)(?|(*:299)|/edit(*:312)|(*:320))|/invoices/(?|([^/]++)(?|(*:353))|car/([^/]++)/(?|data(*:382)|generate/([^/]++)(*:407)))|/notifications/(?|([^/]++)(?|(*:446)|/mark\\-read(*:465))|mark\\-all\\-read(*:489)|([^/]++)(*:505)|send(?|(*:520)|\\-(?|bulk(*:537)|to\\-all\\-dealers(*:561))))|/u(?|sers/([^/]++)(?|(*:593)|/(?|edit(*:609)|toggle\\-(?|approval(*:636)|sms(*:647))|update\\-balance(*:671))|(*:680))|ploads/([a-zA-Z0-9/_\\-\\.]+)(*:716))|/s(?|ms/(?|send\\-for\\-car/([^/]++)(*:759)|templates/([^/]++)(*:785)|logs/([^/]++)(*:806))|torage/(.*)(*:826))|/god/(?|permissions/(?|([^/]++)(*:866)|bulk\\-update(*:886)|reset(*:899))|styles/([^/]++)/(?|color(*:932)|text(*:944)|image(*:957)|reset(*:970))))/?$}sDu',
+      0 => '{^(?|/cars/(?|([^/]++)(?|(*:27)|/invoice/([^/]++)(*:51))|create(*:65)|([^/]++)(?|/(?|edit(*:91)|status(*:104)|recipient(*:121)|files/(?|([^/]++)(?|(*:149)|/main(*:162))|bulk\\-delete(*:183)))|(*:193)))|/finance/([^/]++)(*:220)|/wallet/(?|([^/]++)(*:247)|transfer\\-(?|wallet\\-to\\-car(*:283)|car\\-to\\-car(*:303)))|/transactions/(?|([^/]++)(*:338)|create(*:352)|([^/]++)(?|/edit(*:376)|(*:384)))|/invoices/(?|([^/]++)(*:415)|c(?|reate(*:432)|ar/([^/]++)/(?|data(*:459)|generate/([^/]++)(*:484)))|([^/]++)(*:502))|/notifications/(?|([^/]++)(?|(*:540)|/mark\\-read(*:559))|mark\\-all\\-read(*:583)|([^/]++)(*:599)|send(?|(*:614)|\\-(?|bulk(*:631)|to\\-all\\-dealers(*:655))))|/u(?|sers/(?|([^/]++)(*:687)|create(*:701)|([^/]++)(?|/(?|edit(*:728)|toggle\\-(?|approval(*:755)|sms(*:766))|update\\-balance(*:790))|(*:799)))|ploads/([a-zA-Z0-9/_\\-\\.]+)(*:836))|/s(?|ms/(?|templates/([^/]++)(*:874)|logs/([^/]++)(*:895)|send\\-for\\-car/([^/]++)(*:926))|torage/(.*)(*:946))|/god/(?|permissions/(?|([^/]++)(*:986)|bulk\\-update(*:1006)|reset(*:1020))|styles/([^/]++)/(?|color(*:1054)|text(*:1067)|image(*:1081)|reset(*:1095))))/?$}sDu',
     ),
     3 => 
     array (
-      32 => 
+      27 => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'cars.edit',
+            '_route' => 'cars.show',
           ),
           1 => 
           array (
@@ -1139,123 +1059,11 @@ app('router')->setCompiledRoutes(
           ),
           3 => NULL,
           4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      45 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.update-status',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-          ),
-          2 => 
-          array (
-            'PATCH' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      61 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.update-recipient',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-          ),
-          2 => 
-          array (
-            'PATCH' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      88 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.delete-file',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-            1 => 'file',
-          ),
-          2 => 
-          array (
-            'DELETE' => 0,
-          ),
-          3 => NULL,
-          4 => false,
           5 => true,
           6 => NULL,
         ),
       ),
-      100 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.set-main-photo',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-            1 => 'file',
-          ),
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      121 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.bulk-delete-files',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-          ),
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => false,
-          6 => NULL,
-        ),
-      ),
-      146 => 
+      51 => 
       array (
         0 => 
         array (
@@ -1279,7 +1087,164 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      155 => 
+      65 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.create',
+          ),
+          1 => 
+          array (
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      91 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.edit',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      104 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.update-status',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+          ),
+          2 => 
+          array (
+            'PATCH' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      121 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.update-recipient',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+          ),
+          2 => 
+          array (
+            'PATCH' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      149 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.delete-file',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+            1 => 'file',
+          ),
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      162 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.set-main-photo',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+            1 => 'file',
+          ),
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      183 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'cars.bulk-delete-files',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+          ),
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      193 => 
       array (
         0 => 
         array (
@@ -1319,28 +1284,8 @@ app('router')->setCompiledRoutes(
           5 => true,
           6 => NULL,
         ),
-        2 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'cars.show',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-          ),
-          2 => 
-          array (
-            'GET' => 0,
-            'HEAD' => 1,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
       ),
-      181 => 
+      220 => 
       array (
         0 => 
         array (
@@ -1363,7 +1308,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      208 => 
+      247 => 
       array (
         0 => 
         array (
@@ -1386,7 +1331,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      244 => 
+      283 => 
       array (
         0 => 
         array (
@@ -1407,7 +1352,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      264 => 
+      303 => 
       array (
         0 => 
         array (
@@ -1428,7 +1373,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      299 => 
+      338 => 
       array (
         0 => 
         array (
@@ -1451,7 +1396,29 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      312 => 
+      352 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'transactions.create',
+          ),
+          1 => 
+          array (
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      376 => 
       array (
         0 => 
         array (
@@ -1474,7 +1441,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      320 => 
+      384 => 
       array (
         0 => 
         array (
@@ -1489,7 +1456,6 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'PUT' => 0,
-            'PATCH' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -1516,7 +1482,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      353 => 
+      415 => 
       array (
         0 => 
         array (
@@ -1538,27 +1504,30 @@ app('router')->setCompiledRoutes(
           5 => true,
           6 => NULL,
         ),
-        1 => 
+      ),
+      432 => 
+      array (
+        0 => 
         array (
           0 => 
           array (
-            '_route' => 'invoices.destroy',
+            '_route' => 'invoices.create',
           ),
           1 => 
           array (
-            0 => 'invoice',
           ),
           2 => 
           array (
-            'DELETE' => 0,
+            'GET' => 0,
+            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
-          5 => true,
+          5 => false,
           6 => NULL,
         ),
       ),
-      382 => 
+      459 => 
       array (
         0 => 
         array (
@@ -1581,7 +1550,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      407 => 
+      484 => 
       array (
         0 => 
         array (
@@ -1605,7 +1574,29 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      446 => 
+      502 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'invoices.destroy',
+          ),
+          1 => 
+          array (
+            0 => 'invoice',
+          ),
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      540 => 
       array (
         0 => 
         array (
@@ -1628,7 +1619,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      465 => 
+      559 => 
       array (
         0 => 
         array (
@@ -1650,7 +1641,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      489 => 
+      583 => 
       array (
         0 => 
         array (
@@ -1671,7 +1662,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      505 => 
+      599 => 
       array (
         0 => 
         array (
@@ -1693,7 +1684,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      520 => 
+      614 => 
       array (
         0 => 
         array (
@@ -1714,7 +1705,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      537 => 
+      631 => 
       array (
         0 => 
         array (
@@ -1735,7 +1726,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      561 => 
+      655 => 
       array (
         0 => 
         array (
@@ -1756,7 +1747,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      593 => 
+      687 => 
       array (
         0 => 
         array (
@@ -1779,7 +1770,29 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      609 => 
+      701 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'users.create',
+          ),
+          1 => 
+          array (
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      728 => 
       array (
         0 => 
         array (
@@ -1802,7 +1815,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      636 => 
+      755 => 
       array (
         0 => 
         array (
@@ -1824,7 +1837,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      647 => 
+      766 => 
       array (
         0 => 
         array (
@@ -1846,7 +1859,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      671 => 
+      790 => 
       array (
         0 => 
         array (
@@ -1868,7 +1881,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      680 => 
+      799 => 
       array (
         0 => 
         array (
@@ -1883,7 +1896,6 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'PUT' => 0,
-            'PATCH' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -1910,7 +1922,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      716 => 
+      836 => 
       array (
         0 => 
         array (
@@ -1933,29 +1945,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      759 => 
-      array (
-        0 => 
-        array (
-          0 => 
-          array (
-            '_route' => 'sms.send-for-car',
-          ),
-          1 => 
-          array (
-            0 => 'car',
-          ),
-          2 => 
-          array (
-            'POST' => 0,
-          ),
-          3 => NULL,
-          4 => false,
-          5 => true,
-          6 => NULL,
-        ),
-      ),
-      785 => 
+      874 => 
       array (
         0 => 
         array (
@@ -1977,7 +1967,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      806 => 
+      895 => 
       array (
         0 => 
         array (
@@ -1999,7 +1989,29 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      826 => 
+      926 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'sms.send-for-car',
+          ),
+          1 => 
+          array (
+            0 => 'car',
+          ),
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      946 => 
       array (
         0 => 
         array (
@@ -2022,7 +2034,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      866 => 
+      986 => 
       array (
         0 => 
         array (
@@ -2044,7 +2056,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      886 => 
+      1006 => 
       array (
         0 => 
         array (
@@ -2065,7 +2077,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      899 => 
+      1020 => 
       array (
         0 => 
         array (
@@ -2086,7 +2098,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      932 => 
+      1054 => 
       array (
         0 => 
         array (
@@ -2108,7 +2120,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      944 => 
+      1067 => 
       array (
         0 => 
         array (
@@ -2130,7 +2142,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      957 => 
+      1081 => 
       array (
         0 => 
         array (
@@ -2152,7 +2164,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      970 => 
+      1095 => 
       array (
         0 => 
         array (
@@ -2189,7 +2201,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::xwpZB8MeFfzoNiZB' => 
+    'generated::dbB7aBQsutBRUCy9' => 
     array (
       'methods' => 
       array (
@@ -2217,8 +2229,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'D:\\\\portalv2\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000063f0000000000000000";}}',
-        'as' => 'generated::xwpZB8MeFfzoNiZB',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000003290000000000000000";}}',
+        'as' => 'generated::dbB7aBQsutBRUCy9',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2272,7 +2284,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::k7EhySWqjt7jkiep' => 
+    'generated::V3JiRGdqR0UUWWW9' => 
     array (
       'methods' => 
       array (
@@ -2293,7 +2305,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::k7EhySWqjt7jkiep',
+        'as' => 'generated::V3JiRGdqR0UUWWW9',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2400,6 +2412,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:cars.access',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@index',
         'controller' => 'App\\Http\\Controllers\\CarController@index',
@@ -2409,6 +2422,86 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'cars.index',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'cars.show' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'cars/{car}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'god.permission:cars.access',
+        ),
+        'uses' => 'App\\Http\\Controllers\\CarController@show',
+        'controller' => 'App\\Http\\Controllers\\CarController@show',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'cars.show',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'cars.invoice' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'cars/{car}/invoice/{type}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'god.permission:cars.access',
+        ),
+        'uses' => 'App\\Http\\Controllers\\CarController@invoice',
+        'controller' => 'App\\Http\\Controllers\\CarController@invoice',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'cars.invoice',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2440,6 +2533,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.create',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@create',
         'controller' => 'App\\Http\\Controllers\\CarController@create',
@@ -2479,6 +2573,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.create',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@store',
         'controller' => 'App\\Http\\Controllers\\CarController@store',
@@ -2519,6 +2614,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@edit',
         'controller' => 'App\\Http\\Controllers\\CarController@edit',
@@ -2558,6 +2654,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@update',
         'controller' => 'App\\Http\\Controllers\\CarController@update',
@@ -2567,45 +2664,6 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'cars.update',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'cars.destroy' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'DELETE',
-      ),
-      'uri' => 'cars/{car}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\CarController@destroy',
-        'controller' => 'App\\Http\\Controllers\\CarController@destroy',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'cars.destroy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2636,6 +2694,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@updateStatus',
         'controller' => 'App\\Http\\Controllers\\CarController@updateStatus',
@@ -2675,6 +2734,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@updateRecipient',
         'controller' => 'App\\Http\\Controllers\\CarController@updateRecipient',
@@ -2714,6 +2774,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@deleteFile',
         'controller' => 'App\\Http\\Controllers\\CarController@deleteFile',
@@ -2753,6 +2814,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@setMainPhoto',
         'controller' => 'App\\Http\\Controllers\\CarController@setMainPhoto',
@@ -2792,6 +2854,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:cars.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\CarController@bulkDeleteFiles',
         'controller' => 'App\\Http\\Controllers\\CarController@bulkDeleteFiles',
@@ -2816,12 +2879,11 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'cars.show' => 
+    'cars.destroy' => 
     array (
       'methods' => 
       array (
-        0 => 'GET',
-        1 => 'HEAD',
+        0 => 'DELETE',
       ),
       'uri' => 'cars/{car}',
       'action' => 
@@ -2831,54 +2893,17 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:cars.delete',
         ),
-        'uses' => 'App\\Http\\Controllers\\CarController@show',
-        'controller' => 'App\\Http\\Controllers\\CarController@show',
+        'uses' => 'App\\Http\\Controllers\\CarController@destroy',
+        'controller' => 'App\\Http\\Controllers\\CarController@destroy',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'cars.show',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'cars.invoice' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'cars/{car}/invoice/{type}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-        ),
-        'uses' => 'App\\Http\\Controllers\\CarController@invoice',
-        'controller' => 'App\\Http\\Controllers\\CarController@invoice',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'cars.invoice',
+        'as' => 'cars.destroy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2910,6 +2935,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:finance.access',
         ),
         'uses' => 'App\\Http\\Controllers\\FinanceController@index',
         'controller' => 'App\\Http\\Controllers\\FinanceController@index',
@@ -2950,6 +2976,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:finance.access',
         ),
         'uses' => 'App\\Http\\Controllers\\FinanceController@show',
         'controller' => 'App\\Http\\Controllers\\FinanceController@show',
@@ -2990,6 +3017,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:wallet.access',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@index',
         'controller' => 'App\\Http\\Controllers\\WalletController@index',
@@ -3030,7 +3058,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
-          4 => 'role:admin',
+          4 => 'god.permission:wallet.access',
+          5 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@create',
         'controller' => 'App\\Http\\Controllers\\WalletController@create',
@@ -3070,7 +3099,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
-          4 => 'role:admin',
+          4 => 'god.permission:wallet.access',
+          5 => 'role:admin',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@store',
         'controller' => 'App\\Http\\Controllers\\WalletController@store',
@@ -3111,6 +3141,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:wallet.access',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@show',
         'controller' => 'App\\Http\\Controllers\\WalletController@show',
@@ -3150,6 +3181,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:wallet.transfer',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@transferWalletToCar',
         'controller' => 'App\\Http\\Controllers\\WalletController@transferWalletToCar',
@@ -3189,6 +3221,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:wallet.transfer',
         ),
         'uses' => 'App\\Http\\Controllers\\WalletController@transferCarToCar',
         'controller' => 'App\\Http\\Controllers\\WalletController@transferCarToCar',
@@ -3229,8 +3262,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.access',
         ),
-        'as' => 'transactions.index',
         'uses' => 'App\\Http\\Controllers\\TransactionController@index',
         'controller' => 'App\\Http\\Controllers\\TransactionController@index',
         'namespace' => NULL,
@@ -3238,85 +3271,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'transactions.create' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'transactions/create',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin,dealer',
-        ),
-        'as' => 'transactions.create',
-        'uses' => 'App\\Http\\Controllers\\TransactionController@create',
-        'controller' => 'App\\Http\\Controllers\\TransactionController@create',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'transactions.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'transactions',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin,dealer',
-        ),
-        'as' => 'transactions.store',
-        'uses' => 'App\\Http\\Controllers\\TransactionController@store',
-        'controller' => 'App\\Http\\Controllers\\TransactionController@store',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
+        'as' => 'transactions.index',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3348,8 +3303,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.access',
         ),
-        'as' => 'transactions.show',
         'uses' => 'App\\Http\\Controllers\\TransactionController@show',
         'controller' => 'App\\Http\\Controllers\\TransactionController@show',
         'namespace' => NULL,
@@ -3357,6 +3312,88 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'transactions.show',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'transactions.create' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'transactions/create',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.create',
+        ),
+        'uses' => 'App\\Http\\Controllers\\TransactionController@create',
+        'controller' => 'App\\Http\\Controllers\\TransactionController@create',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'transactions.create',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'transactions.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'transactions',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.create',
+        ),
+        'uses' => 'App\\Http\\Controllers\\TransactionController@store',
+        'controller' => 'App\\Http\\Controllers\\TransactionController@store',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'transactions.store',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3388,8 +3425,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.edit',
         ),
-        'as' => 'transactions.edit',
         'uses' => 'App\\Http\\Controllers\\TransactionController@edit',
         'controller' => 'App\\Http\\Controllers\\TransactionController@edit',
         'namespace' => NULL,
@@ -3397,6 +3434,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'transactions.edit',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3417,7 +3455,6 @@ app('router')->setCompiledRoutes(
       'methods' => 
       array (
         0 => 'PUT',
-        1 => 'PATCH',
       ),
       'uri' => 'transactions/{transaction}',
       'action' => 
@@ -3428,8 +3465,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.edit',
         ),
-        'as' => 'transactions.update',
         'uses' => 'App\\Http\\Controllers\\TransactionController@update',
         'controller' => 'App\\Http\\Controllers\\TransactionController@update',
         'namespace' => NULL,
@@ -3437,6 +3474,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'transactions.update',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3467,8 +3505,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:transactions.delete',
         ),
-        'as' => 'transactions.destroy',
         'uses' => 'App\\Http\\Controllers\\TransactionController@destroy',
         'controller' => 'App\\Http\\Controllers\\TransactionController@destroy',
         'namespace' => NULL,
@@ -3476,6 +3514,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'transactions.destroy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3507,8 +3546,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.access',
         ),
-        'as' => 'invoices.index',
         'uses' => 'App\\Http\\Controllers\\InvoiceController@index',
         'controller' => 'App\\Http\\Controllers\\InvoiceController@index',
         'namespace' => NULL,
@@ -3516,85 +3555,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'invoices.create' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'invoices/create',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin,dealer',
-        ),
-        'as' => 'invoices.create',
-        'uses' => 'App\\Http\\Controllers\\InvoiceController@create',
-        'controller' => 'App\\Http\\Controllers\\InvoiceController@create',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'invoices.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'invoices',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin,dealer',
-        ),
-        'as' => 'invoices.store',
-        'uses' => 'App\\Http\\Controllers\\InvoiceController@store',
-        'controller' => 'App\\Http\\Controllers\\InvoiceController@store',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
+        'as' => 'invoices.index',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3626,8 +3587,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.access',
         ),
-        'as' => 'invoices.show',
         'uses' => 'App\\Http\\Controllers\\InvoiceController@show',
         'controller' => 'App\\Http\\Controllers\\InvoiceController@show',
         'namespace' => NULL,
@@ -3635,6 +3596,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'invoices.show',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3650,13 +3612,14 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'invoices.destroy' => 
+    'invoices.create' => 
     array (
       'methods' => 
       array (
-        0 => 'DELETE',
+        0 => 'GET',
+        1 => 'HEAD',
       ),
-      'uri' => 'invoices/{invoice}',
+      'uri' => 'invoices/create',
       'action' => 
       array (
         'middleware' => 
@@ -3665,15 +3628,56 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.create',
         ),
-        'as' => 'invoices.destroy',
-        'uses' => 'App\\Http\\Controllers\\InvoiceController@destroy',
-        'controller' => 'App\\Http\\Controllers\\InvoiceController@destroy',
+        'uses' => 'App\\Http\\Controllers\\InvoiceController@create',
+        'controller' => 'App\\Http\\Controllers\\InvoiceController@create',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
+        'as' => 'invoices.create',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'invoices.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'invoices',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.create',
+        ),
+        'uses' => 'App\\Http\\Controllers\\InvoiceController@store',
+        'controller' => 'App\\Http\\Controllers\\InvoiceController@store',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'invoices.store',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3705,6 +3709,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.create',
         ),
         'uses' => 'App\\Http\\Controllers\\InvoiceController@getCarData',
         'controller' => 'App\\Http\\Controllers\\InvoiceController@getCarData',
@@ -3745,6 +3750,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:invoices.create',
         ),
         'uses' => 'App\\Http\\Controllers\\InvoiceController@generateFromCar',
         'controller' => 'App\\Http\\Controllers\\InvoiceController@generateFromCar',
@@ -3754,6 +3760,45 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'invoices.generate-from-car',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'invoices.destroy' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'invoices/{invoice}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin,dealer',
+        ),
+        'uses' => 'App\\Http\\Controllers\\InvoiceController@destroy',
+        'controller' => 'App\\Http\\Controllers\\InvoiceController@destroy',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'invoices.destroy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3785,6 +3830,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:calculator.access',
         ),
         'uses' => 'App\\Http\\Controllers\\CalculatorController@index',
         'controller' => 'App\\Http\\Controllers\\CalculatorController@index',
@@ -3824,6 +3870,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:calculator.access',
         ),
         'uses' => 'App\\Http\\Controllers\\CalculatorController@calculate',
         'controller' => 'App\\Http\\Controllers\\CalculatorController@calculate',
@@ -3864,6 +3911,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:calculator.access',
         ),
         'uses' => 'App\\Http\\Controllers\\CalculatorController@getLocations',
         'controller' => 'App\\Http\\Controllers\\CalculatorController@getLocations',
@@ -3903,6 +3951,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin,dealer',
+          4 => 'god.permission:calculator.access',
         ),
         'uses' => 'App\\Http\\Controllers\\CalculatorController@calculateShippingFromRates',
         'controller' => 'App\\Http\\Controllers\\CalculatorController@calculateShippingFromRates',
@@ -3942,6 +3991,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@index',
         'controller' => 'App\\Http\\Controllers\\NotificationController@index',
@@ -3981,6 +4031,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@getUnreadCount',
         'controller' => 'App\\Http\\Controllers\\NotificationController@getUnreadCount',
@@ -4020,6 +4071,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@getRecent',
         'controller' => 'App\\Http\\Controllers\\NotificationController@getRecent',
@@ -4059,6 +4111,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@show',
         'controller' => 'App\\Http\\Controllers\\NotificationController@show',
@@ -4097,6 +4150,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@markRead',
         'controller' => 'App\\Http\\Controllers\\NotificationController@markRead',
@@ -4135,6 +4189,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@markAllRead',
         'controller' => 'App\\Http\\Controllers\\NotificationController@markAllRead',
@@ -4173,6 +4228,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'approved',
+          3 => 'god.permission:notifications.access',
         ),
         'uses' => 'App\\Http\\Controllers\\NotificationController@destroy',
         'controller' => 'App\\Http\\Controllers\\NotificationController@destroy',
@@ -4182,6 +4238,126 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'notifications.destroy',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'notifications.send' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'notifications/send',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:notifications.send',
+        ),
+        'uses' => 'App\\Http\\Controllers\\NotificationController@send',
+        'controller' => 'App\\Http\\Controllers\\NotificationController@send',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'notifications.send',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'notifications.send-bulk' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'notifications/send-bulk',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:notifications.send',
+        ),
+        'uses' => 'App\\Http\\Controllers\\NotificationController@sendBulk',
+        'controller' => 'App\\Http\\Controllers\\NotificationController@sendBulk',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'notifications.send-bulk',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'notifications.send-to-all-dealers' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'notifications/send-to-all-dealers',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:notifications.send',
+        ),
+        'uses' => 'App\\Http\\Controllers\\NotificationController@sendToAllDealers',
+        'controller' => 'App\\Http\\Controllers\\NotificationController@sendToAllDealers',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'notifications.send-to-all-dealers',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4406,8 +4582,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.access',
         ),
-        'as' => 'users.index',
         'uses' => 'App\\Http\\Controllers\\UserController@index',
         'controller' => 'App\\Http\\Controllers\\UserController@index',
         'namespace' => NULL,
@@ -4415,85 +4591,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'users.create' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'users/create',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'as' => 'users.create',
-        'uses' => 'App\\Http\\Controllers\\UserController@create',
-        'controller' => 'App\\Http\\Controllers\\UserController@create',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'users.store' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'users',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'as' => 'users.store',
-        'uses' => 'App\\Http\\Controllers\\UserController@store',
-        'controller' => 'App\\Http\\Controllers\\UserController@store',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
+        'as' => 'users.index',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4525,8 +4623,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.access',
         ),
-        'as' => 'users.show',
         'uses' => 'App\\Http\\Controllers\\UserController@show',
         'controller' => 'App\\Http\\Controllers\\UserController@show',
         'namespace' => NULL,
@@ -4534,6 +4632,88 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'users.show',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'users.create' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'users/create',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:users.create',
+        ),
+        'uses' => 'App\\Http\\Controllers\\UserController@create',
+        'controller' => 'App\\Http\\Controllers\\UserController@create',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'users.create',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'users.store' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'users',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:users.create',
+        ),
+        'uses' => 'App\\Http\\Controllers\\UserController@store',
+        'controller' => 'App\\Http\\Controllers\\UserController@store',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'users.store',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4565,8 +4745,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.edit',
         ),
-        'as' => 'users.edit',
         'uses' => 'App\\Http\\Controllers\\UserController@edit',
         'controller' => 'App\\Http\\Controllers\\UserController@edit',
         'namespace' => NULL,
@@ -4574,6 +4754,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
+        'as' => 'users.edit',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4594,7 +4775,6 @@ app('router')->setCompiledRoutes(
       'methods' => 
       array (
         0 => 'PUT',
-        1 => 'PATCH',
       ),
       'uri' => 'users/{user}',
       'action' => 
@@ -4605,8 +4785,8 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.edit',
         ),
-        'as' => 'users.update',
         'uses' => 'App\\Http\\Controllers\\UserController@update',
         'controller' => 'App\\Http\\Controllers\\UserController@update',
         'namespace' => NULL,
@@ -4614,45 +4794,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'users.destroy' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'DELETE',
-      ),
-      'uri' => 'users/{user}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'as' => 'users.destroy',
-        'uses' => 'App\\Http\\Controllers\\UserController@destroy',
-        'controller' => 'App\\Http\\Controllers\\UserController@destroy',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
+        'as' => 'users.update',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4683,6 +4825,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\UserController@toggleApproval',
         'controller' => 'App\\Http\\Controllers\\UserController@toggleApproval',
@@ -4722,6 +4865,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\UserController@toggleSms',
         'controller' => 'App\\Http\\Controllers\\UserController@toggleSms',
@@ -4761,6 +4905,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:users.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\UserController@updateBalance',
         'controller' => 'App\\Http\\Controllers\\UserController@updateBalance',
@@ -4770,6 +4915,46 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'users.update-balance',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'users.destroy' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'users/{user}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:users.delete',
+        ),
+        'uses' => 'App\\Http\\Controllers\\UserController@destroy',
+        'controller' => 'App\\Http\\Controllers\\UserController@destroy',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'users.destroy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4801,6 +4986,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SmsController@index',
         'controller' => 'App\\Http\\Controllers\\SmsController@index',
@@ -4810,162 +4996,6 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'sms.index',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'sms.send' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'sms/send',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SmsController@send',
-        'controller' => 'App\\Http\\Controllers\\SmsController@send',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'sms.send',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'sms.send-to-user' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'sms/send-to-user',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SmsController@sendToUser',
-        'controller' => 'App\\Http\\Controllers\\SmsController@sendToUser',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'sms.send-to-user',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'sms.send-for-car' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'sms/send-for-car/{car}',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SmsController@sendForCar',
-        'controller' => 'App\\Http\\Controllers\\SmsController@sendForCar',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'sms.send-for-car',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'sms.send-bulk' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'sms/send-bulk',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SmsController@sendBulk',
-        'controller' => 'App\\Http\\Controllers\\SmsController@sendBulk',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'sms.send-bulk',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4996,6 +5026,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SmsController@updateTemplate',
         'controller' => 'App\\Http\\Controllers\\SmsController@updateTemplate',
@@ -5035,6 +5066,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SmsController@deleteLog',
         'controller' => 'App\\Http\\Controllers\\SmsController@deleteLog',
@@ -5074,6 +5106,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SmsController@clearOldLogs',
         'controller' => 'App\\Http\\Controllers\\SmsController@clearOldLogs',
@@ -5113,6 +5146,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SmsController@clearAllLogs',
         'controller' => 'App\\Http\\Controllers\\SmsController@clearAllLogs',
@@ -5137,13 +5171,13 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'notifications.send' => 
+    'sms.send' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'notifications/send',
+      'uri' => 'sms/send',
       'action' => 
       array (
         'middleware' => 
@@ -5152,15 +5186,16 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.send',
         ),
-        'uses' => 'App\\Http\\Controllers\\NotificationController@send',
-        'controller' => 'App\\Http\\Controllers\\NotificationController@send',
+        'uses' => 'App\\Http\\Controllers\\SmsController@send',
+        'controller' => 'App\\Http\\Controllers\\SmsController@send',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'notifications.send',
+        'as' => 'sms.send',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5176,13 +5211,13 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'notifications.send-bulk' => 
+    'sms.send-to-user' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'notifications/send-bulk',
+      'uri' => 'sms/send-to-user',
       'action' => 
       array (
         'middleware' => 
@@ -5191,15 +5226,16 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.send',
         ),
-        'uses' => 'App\\Http\\Controllers\\NotificationController@sendBulk',
-        'controller' => 'App\\Http\\Controllers\\NotificationController@sendBulk',
+        'uses' => 'App\\Http\\Controllers\\SmsController@sendToUser',
+        'controller' => 'App\\Http\\Controllers\\SmsController@sendToUser',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'notifications.send-bulk',
+        'as' => 'sms.send-to-user',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5215,13 +5251,13 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'notifications.send-to-all-dealers' => 
+    'sms.send-for-car' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'notifications/send-to-all-dealers',
+      'uri' => 'sms/send-for-car/{car}',
       'action' => 
       array (
         'middleware' => 
@@ -5230,15 +5266,56 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:sms.send',
         ),
-        'uses' => 'App\\Http\\Controllers\\NotificationController@sendToAllDealers',
-        'controller' => 'App\\Http\\Controllers\\NotificationController@sendToAllDealers',
+        'uses' => 'App\\Http\\Controllers\\SmsController@sendForCar',
+        'controller' => 'App\\Http\\Controllers\\SmsController@sendForCar',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'notifications.send-to-all-dealers',
+        'as' => 'sms.send-for-car',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'sms.send-bulk' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'sms/send-bulk',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:sms.send',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SmsController@sendBulk',
+        'controller' => 'App\\Http\\Controllers\\SmsController@sendBulk',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'sms.send-bulk',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5270,6 +5347,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:settings.access',
         ),
         'uses' => 'App\\Http\\Controllers\\SettingsController@index',
         'controller' => 'App\\Http\\Controllers\\SettingsController@index',
@@ -5279,6 +5357,47 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'settings.index',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'settings.system-info' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'settings/system-info',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'approved',
+          3 => 'role:admin',
+          4 => 'god.permission:settings.access',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SettingsController@systemInfo',
+        'controller' => 'App\\Http\\Controllers\\SettingsController@systemInfo',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'settings.system-info',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5309,6 +5428,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\SettingsController@update',
         'controller' => 'App\\Http\\Controllers\\SettingsController@update',
@@ -5348,6 +5468,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\SettingsController@updateSingle',
         'controller' => 'App\\Http\\Controllers\\SettingsController@updateSingle',
@@ -5387,6 +5508,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\SettingsController@toggleMaintenance',
         'controller' => 'App\\Http\\Controllers\\SettingsController@toggleMaintenance',
@@ -5426,6 +5548,7 @@ app('router')->setCompiledRoutes(
           1 => 'auth',
           2 => 'approved',
           3 => 'role:admin',
+          4 => 'god.permission:settings.edit',
         ),
         'uses' => 'App\\Http\\Controllers\\SettingsController@clearCache',
         'controller' => 'App\\Http\\Controllers\\SettingsController@clearCache',
@@ -5435,46 +5558,6 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'settings.clear-cache',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
-    'settings.system-info' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'GET',
-        1 => 'HEAD',
-      ),
-      'uri' => 'settings/system-info',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-          1 => 'auth',
-          2 => 'approved',
-          3 => 'role:admin',
-        ),
-        'uses' => 'App\\Http\\Controllers\\SettingsController@systemInfo',
-        'controller' => 'App\\Http\\Controllers\\SettingsController@systemInfo',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'settings.system-info',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5534,7 +5617,7 @@ app('router')->setCompiledRoutes(
     }
 
     return \\response()->file($filePath);
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000000000063d0000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000003270000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
@@ -6322,7 +6405,7 @@ app('router')->setCompiledRoutes(
                         $config,
                         $isProduction
                     ))($request, $path);
-                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"00000000000006760000000000000000";}}',
+                }";s:5:"scope";s:47:"Illuminate\\Filesystem\\FilesystemServiceProvider";s:4:"this";N;s:4:"self";s:32:"00000000000003630000000000000000";}}',
         'as' => 'storage.local',
       ),
       'fallback' => false,
