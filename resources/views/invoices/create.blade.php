@@ -268,7 +268,7 @@ function invoiceForm() {
             this.loading = true;
             
             try {
-                const response = await fetch(`/invoices/car/${this.selectedCarId}/data`, {
+                const response = await fetch(`{{ url('/invoices/car') }}/${this.selectedCarId}/data`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json',

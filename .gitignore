@@ -23,3 +23,6 @@ Homestead.yaml
 Thumbs.db
 /backupv1
 /test_*.php
+
+# Route cache must not be committed (stale order causes 404 e.g. invoices/create)
+/bootstrap/cache/routes-*.php
