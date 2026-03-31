@@ -83,15 +83,17 @@ Route::middleware(['auth', 'approved'])->group(function () {
         Route::post('wallet/transfer-car-to-car', [WalletController::class, 'transferCarToCar'])->name('wallet.transfer-car-to-car');
     });
 
-    // Transactions - admin and dealer
+    // Transactions - admin and dealer (static paths before transactions/{transaction} so "create" is not captured as id)
     Route::middleware(['role:admin,dealer'])->group(function () {
         Route::middleware(['god.permission:transactions.access'])->group(function () {
             Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
-            Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
         });
         Route::middleware(['god.permission:transactions.create'])->group(function () {
             Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
             Route::post('transactions', [TransactionController::class, 'store'])->name('transactions.store');
+        });
+        Route::middleware(['god.permission:transactions.access'])->group(function () {
+            Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
         });
         Route::middleware(['god.permission:transactions.edit'])->group(function () {
             Route::get('transactions/{transaction}/edit', [TransactionController::class, 'edit'])->name('transactions.edit');
