@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Hostinger shared hosting account
+- Hostinger shared hosting account.
 - PHP 8.2 or higher
 - MySQL/MariaDB database
 - Composer access (via SSH or cPanel)
