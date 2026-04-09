@@ -205,8 +205,13 @@ Route::middleware(['auth', 'approved'])->group(function () {
 // Uploads route - serve files from uploads directory (auth required)
 Route::get('/uploads/{path}', function ($path) {
     // Path traversal prevention
-    $path = ltrim($path, '/');
-    if (str_contains($path, '..') || str_contains($path, "\0") || str_contains($path, '//')) {
+    $path = ltrim(rawurldecode($path), '/');
+    if (
+        str_contains($path, '..') ||
+        str_contains($path, "\0") ||
+        str_contains($path, '//') ||
+        str_contains($path, '\\')
+    ) {
         abort(403);
     }
 
@@ -232,7 +237,7 @@ Route::get('/uploads/{path}', function ($path) {
     }
 
     return response()->file($filePath);
-})->where('path', '[a-zA-Z0-9/_\-\.]+')->middleware('auth')->name('uploads');
+})->where('path', '.*')->middleware('auth')->name('uploads');
 
 /*
 |--------------------------------------------------------------------------
