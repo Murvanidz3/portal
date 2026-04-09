@@ -282,8 +282,12 @@ class FileUploadService
             return $path;
         }
 
-        // Use direct storage URL instead of route
-        return Storage::url($path);
+        $path = ltrim($path, '/');
+        $relativePath = str_starts_with($path, 'uploads/')
+            ? substr($path, strlen('uploads/'))
+            : $path;
+
+        return route('uploads', ['path' => $relativePath]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CarFile extends Model
 {
@@ -89,8 +90,12 @@ class CarFile extends Model
             return $this->file_path;
         }
 
-        // Use direct storage URL
-        return Storage::url($this->file_path);
+        $path = ltrim($this->file_path, '/');
+        $relativePath = Str::startsWith($path, 'uploads/')
+            ? Str::after($path, 'uploads/')
+            : $path;
+
+        return route('uploads', ['path' => $relativePath]);
     }
 
     public function getFilenameAttribute(): string

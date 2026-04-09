@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Car extends Model
 {
@@ -233,7 +234,12 @@ class Car extends Model
             return $this->main_photo;
         }
 
-        return \Illuminate\Support\Facades\Storage::url($this->main_photo);
+        $path = ltrim($this->main_photo, '/');
+        $relativePath = Str::startsWith($path, 'uploads/')
+            ? Str::after($path, 'uploads/')
+            : $path;
+
+        return route('uploads', ['path' => $relativePath]);
     }
 
     public function getFormattedDebtAttribute(): string
