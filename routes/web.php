@@ -36,17 +36,21 @@ Route::middleware(['auth', 'approved'])->group(function () {
     // Dashboard (always accessible)
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Cars - view routes (all authenticated+approved users including clients)
+    // Cars - list (all authenticated+approved users including clients)
     Route::middleware(['god.permission:cars.access'])->group(function () {
         Route::get('cars', [CarController::class, 'index'])->name('cars.index');
-        Route::get('cars/{car}', [CarController::class, 'show'])->name('cars.show');
-        Route::get('cars/{car}/invoice/{type}', [CarController::class, 'invoice'])->name('cars.invoice');
     });
 
-    // Cars - create routes (admin only)
+    // Cars - create (admin only); must be before cars/{car} or "create" is captured as {car}
     Route::middleware(['role:admin', 'god.permission:cars.create'])->group(function () {
         Route::get('cars/create', [CarController::class, 'create'])->name('cars.create');
         Route::post('cars', [CarController::class, 'store'])->name('cars.store');
+    });
+
+    // Cars - single-car views (all authenticated+approved users including clients)
+    Route::middleware(['god.permission:cars.access'])->group(function () {
+        Route::get('cars/{car}', [CarController::class, 'show'])->name('cars.show');
+        Route::get('cars/{car}/invoice/{type}', [CarController::class, 'invoice'])->name('cars.invoice');
     });
 
     // Cars - edit routes (admin only)
